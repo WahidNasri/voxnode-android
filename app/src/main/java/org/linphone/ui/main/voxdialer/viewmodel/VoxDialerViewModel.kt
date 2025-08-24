@@ -72,10 +72,14 @@ class VoxDialerViewModel
         }
     }
 
-    @UiThread
     fun clearUri() {
         enteredUri.value = ""
         Log.d("$TAG Cleared URI")
+    }
+
+    private fun clearUriFromBackgroundThread() {
+        enteredUri.postValue("")
+        Log.d("$TAG Cleared URI from background thread")
     }
 
     fun makeCall() {
@@ -91,7 +95,7 @@ class VoxDialerViewModel
                     Log.i("$TAG Calling [${address.asStringUriOnly()}]")
                     coreContext.startAudioCall(address)
                     // Clear the dialer after successful call initiation
-                    clearUri()
+                    clearUriFromBackgroundThread()
                 } else {
                     Log.e("$TAG Failed to parse [$uri] as SIP address")
                     // TODO: Add appropriate error message toast
