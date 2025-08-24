@@ -87,6 +87,7 @@ class MainActivity : GenericActivity() {
         private const val HISTORY_FRAGMENT_ID = 2
         private const val CHAT_FRAGMENT_ID = 3
         private const val MEETINGS_FRAGMENT_ID = 4
+        private const val VOXSETTINGS_FRAGMENT_ID = 5
 
         const val ARGUMENTS_CHAT = "Chat"
         const val ARGUMENTS_CONVERSATION_ID = "ConversationId"
@@ -411,6 +412,9 @@ class MainActivity : GenericActivity() {
             R.id.meetingsListFragment -> {
                 MEETINGS_FRAGMENT_ID
             }
+            R.id.voxSettingsFragment -> {
+                VOXSETTINGS_FRAGMENT_ID
+            }
             else -> { // Default
                 HISTORY_FRAGMENT_ID
             }
@@ -511,6 +515,14 @@ class MainActivity : GenericActivity() {
                         findNavController().addOnDestinationChangedListener(destinationListener)
                         findNavController().navigate(
                             R.id.meetingsListFragment,
+                            args,
+                            navOptions
+                        )
+                    }
+                    VOXSETTINGS_FRAGMENT_ID -> {
+                        findNavController().addOnDestinationChangedListener(destinationListener)
+                        findNavController().navigate(
+                            R.id.voxSettingsFragment,
                             args,
                             navOptions
                         )

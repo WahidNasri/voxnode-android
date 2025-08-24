@@ -29,6 +29,12 @@
             app:popUpTo="@id/contactsListFragment"
             app:popUpToInclusive="true" />
         <action
+            android:id="@+id/action_contactsListFragment_to_voxSettingsFragment"
+            app:destination="@id/voxSettingsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/contactsListFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_contactsListFragment_to_newContactFragment"
             app:destination="@id/newContactFragment"
             app:enterAnim="@anim/slide_in"
@@ -56,6 +62,12 @@
         <action
             android:id="@+id/action_historyListFragment_to_meetingsListFragment"
             app:destination="@id/meetingsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/historyListFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_historyListFragment_to_voxSettingsFragment"
+            app:destination="@id/voxSettingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/historyListFragment"
             app:popUpToInclusive="true" />
@@ -272,6 +284,12 @@
             app:popUpTo="@id/conversationsListFragment"
             app:popUpToInclusive="true" />
         <action
+            android:id="@+id/action_conversationsListFragment_to_voxSettingsFragment"
+            app:destination="@id/voxSettingsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/conversationsListFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_conversationsListFragment_to_startConversationFragment"
             app:destination="@id/startConversationFragment"
             app:enterAnim="@anim/slide_in"
@@ -317,6 +335,12 @@
         <action
             android:id="@+id/action_meetingsListFragment_to_contactsListFragment"
             app:destination="@id/contactsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/meetingsListFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_meetingsListFragment_to_voxSettingsFragment"
+            app:destination="@id/voxSettingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/meetingsListFragment"
             app:popUpToInclusive="true" />
@@ -453,5 +477,36 @@
         android:name="org.linphone.ui.main.settings.fragment.SettingsAdvancedCallFragment"
         android:label="SettingsAdvancedCallFragment"
         tools:layout="@layout/settings_advanced_calls_fragment"/>
+
+    <fragment
+        android:id="@+id/voxSettingsFragment"
+        android:name="org.linphone.ui.main.voxsettings.fragment.VoxSettingsFragment"
+        android:label="VoxSettingsFragment"
+        tools:layout="@layout/vox_settings_fragment">
+        <action
+            android:id="@+id/action_voxSettingsFragment_to_historyListFragment"
+            app:destination="@id/historyListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxSettingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxSettingsFragment_to_contactsListFragment"
+            app:destination="@id/contactsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxSettingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxSettingsFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxSettingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxSettingsFragment_to_meetingsListFragment"
+            app:destination="@id/meetingsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxSettingsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

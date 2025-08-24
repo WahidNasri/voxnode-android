@@ -45,6 +45,7 @@ import org.linphone.ui.main.chat.fragment.ConversationsListFragmentDirections
 import org.linphone.ui.main.contacts.fragment.ContactsListFragmentDirections
 import org.linphone.ui.main.history.fragment.HistoryListFragmentDirections
 import org.linphone.ui.main.meetings.fragment.MeetingsListFragmentDirections
+import org.linphone.ui.main.voxsettings.fragment.VoxSettingsFragmentDirections
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
 import org.linphone.utils.Event
 import org.linphone.utils.SlidingPaneBackPressedCallback
@@ -171,6 +172,14 @@ abstract class AbstractMainFragment : GenericMainFragment() {
             }
         }
 
+        viewModel.navigateToVoxSettingsEvent.observe(viewLifecycleOwner) {
+            it.consume {
+                if (currentFragmentId != R.id.voxSettingsFragment) {
+                    goToVoxSettingsList()
+                }
+            }
+        }
+
         viewModel.defaultAccountChangedEvent.observe(viewLifecycleOwner) {
             it.consume {
                 onDefaultAccountChanged()
@@ -182,6 +191,7 @@ abstract class AbstractMainFragment : GenericMainFragment() {
             viewModel.callsSelected.value = it == R.id.historyListFragment
             viewModel.conversationsSelected.value = it == R.id.conversationsListFragment
             viewModel.meetingsSelected.value = it == R.id.meetingsListFragment
+            viewModel.voxSettingsSelected.value = it == R.id.voxSettingsFragment
         }
 
         sharedViewModel.resetMissedCallsCountEvent.observe(viewLifecycleOwner) {
@@ -334,6 +344,12 @@ abstract class AbstractMainFragment : GenericMainFragment() {
                 goToMeetingsList()
             }
         }
+
+        sharedViewModel.navigateToVoxSettingsEvent.observe(viewLifecycleOwner) {
+            it.consume {
+                goToVoxSettingsList()
+            }
+        }
     }
 
     override fun onResume() {
@@ -362,6 +378,11 @@ abstract class AbstractMainFragment : GenericMainFragment() {
                 val action = HistoryListFragmentDirections.actionHistoryListFragmentToContactsListFragment()
                 navigateTo(action)
             }
+            R.id.voxSettingsFragment -> {
+                Log.i("$TAG Leaving vox settings")
+                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToContactsListFragment()
+                navigateTo(action)
+            }
         }
     }
 
@@ -381,6 +402,11 @@ abstract class AbstractMainFragment : GenericMainFragment() {
             R.id.meetingsListFragment -> {
                 Log.i("$TAG Leaving meetings list")
                 val action = MeetingsListFragmentDirections.actionMeetingsListFragmentToHistoryListFragment()
+                navigateTo(action)
+            }
+            R.id.voxSettingsFragment -> {
+                Log.i("$TAG Leaving vox settings")
+                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToHistoryListFragment()
                 navigateTo(action)
             }
         }
@@ -404,6 +430,11 @@ abstract class AbstractMainFragment : GenericMainFragment() {
                 val action = HistoryListFragmentDirections.actionHistoryListFragmentToConversationsListFragment()
                 navigateTo(action)
             }
+            R.id.voxSettingsFragment -> {
+                Log.i("$TAG Leaving vox settings")
+                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToConversationsListFragment()
+                navigateTo(action)
+            }
         }
     }
 
@@ -423,6 +454,37 @@ abstract class AbstractMainFragment : GenericMainFragment() {
             R.id.historyListFragment -> {
                 Log.i("$TAG Leaving history list")
                 val action = HistoryListFragmentDirections.actionHistoryListFragmentToMeetingsListFragment()
+                navigateTo(action)
+            }
+            R.id.voxSettingsFragment -> {
+                Log.i("$TAG Leaving vox settings")
+                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToMeetingsListFragment()
+                navigateTo(action)
+            }
+        }
+    }
+
+    private fun goToVoxSettingsList() {
+        Log.i("$TAG Navigating to vox settings list")
+        when (currentFragmentId) {
+            R.id.conversationsListFragment -> {
+                Log.i("$TAG Leaving conversations list")
+                val action = ConversationsListFragmentDirections.actionConversationsListFragmentToVoxSettingsFragment()
+                navigateTo(action)
+            }
+            R.id.contactsListFragment -> {
+                Log.i("$TAG Leaving contacts list")
+                val action = ContactsListFragmentDirections.actionContactsListFragmentToVoxSettingsFragment()
+                navigateTo(action)
+            }
+            R.id.historyListFragment -> {
+                Log.i("$TAG Leaving history list")
+                val action = HistoryListFragmentDirections.actionHistoryListFragmentToVoxSettingsFragment()
+                navigateTo(action)
+            }
+            R.id.meetingsListFragment -> {
+                Log.i("$TAG Leaving meetings list")
+                val action = MeetingsListFragmentDirections.actionMeetingsListFragmentToVoxSettingsFragment()
                 navigateTo(action)
             }
         }

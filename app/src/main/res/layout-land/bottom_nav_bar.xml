@@ -20,22 +20,6 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/bottom_nav_bar_label_style"
-            android:id="@+id/contacts"
-            android:onClick="@{() -> viewModel.navigateToContacts()}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/address_book"
-            android:drawablePadding="10dp"
-            android:drawableTint="@{viewModel.contactsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
-            android:text="@string/bottom_navigation_contacts_label"
-            textFont="@{viewModel.contactsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
-            app:layout_constraintBottom_toTopOf="@id/calls"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/bottom_nav_bar_label_style"
             android:id="@+id/calls"
             android:onClick="@{() -> viewModel.navigateToHistory()}"
             android:layout_width="0dp"
@@ -45,10 +29,26 @@
             android:drawablePadding="10dp"
             android:text="@string/bottom_navigation_calls_label"
             textFont="@{viewModel.callsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
+            app:layout_constraintBottom_toTopOf="@id/contacts"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/bottom_nav_bar_label_style"
+            android:id="@+id/contacts"
+            android:onClick="@{() -> viewModel.navigateToContacts()}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/address_book"
+            android:drawablePadding="10dp"
+            android:drawableTint="@{viewModel.contactsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            android:text="@string/bottom_navigation_contacts_label"
+            textFont="@{viewModel.contactsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toTopOf="@id/conversations"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contacts" />
+            app:layout_constraintTop_toBottomOf="@id/calls" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/unread_count_text_style"
@@ -74,10 +74,10 @@
             android:text="@string/bottom_navigation_conversations_label"
             android:visibility="@{viewModel.hideConversations ? View.GONE : View.VISIBLE}"
             textFont="@{viewModel.conversationsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
-            app:layout_constraintBottom_toTopOf="@id/meetings"
+            app:layout_constraintBottom_toTopOf="@id/voxsettings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calls" />
+            app:layout_constraintTop_toBottomOf="@id/contacts" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/unread_count_text_style"
@@ -93,16 +93,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/bottom_nav_bar_label_style"
-            android:id="@+id/meetings"
-            android:onClick="@{() -> viewModel.navigateToMeetings()}"
+            android:id="@+id/voxsettings"
+            android:onClick="@{() -> viewModel.navigateToVoxSettings()}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/video_conference"
+            android:drawableTop="@drawable/gear"
             android:drawablePadding="10dp"
-            android:drawableTint="@{viewModel.meetingsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
-            android:text="@string/bottom_navigation_meetings_label"
-            android:visibility="@{viewModel.hideMeetings ? View.GONE : View.VISIBLE}"
-            textFont="@{viewModel.meetingsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
+            android:drawableTint="@{viewModel.voxSettingsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            android:text="@string/bottom_navigation_voxsettings_label"
+            textFont="@{viewModel.voxSettingsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
