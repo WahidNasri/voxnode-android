@@ -14,7 +14,7 @@ plugins {
     alias(libs.plugins.crashlytics)
 }
 
-val packageName = "org.linphone"
+val packageName = "org.voxnode"
 val useDifferentPackageNameForDebugBuild = false
 
 val sdkPath = providers.gradleProperty("LinphoneSdkBuildDir").get()

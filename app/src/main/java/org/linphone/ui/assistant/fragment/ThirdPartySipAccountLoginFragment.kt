@@ -25,7 +25,6 @@ import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.UiThread
 import androidx.lifecycle.lifecycleScope
@@ -55,17 +54,6 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
         R.id.assistant_nav_graph
     )
 
-    private val dropdownListener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            val transport = viewModel.availableTransports[position]
-            Log.i("$TAG Selected transport updated [$transport]")
-            viewModel.transport.value = transport
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-        }
-    }
-
     private lateinit var adapter: ArrayAdapter<String>
 
     override fun onCreateView(
@@ -88,8 +76,6 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
             viewModel.availableTransports
         )
         adapter.setDropDownViewResource(R.layout.generic_dropdown_cell)
-        binding.transport.adapter = adapter
-        binding.transport.onItemSelectedListener = dropdownListener
 
         binding.viewModel = viewModel
         observeToastEvents(viewModel)
@@ -121,12 +107,6 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
             }
         }
 
-        viewModel.defaultTransportIndexEvent.observe(viewLifecycleOwner) {
-            it.consume { index ->
-                binding.transport.setSelection(index)
-            }
-        }
-
         coreContext.bearerAuthenticationRequestedEvent.observe(viewLifecycleOwner) {
             it.consume { pair ->
                 val serverUrl = pair.first
@@ -150,8 +130,8 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
         coreContext.postOnCoreThread {
             val dialPlan = PhoneNumberUtils.getDeviceDialPlan(countryIso)
             if (dialPlan != null) {
-                viewModel.internationalPrefix.postValue(dialPlan.countryCallingCode)
-                viewModel.internationalPrefixIsoCountryCode.postValue(dialPlan.isoCountryCode)
+                // viewModel.internationalPrefix.postValue(dialPlan.countryCallingCode)
+                // viewModel.internationalPrefixIsoCountryCode.postValue(dialPlan.isoCountryCode)
             }
         }
     }

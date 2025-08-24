@@ -70,7 +70,6 @@ import org.linphone.utils.PasswordDialogModel
 import org.linphone.ui.main.sso.fragment.SingleSignOnFragmentDirections
 import org.linphone.ui.main.viewmodel.MainViewModel
 import org.linphone.ui.main.viewmodel.SharedMainViewModel
-import org.linphone.ui.welcome.WelcomeActivity
 import org.linphone.utils.AppUtils
 import org.linphone.utils.DialogUtils
 import org.linphone.utils.Event
@@ -583,7 +582,8 @@ class MainActivity : GenericActivity() {
                 corePreferences.firstLaunch = false
                 coreContext.postOnMainThread {
                     try {
-                        startActivity(Intent(this, WelcomeActivity::class.java))
+                        // startActivity(Intent(this, WelcomeActivity::class.java))
+                        startActivity(Intent(this, AssistantActivity::class.java))
                     } catch (ise: IllegalStateException) {
                         Log.e("$TAG Can't start activity: $ise")
                     }

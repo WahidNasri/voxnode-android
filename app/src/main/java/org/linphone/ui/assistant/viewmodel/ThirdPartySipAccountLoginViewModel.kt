@@ -49,25 +49,9 @@ class ThirdPartySipAccountLoginViewModel
 
     val username = MutableLiveData<String>()
 
-    val authId = MutableLiveData<String>()
-
     val password = MutableLiveData<String>()
 
-    val domain = MutableLiveData<String>()
-
-    val displayName = MutableLiveData<String>()
-
-    val transport = MutableLiveData<String>()
-
-    val internationalPrefix = MutableLiveData<String>()
-
-    val internationalPrefixIsoCountryCode = MutableLiveData<String>()
-
     val showPassword = MutableLiveData<Boolean>()
-
-    val expandAdvancedSettings = MutableLiveData<Boolean>()
-
-    val outboundProxy = MutableLiveData<String>()
 
     val loginEnabled = MediatorLiveData<Boolean>()
 
@@ -135,13 +119,9 @@ class ThirdPartySipAccountLoginViewModel
 
     init {
         showPassword.value = false
-        expandAdvancedSettings.value = false
         registrationInProgress.value = false
 
         loginEnabled.addSource(username) {
-            loginEnabled.value = isLoginButtonEnabled()
-        }
-        loginEnabled.addSource(domain) {
             loginEnabled.value = isLoginButtonEnabled()
         }
 
@@ -152,7 +132,6 @@ class ThirdPartySipAccountLoginViewModel
         availableTransports.add(TransportType.Tls.name.uppercase(Locale.getDefault()))
 
         coreContext.postOnCoreThread {
-            domain.postValue(corePreferences.thirdPartySipAccountDefaultDomain)
 
             val defaultTransport = corePreferences.thirdPartySipAccountDefaultTransport.uppercase(
                 Locale.getDefault()
@@ -168,11 +147,15 @@ class ThirdPartySipAccountLoginViewModel
 
     @UiThread
     fun login() {
+
+    }
+
+    fun sipLogin(domain: String, sipUsername: String, authId: String, displayName: String) {
         coreContext.postOnCoreThread { core ->
             core.loadConfigFromXml(corePreferences.thirdPartyDefaultValuesPath)
 
             // Remove sip: in front of domain, just in case...
-            val domainValue = domain.value.orEmpty().trim()
+            val domainValue = domain.trim()
             val domainWithoutSip = if (domainValue.startsWith("sip:")) {
                 domainValue.substring("sip:".length)
             } else {
@@ -187,7 +170,7 @@ class ThirdPartySipAccountLoginViewModel
 
             // Allow to enter SIP identity instead of simply username
             // in case identity domain doesn't match proxy domain
-            var user = username.value.orEmpty().trim()
+            var user = sipUsername.trim()
             if (user.startsWith("sip:")) {
                 user = user.substring("sip:".length)
             } else if (user.startsWith("sips:")) {
@@ -197,7 +180,7 @@ class ThirdPartySipAccountLoginViewModel
                 user = user.split("@")[0]
             }
 
-            val userId = authId.value.orEmpty().trim()
+            val userId = authId.trim()
 
             Log.i("$TAG Parsed username is [$user], user ID [$userId] and domain [$domain]")
             val identity = "sip:$user@$domain"
@@ -231,47 +214,16 @@ class ThirdPartySipAccountLoginViewModel
 
             val accountParams = core.createAccountParams()
 
-            if (displayName.value.orEmpty().isNotEmpty()) {
-                identityAddress.displayName = displayName.value.orEmpty().trim()
+            if (displayName.isNotEmpty()) {
+                identityAddress.displayName = displayName.trim()
             }
             accountParams.identityAddress = identityAddress
 
-            val outboundProxyValue = outboundProxy.value.orEmpty().trim()
-            val serverAddress = if (outboundProxyValue.isNotEmpty()) {
-                val server = if (outboundProxyValue.startsWith("sip:")) {
-                    outboundProxyValue
-                } else {
-                    "sip:$outboundProxyValue"
-                }
-                Factory.instance().createAddress(server)
-            } else {
-                domainAddress ?: Factory.instance().createAddress("sip:$domainWithoutSip")
-            }
+            val serverAddress = domainAddress ?: Factory.instance().createAddress("sip:$domainWithoutSip")
 
-            serverAddress?.transport = when (transport.value.orEmpty().trim()) {
-                TransportType.Tcp.name.uppercase(Locale.getDefault()) -> TransportType.Tcp
-                TransportType.Tls.name.uppercase(Locale.getDefault()) -> TransportType.Tls
-                else -> TransportType.Udp
-            }
+            serverAddress?.transport = TransportType.Udp
             Log.i("$TAG Created proxy server SIP address [${serverAddress?.asStringUriOnly()}]")
             accountParams.serverAddress = serverAddress
-
-            val prefix = internationalPrefix.value.orEmpty().trim()
-            val isoCountryCode = internationalPrefixIsoCountryCode.value.orEmpty()
-            if (prefix.isNotEmpty()) {
-                val prefixDigits = if (prefix.startsWith("+")) {
-                    prefix.substring(1)
-                } else {
-                    prefix
-                }
-                if (prefixDigits.isNotEmpty()) {
-                    Log.i(
-                        "$TAG Setting international prefix [$prefixDigits]($isoCountryCode) in account params"
-                    )
-                    accountParams.internationalPrefix = prefixDigits
-                    accountParams.internationalPrefixIsoCountryCode = isoCountryCode
-                }
-            }
 
             newlyCreatedAccount = core.createAccount(accountParams)
 
@@ -289,11 +241,6 @@ class ThirdPartySipAccountLoginViewModel
     @UiThread
     private fun isLoginButtonEnabled(): Boolean {
         // Password isn't mandatory as authentication could be Bearer
-        return username.value.orEmpty().isNotEmpty() && domain.value.orEmpty().isNotEmpty()
-    }
-
-    @UiThread
-    fun toggleAdvancedSettingsExpand() {
-        expandAdvancedSettings.value = expandAdvancedSettings.value == false
+        return username.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
     }
 }
