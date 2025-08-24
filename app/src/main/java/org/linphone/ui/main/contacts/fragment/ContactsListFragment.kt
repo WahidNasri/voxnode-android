@@ -24,18 +24,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -44,7 +41,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.File
 import org.linphone.R
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ContactsListFilterPopupMenuBinding
 import org.linphone.databinding.ContactsListFragmentBinding
 import org.linphone.ui.main.MainActivity
 import org.linphone.ui.main.contacts.adapter.ContactsListAdapter
@@ -177,10 +173,6 @@ class ContactsListFragment : AbstractMainFragment() {
             sharedViewModel.showNewContactEvent.value = Event(true)
         }
 
-        binding.setFilterClickListener {
-            showFilterPopupMenu(binding.topBar.extraAction)
-        }
-
         sharedViewModel.showContactEvent.observe(viewLifecycleOwner) {
             it.consume { refKey ->
                 Log.i("$TAG Displaying contact with ref key [$refKey]")
@@ -290,58 +282,6 @@ class ContactsListFragment : AbstractMainFragment() {
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         startActivity(shareIntent)
-    }
-
-    private fun showFilterPopupMenu(view: View) {
-        val popupView: ContactsListFilterPopupMenuBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(requireContext()),
-            R.layout.contacts_list_filter_popup_menu,
-            null,
-            false
-        )
-        popupView.seeAllSelected = listViewModel.areAllContactsDisplayed.value == true
-        popupView.showLinphoneFilter = listViewModel.isDefaultAccountLinphone.value == true
-
-        val popupWindow = PopupWindow(
-            popupView.root,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        popupView.setNoFilterClickListener {
-            if (listViewModel.areAllContactsDisplayed.value != true) {
-                listViewModel.changeContactsFilter(
-                    onlyLinphoneContacts = false,
-                    onlySipContacts = false
-                )
-            }
-            popupWindow.dismiss()
-        }
-
-        popupView.setLinphoneOnlyClickListener {
-            if (listViewModel.areAllContactsDisplayed.value == true) {
-                listViewModel.changeContactsFilter(
-                    onlyLinphoneContacts = true,
-                    onlySipContacts = false
-                )
-            }
-            popupWindow.dismiss()
-        }
-
-        popupView.setSipOnlyClickListener {
-            if (listViewModel.areAllContactsDisplayed.value == true) {
-                listViewModel.changeContactsFilter(
-                    onlyLinphoneContacts = false,
-                    onlySipContacts = true
-                )
-            }
-            popupWindow.dismiss()
-        }
-
-        // Elevation is for showing a shadow around the popup
-        popupWindow.elevation = 20f
-        popupWindow.showAsDropDown(view, 0, 0, Gravity.BOTTOM)
     }
 
     private fun showDeleteConfirmationDialog(contactModel: ContactAvatarModel) {

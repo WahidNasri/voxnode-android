@@ -126,11 +126,13 @@ class ContactsListViewModel
     init {
         fetchInProgress.value = true
         showFavourites.value = corePreferences.showFavoriteContacts
-        showFilter.value = !corePreferences.hidePhoneNumbers && !corePreferences.hideSipAddresses
+        // Always hide the filter menu
+        showFilter.value = false
 
         coreContext.postOnCoreThread { core ->
-            domainFilter = corePreferences.contactsFilter
-            areAllContactsDisplayed.postValue(domainFilter.isEmpty())
+            // Always set domain filter to empty string to show all contacts
+            domainFilter = ""
+            areAllContactsDisplayed.postValue(true)
             checkIfDefaultAccountOnDefaultDomain()
 
             coreContext.contactsManager.addListener(contactsListener)
@@ -173,8 +175,9 @@ class ContactsListViewModel
     @UiThread
     fun applyCurrentDefaultAccountFilter() {
         coreContext.postOnCoreThread {
-            domainFilter = corePreferences.contactsFilter
-            areAllContactsDisplayed.postValue(domainFilter.isEmpty())
+            // Always show all contacts, ignore saved filter preferences
+            domainFilter = ""
+            areAllContactsDisplayed.postValue(true)
             checkIfDefaultAccountOnDefaultDomain()
 
             coreContext.postOnMainThread {
@@ -194,8 +197,8 @@ class ContactsListViewModel
                 ""
             }
             areAllContactsDisplayed.postValue(domainFilter.isEmpty())
-            corePreferences.contactsFilter = domainFilter
-            Log.i("$TAG Newly set filter is [${corePreferences.contactsFilter}]")
+            // Don't save filter preference - always show all contacts
+            Log.i("$TAG Filter changed but not saved - always showing all contacts")
 
             coreContext.postOnMainThread {
                 applyFilter(currentFilter, domainFilter, filterChanged = true)

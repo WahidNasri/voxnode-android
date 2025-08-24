@@ -184,20 +184,8 @@ class CoreContext
         override fun onDefaultAccountChanged(core: Core, account: Account?) {
             defaultAccountHasVideoConferenceFactoryUri = account?.params?.audioVideoConferenceFactoryAddress != null
 
-            val defaultDomain = corePreferences.defaultDomain
-            val isAccountOnDefaultDomain = account?.params?.domain == defaultDomain
-            val domainFilter = corePreferences.contactsFilter
-            Log.i("$TAG Currently selected filter is [$domainFilter]")
-
-            if (!isAccountOnDefaultDomain && domainFilter == defaultDomain) {
-                corePreferences.contactsFilter = "*"
-                Log.i(
-                    "$TAG New default account isn't on default domain, changing filter to any SIP contacts instead"
-                )
-            } else if (isAccountOnDefaultDomain && domainFilter != "") {
-                corePreferences.contactsFilter = defaultDomain
-                Log.i("$TAG New default account is on default domain, using that domain as filter instead of wildcard")
-            }
+            // Always show all contacts, don't apply domain filters automatically
+            Log.i("$TAG Contacts filter disabled - always showing all contacts")
         }
 
         @WorkerThread
@@ -1165,12 +1153,8 @@ class CoreContext
         core.config.setBool("magic_search", "return_empty_friends", true)
         Log.i("$TAG Showing 'empty' friends enabled")
 
-        if (LinphoneUtils.getDefaultAccount()?.params?.domain == corePreferences.defaultDomain) {
-            corePreferences.contactsFilter = corePreferences.defaultDomain
-            Log.i(
-                "$TAG Setting default contacts list filter to [${corePreferences.contactsFilter}]"
-            )
-        }
+        // Always show all contacts - don't set domain filter
+        Log.i("$TAG Contacts filter disabled - showing all contacts by default")
 
         for (account in core.accountList) {
             val params = account.params
