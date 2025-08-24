@@ -252,6 +252,12 @@ dependencies {
     // https://github.com/openid/AppAuth-Android/blob/master/LICENSE Apache v2.0
     implementation(libs.openid.appauth)
 
+    // https://github.com/square/retrofit/blob/master/LICENSE.txt Apache v2.0
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    // https://github.com/google/gson/blob/main/LICENSE Apache v2.0
+    implementation(libs.gson)
+
     implementation(libs.linphone)
 }
 

@@ -29,6 +29,8 @@ coil = "3.3.0"
 dotsIndicator = "5.1.0"
 photoview = "2.3.0"
 openidAppauth = "0.11.1"
+retrofit = "2.11.0"
+gson = "2.11.0"
 linphone = "5.5.+"
 
 [libraries]
@@ -64,6 +66,10 @@ coil-video = { group = "io.coil-kt.coil3", name = "coil-video", version.ref = "c
 dots-indicator = { group = "com.tbuonomo", name = "dotsindicator", version.ref = "dotsIndicator" }
 photoview = { group = "com.github.chrisbanes", name = "PhotoView", version.ref = "photoview" }
 openid-appauth = { group = "net.openid", name = "appauth", version.ref = "openidAppauth" }
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 linphone = { group = "org.linphone", name = "linphone-sdk-android", version.ref = "linphone" }
 
