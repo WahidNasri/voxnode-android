@@ -3,7 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/historyListFragment">
+    app:startDestination="@id/historyWithRecordingsFragment">
+
+    <fragment
+        android:id="@+id/historyWithRecordingsFragment"
+        android:name="org.linphone.ui.main.historyrecordings.fragment.HistoryWithRecordingsFragment"
+        android:label="HistoryWithRecordingsFragment"
+        tools:layout="@layout/history_with_recordings_fragment">
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_contactsListFragment"
+            app:destination="@id/contactsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/historyWithRecordingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/historyWithRecordingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_meetingsListFragment"
+            app:destination="@id/meetingsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/historyWithRecordingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_voxSettingsFragment"
+            app:destination="@id/voxSettingsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/historyWithRecordingsFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_startCallFragment"
+            app:destination="@id/startCallFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_meetingWaitingRoomFragment"
+            app:destination="@id/meetingWaitingRoomFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_recordingMediaPlayerFragment"
+            app:destination="@id/recordingMediaPlayerFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:launchSingleTop="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/contactsListFragment"
@@ -11,8 +60,8 @@
         android:label="ContactsListFragment"
         tools:layout="@layout/contacts_list_fragment">
         <action
-            android:id="@+id/action_contactsListFragment_to_historyListFragment"
-            app:destination="@id/historyListFragment"
+            android:id="@+id/action_contactsListFragment_to_historyWithRecordingsFragment"
+            app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/contactsListFragment"
             app:popUpToInclusive="true" />
@@ -266,8 +315,8 @@
         android:label="ConversationsListFragment"
         tools:layout="@layout/chat_list_fragment" >
         <action
-            android:id="@+id/action_conversationsListFragment_to_historyListFragment"
-            app:destination="@id/historyListFragment"
+            android:id="@+id/action_conversationsListFragment_to_historyWithRecordingsFragment"
+            app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/conversationsListFragment"
             app:popUpToInclusive="true" />
@@ -321,8 +370,8 @@
         android:label="MeetingsListFragment"
         tools:layout="@layout/meetings_list_fragment">
         <action
-            android:id="@+id/action_meetingsListFragment_to_historyListFragment"
-            app:destination="@id/historyListFragment"
+            android:id="@+id/action_meetingsListFragment_to_historyWithRecordingsFragment"
+            app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/meetingsListFragment"
             app:popUpToInclusive="true" />
@@ -484,8 +533,8 @@
         android:label="VoxSettingsFragment"
         tools:layout="@layout/vox_settings_fragment">
         <action
-            android:id="@+id/action_voxSettingsFragment_to_historyListFragment"
-            app:destination="@id/historyListFragment"
+            android:id="@+id/action_voxSettingsFragment_to_historyWithRecordingsFragment"
+            app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/voxSettingsFragment"
             app:popUpToInclusive="true" />

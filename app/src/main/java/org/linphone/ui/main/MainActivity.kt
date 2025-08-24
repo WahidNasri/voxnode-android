@@ -83,11 +83,11 @@ class MainActivity : GenericActivity() {
         private const val TAG = "[Main Activity]"
 
         private const val DEFAULT_FRAGMENT_KEY = "default_fragment"
-        private const val CONTACTS_FRAGMENT_ID = 1
-        private const val HISTORY_FRAGMENT_ID = 2
+        private const val HISTORY_RECORDINGS_FRAGMENT_ID = 1
+        private const val CONTACTS_FRAGMENT_ID = 2
         private const val CHAT_FRAGMENT_ID = 3
-        private const val MEETINGS_FRAGMENT_ID = 4
-        private const val VOXSETTINGS_FRAGMENT_ID = 5
+        private const val VOXSETTINGS_FRAGMENT_ID = 4
+        private const val MEETINGS_FRAGMENT_ID = 5
 
         const val ARGUMENTS_CHAT = "Chat"
         const val ARGUMENTS_CONVERSATION_ID = "ConversationId"
@@ -400,23 +400,23 @@ class MainActivity : GenericActivity() {
         currentlyDisplayedAuthDialog = null
 
         val defaultFragmentId = when (sharedViewModel.currentlyDisplayedFragment.value) {
+            R.id.historyWithRecordingsFragment -> {
+                HISTORY_RECORDINGS_FRAGMENT_ID
+            }
             R.id.contactsListFragment -> {
                 CONTACTS_FRAGMENT_ID
-            }
-            R.id.historyListFragment -> {
-                HISTORY_FRAGMENT_ID
             }
             R.id.conversationsListFragment -> {
                 CHAT_FRAGMENT_ID
             }
-            R.id.meetingsListFragment -> {
-                MEETINGS_FRAGMENT_ID
-            }
             R.id.voxSettingsFragment -> {
                 VOXSETTINGS_FRAGMENT_ID
             }
+            R.id.meetingsListFragment -> {
+                MEETINGS_FRAGMENT_ID
+            }
             else -> { // Default
-                HISTORY_FRAGMENT_ID
+                HISTORY_RECORDINGS_FRAGMENT_ID
             }
         }
         getPreferences(MODE_PRIVATE).edit {
@@ -483,14 +483,14 @@ class MainActivity : GenericActivity() {
 
             val defaultFragmentId = getPreferences(MODE_PRIVATE).getInt(
                 DEFAULT_FRAGMENT_KEY,
-                HISTORY_FRAGMENT_ID
+                HISTORY_RECORDINGS_FRAGMENT_ID
             )
             Log.i(
                 "$TAG Trying to navigate to set default destination [$defaultFragmentId]"
             )
             try {
                 val navOptionsBuilder = NavOptions.Builder()
-                navOptionsBuilder.setPopUpTo(R.id.historyListFragment, true)
+                navOptionsBuilder.setPopUpTo(R.id.historyWithRecordingsFragment, true)
                 navOptionsBuilder.setLaunchSingleTop(true)
                 val navOptions = navOptionsBuilder.build()
                 val args = bundleOf()
@@ -511,18 +511,18 @@ class MainActivity : GenericActivity() {
                             navOptions
                         )
                     }
-                    MEETINGS_FRAGMENT_ID -> {
-                        findNavController().addOnDestinationChangedListener(destinationListener)
-                        findNavController().navigate(
-                            R.id.meetingsListFragment,
-                            args,
-                            navOptions
-                        )
-                    }
                     VOXSETTINGS_FRAGMENT_ID -> {
                         findNavController().addOnDestinationChangedListener(destinationListener)
                         findNavController().navigate(
                             R.id.voxSettingsFragment,
+                            args,
+                            navOptions
+                        )
+                    }
+                    MEETINGS_FRAGMENT_ID -> {
+                        findNavController().addOnDestinationChangedListener(destinationListener)
+                        findNavController().navigate(
+                            R.id.meetingsListFragment,
                             args,
                             navOptions
                         )

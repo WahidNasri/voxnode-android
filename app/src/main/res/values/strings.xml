@@ -188,7 +188,15 @@
     <string name="bottom_navigation_calls_label">Calls</string>
     <string name="bottom_navigation_conversations_label">Conversations</string>
     <string name="bottom_navigation_meetings_label">Meetings</string>
-    <string name="bottom_navigation_voxsettings_label">VoxSettings</string>
+    <string name="bottom_navigation_voxsettings_label">Settings</string>
+    <string name="bottom_navigation_history_recordings_label">History</string>
+
+    <!-- History with Recordings tabs -->
+    <string name="history_recordings_tab_calls">Calls</string>
+    <string name="history_recordings_tab_recordings">Recordings</string>
+    
+    <!-- Search hint -->
+    <string name="search_recordings_hint">Search recordings...</string>
 
     <!-- Side menu -->
     <string name="drawer_menu_manage_account">Manage the profile</string>

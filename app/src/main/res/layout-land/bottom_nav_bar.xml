@@ -27,7 +27,7 @@
             android:drawableTop="@drawable/phone"
             android:drawableTint="@{viewModel.callsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
             android:drawablePadding="10dp"
-            android:text="@string/bottom_navigation_calls_label"
+            android:text="@string/bottom_navigation_history_recordings_label"
             textFont="@{viewModel.callsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toTopOf="@id/contacts"
             app:layout_constraintStart_toStartOf="parent"

@@ -68,6 +68,17 @@ class VoxSettingsFragment : AbstractMainFragment() {
         
         // Observer for any future functionality
         observeToastEvents(listViewModel)
+        
+        // AbstractMainFragment related - set up the title and initialize main fragment components
+        listViewModel.title.value = getString(R.string.bottom_navigation_voxsettings_label)
+        setViewModel(listViewModel)
+        initViews(
+            binding.slidingPaneLayout,
+            binding.topBar,
+            binding.bottomNavBar,
+            R.id.voxSettingsFragment
+        )
+        
         observeEvents()
     }
 

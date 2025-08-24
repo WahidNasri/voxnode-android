@@ -6,9 +6,6 @@
     <data>
         <import type="android.view.View" />
         <variable
-            name="backClickListener"
-            type="View.OnClickListener" />
-        <variable
             name="viewModel"
             type="org.linphone.ui.main.recordings.viewmodel.RecordingsListViewModel" />
     </data>
@@ -30,67 +27,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.searchBarVisible ? View.VISIBLE : View.GONE, default=gone}"
-            app:constraint_referenced_ids="cancel_search, search, clear_field" />
+            app:constraint_referenced_ids="search_toggle, cancel_search, search, clear_field" />
 
-        <ImageView
-            style="@style/icon_top_bar_button_style"
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:onClick="@{backClickListener}"
-            android:src="@drawable/caret_left"
-            android:contentDescription="@string/content_description_go_back_icon"
-            app:layout_constraintBottom_toBottomOf="@id/title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/title"
-            app:tint="?attr/color_main1_500" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
-            style="@style/main_page_title_style"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/top_bar_height"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@string/recordings_title"
-            android:visibility="@{viewModel.searchBarVisible ? View.GONE : View.VISIBLE}"
-            app:layout_constraintEnd_toStartOf="@id/search_toggle"
-            app:layout_constraintStart_toEndOf="@id/back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            style="@style/icon_top_bar_button_style"
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
             android:onClick="@{() -> viewModel.openSearchBar()}"
             android:src="@drawable/magnifying_glass"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/content_description_open_filter"
             android:visibility="@{viewModel.searchBarVisible ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/title"
-            app:tint="?attr/color_main2_500" />
+            android:padding="12dp"
+            app:tint="?attr/color_main2_600"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageView
-            style="@style/icon_top_bar_button_style"
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/cancel_search"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
             android:onClick="@{() -> viewModel.closeSearchBar()}"
-            android:src="@drawable/caret_left"
+            android:src="@drawable/x"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/content_description_cancel_filter"
-            app:layout_constraintBottom_toBottomOf="@id/search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/search"
-            app:tint="?attr/color_main2_500" />
+            android:padding="12dp"
+            app:tint="?attr/color_main2_600"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputFilledStyle"
             android:id="@+id/search"
             android:layout_width="0dp"
-            android:layout_height="@dimen/top_bar_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:gravity="center_vertical"
             android:textColorHint="?attr/color_main2_400"
             app:boxStrokeWidth="0dp"
@@ -99,7 +72,7 @@
             app:hintEnabled="false"
             app:hintTextColor="?attr/color_main2_400"
             app:layout_constraintEnd_toStartOf="@id/clear_field"
-            app:layout_constraintStart_toEndOf="@id/cancel_search"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -110,34 +83,24 @@
                 android:paddingVertical="1dp"
                 android:text="@={viewModel.searchFilter}"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:hint="@string/search_recordings_hint" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            style="@style/icon_top_bar_button_style"
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/clear_field"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="5dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
             android:onClick="@{() -> viewModel.clearFilter()}"
             android:src="@drawable/x"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/content_description_clear_filter"
-            app:layout_constraintBottom_toBottomOf="@id/search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/search"
-            app:tint="?attr/color_main2_500" />
-
-        <View
-            android:id="@+id/background"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/top_bar_height"
-            android:background="?attr/color_main2_000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="12dp"
+            app:tint="?attr/color_main2_600"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/no_recording_image"
@@ -151,7 +114,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_max="200dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -169,8 +132,9 @@
             android:id="@+id/recordings_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/top_bar_height"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator

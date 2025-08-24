@@ -85,10 +85,6 @@ class RecordingsListFragment : GenericMainFragment() {
         binding.viewModel = listViewModel
         observeToastEvents(listViewModel)
 
-        binding.setBackClickListener {
-            goBack()
-        }
-
         binding.recordingsList.setHasFixedSize(true)
         binding.recordingsList.layoutManager = LinearLayoutManager(requireContext())
         val headerItemDecoration = RecyclerViewHeaderDecoration(requireContext(), adapter)
@@ -125,12 +121,20 @@ class RecordingsListFragment : GenericMainFragment() {
 
         adapter.recordingClickedEvent.observe(viewLifecycleOwner) {
             it.consume { model ->
-                val action = RecordingsListFragmentDirections.actionRecordingsListFragmentToRecordingMediaPlayerFragment()
-                if (findNavController().currentDestination?.id == R.id.recordingsListFragment) {
+                // Since we're now a child fragment, we need to get the parent fragment's NavController
+                // and use its navigation action
+                val parentFragment = parentFragment
+                if (parentFragment != null) {
+                    val parentNavController = parentFragment.findNavController()
+                    val action = org.linphone.ui.main.historyrecordings.fragment.HistoryWithRecordingsFragmentDirections
+                        .actionHistoryWithRecordingsFragmentToRecordingMediaPlayerFragment()
+                    
                     Log.i("$TAG Navigating to recording player for file [${model.filePath}]")
                     sharedViewModel.playingRecording = model
-
-                    findNavController().navigate(action)
+                    
+                    parentNavController.navigate(action)
+                } else {
+                    Log.e("$TAG Parent fragment is null, cannot navigate to recording player")
                 }
             }
         }

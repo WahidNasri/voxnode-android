@@ -45,6 +45,7 @@ import org.linphone.databinding.HistoryListPopupMenuBinding
 import org.linphone.ui.GenericActivity
 import org.linphone.ui.main.fragment.AbstractMainFragment
 import org.linphone.ui.main.history.adapter.HistoryListAdapter
+import org.linphone.ui.main.historyrecordings.fragment.HistoryWithRecordingsFragmentDirections
 import org.linphone.utils.ConfirmationDialogModel
 import org.linphone.ui.main.history.viewmodel.HistoryListViewModel
 import org.linphone.utils.DialogUtils
@@ -161,10 +162,13 @@ class HistoryListFragment : AbstractMainFragment() {
                 val uri = model.id
                 Log.i("$TAG Show details for call log with ID [$uri]")
                 if (!uri.isNullOrEmpty()) {
-                    val navController = binding.historyNavContainer.findNavController()
-                    val action =
-                        HistoryFragmentDirections.actionGlobalHistoryFragment(uri)
-                    navController.navigate(action)
+                    // Navigate through the parent fragment since this is now a child fragment
+                    try {
+                        val action = HistoryFragmentDirections.actionGlobalHistoryFragment(uri)
+                        findNavController().navigate(action)
+                    } catch (e: Exception) {
+                        Log.e("$TAG Failed to navigate to call details: $e")
+                    }
                 }
             }
         }
@@ -226,13 +230,12 @@ class HistoryListFragment : AbstractMainFragment() {
 
         sharedViewModel.goToMeetingWaitingRoomEvent.observe(viewLifecycleOwner) {
             it.consume { uri ->
-                if (findNavController().currentDestination?.id == R.id.historyListFragment) {
-                    Log.i("$TAG Navigating to meeting waiting room fragment with URI [$uri]")
-                    val action =
-                        HistoryListFragmentDirections.actionHistoryListFragmentToMeetingWaitingRoomFragment(
-                            uri
-                        )
+                Log.i("$TAG Navigating to meeting waiting room fragment with URI [$uri]")
+                try {
+                    val action = HistoryWithRecordingsFragmentDirections.actionHistoryWithRecordingsFragmentToMeetingWaitingRoomFragment(uri)
                     findNavController().navigate(action)
+                } catch (e: Exception) {
+                    Log.e("$TAG Failed to navigate to meeting waiting room: $e")
                 }
             }
         }
@@ -242,24 +245,14 @@ class HistoryListFragment : AbstractMainFragment() {
         }
 
         binding.setStartCallClickListener {
-            if (findNavController().currentDestination?.id == R.id.historyListFragment) {
-                Log.i("$TAG Navigating to start call fragment")
-                val action =
-                    HistoryListFragmentDirections.actionHistoryListFragmentToStartCallFragment()
+            // Navigate to start call fragment through parent navigation
+            try {
+                val action = HistoryWithRecordingsFragmentDirections.actionHistoryWithRecordingsFragmentToStartCallFragment()
                 findNavController().navigate(action)
+            } catch (e: Exception) {
+                Log.e("$TAG Failed to navigate to start call: $e")
             }
         }
-
-        // AbstractMainFragment related
-
-        listViewModel.title.value = getString(R.string.bottom_navigation_calls_label)
-        setViewModel(listViewModel)
-        initViews(
-            binding.slidingPaneLayout,
-            binding.topBar,
-            binding.bottomNavBar,
-            R.id.historyListFragment
-        )
     }
 
     override fun onPause() {
@@ -314,7 +307,8 @@ class HistoryListFragment : AbstractMainFragment() {
 
         // Elevation is for showing a shadow around the popup
         popupWindow.elevation = 20f
-        popupWindow.showAsDropDown(binding.topBar.extraAction, 0, 0, Gravity.BOTTOM)
+        // Show popup menu relative to the menu button
+        popupWindow.showAsDropDown(binding.menuButton, 0, 0, Gravity.BOTTOM)
     }
 
     private fun showDeleteConfirmationDialog() {
