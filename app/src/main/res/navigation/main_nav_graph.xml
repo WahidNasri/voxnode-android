@@ -78,6 +78,12 @@
             app:popUpTo="@id/contactsListFragment"
             app:popUpToInclusive="true" />
         <action
+            android:id="@+id/action_contactsListFragment_to_voxDialerFragment"
+            app:destination="@id/voxDialerFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/contactsListFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_contactsListFragment_to_voxSettingsFragment"
             app:destination="@id/voxSettingsFragment"
             app:launchSingleTop="true"
@@ -86,6 +92,49 @@
         <action
             android:id="@+id/action_contactsListFragment_to_newContactFragment"
             app:destination="@id/newContactFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/voxDialerFragment"
+        android:name="org.linphone.ui.main.voxdialer.fragment.VoxDialerFragment"
+        android:label="VoxDialerFragment"
+        tools:layout="@layout/vox_dialer_fragment">
+        <action
+            android:id="@+id/action_voxDialerFragment_to_historyWithRecordingsFragment"
+            app:destination="@id/historyWithRecordingsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxDialerFragment_to_contactsListFragment"
+            app:destination="@id/contactsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxDialerFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxDialerFragment_to_meetingsListFragment"
+            app:destination="@id/meetingsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxDialerFragment_to_voxSettingsFragment"
+            app:destination="@id/voxSettingsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_voxDialerFragment_to_startCallFragment"
+            app:destination="@id/startCallFragment"
             app:enterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out"
             app:launchSingleTop="true" />

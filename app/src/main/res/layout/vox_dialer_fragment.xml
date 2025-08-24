@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="org.linphone.ui.main.voxdialer.viewmodel.VoxDialerViewModel" />
+    </data>
+
+    <androidx.slidingpanelayout.widget.SlidingPaneLayout
+        android:id="@+id/sliding_pane_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="@dimen/sliding_pane_left_fragment_width"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/color_main1_500">
+
+                <include
+                    android:id="@+id/top_bar"
+                    layout="@layout/main_activity_top_bar"
+                    bind:viewModel="@{viewModel}"
+                    bind:enableExtraAction="@{false}"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/top_bar_height"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <View
+                    android:id="@+id/shadow_effect"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/top_bar_shadow_height"
+                    android:background="@drawable/shape_squircle_white_r20_top_shadow"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/top_bar_height"
+                    android:background="@drawable/shape_squircle_white_r20_top_background"
+                    app:layout_constraintBottom_toTopOf="@id/bottom_nav_bar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Phone number display area -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/number_display_container"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/shape_squircle_main2_100_background"
+                        android:padding="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/phone_number_display"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.enteredUri}"
+                            android:textSize="24sp"
+                            android:textColor="?attr/color_main2_900"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/noto_sans_600"
+                            android:hint="Enter phone number"
+                            android:textColorHint="?attr/color_main2_400"
+                            android:minHeight="48dp"
+                            android:gravity="center"
+                            android:letterSpacing="0.05"
+                            app:layout_constraintEnd_toStartOf="@+id/delete_button"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/delete_button"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/backspace_fill"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="12dp"
+                            android:visibility="@{viewModel.deleteButtonEnabled ? View.VISIBLE : View.GONE}"
+                            app:tint="?attr/color_main2_600"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Dialer keypad -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/dialer_keypad"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="32dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/number_display_container">
+
+                        <!-- Row 1: 1, 2, 3 -->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_1"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:text="1"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_2"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:text="2\nABC"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_3"
+                            app:layout_constraintStart_toEndOf="@+id/digit_1"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_3"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:text="3\nDEF"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/digit_2"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!-- Row 2: 4, 5, 6 -->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_4"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="4\nGHI"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_1" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_5"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="5\nJKL"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_6"
+                            app:layout_constraintStart_toEndOf="@+id/digit_4"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_2" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_6"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="6\nMNO"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/digit_5"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_3" />
+
+                        <!-- Row 3: 7, 8, 9 -->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_7"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="7\nPQRS"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_8"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_4" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_8"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="8\nTUV"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_9"
+                            app:layout_constraintStart_toEndOf="@+id/digit_7"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_5" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_9"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="9\nWXYZ"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/digit_8"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_6" />
+
+                        <!-- Row 4: *, 0, # -->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_star"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="*"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_7" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_0"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="0\n+"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_hash"
+                            app:layout_constraintStart_toEndOf="@+id/digit_star"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_8" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/digit_hash"
+                            style="@style/dialer_digit_button_style"
+                            android:layout_width="0dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="16dp"
+                            android:text="#"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/digit_0"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_9" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Call button -->
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/call_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="32dp"
+                        android:src="@drawable/phone"
+                        android:backgroundTint="?attr/color_success_500"
+                        android:enabled="@{viewModel.callButtonEnabled}"
+                        app:tint="@android:color/white"
+                        app:fabSize="normal"
+                        app:elevation="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dialer_keypad" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <include
+                    android:id="@+id/bottom_nav_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/bottom_nav_bar"
+                    bind:viewModel="@{viewModel}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/vox_dialer_nav_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="@dimen/sliding_pane_right_fragment_width"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:defaultNavHost="false" />
+
+    </androidx.slidingpanelayout.widget.SlidingPaneLayout>
+
+</layout>

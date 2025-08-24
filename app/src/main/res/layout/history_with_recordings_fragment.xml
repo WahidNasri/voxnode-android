@@ -62,6 +62,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
+                        android:background="@android:color/transparent"
                         app:tabTextColor="?attr/color_main2_600"
                         app:tabSelectedTextColor="?attr/color_main1_500"
                         app:tabIndicatorColor="?attr/color_main1_500"

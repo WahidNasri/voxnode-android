@@ -190,6 +190,7 @@
     <string name="bottom_navigation_meetings_label">Meetings</string>
     <string name="bottom_navigation_voxsettings_label">Settings</string>
     <string name="bottom_navigation_history_recordings_label">History</string>
+    <string name="bottom_navigation_dialer_label">Dialer</string>
 
     <!-- History with Recordings tabs -->
     <string name="history_recordings_tab_calls">Calls</string>

@@ -85,9 +85,10 @@ class MainActivity : GenericActivity() {
         private const val DEFAULT_FRAGMENT_KEY = "default_fragment"
         private const val HISTORY_RECORDINGS_FRAGMENT_ID = 1
         private const val CONTACTS_FRAGMENT_ID = 2
-        private const val CHAT_FRAGMENT_ID = 3
-        private const val VOXSETTINGS_FRAGMENT_ID = 4
-        private const val MEETINGS_FRAGMENT_ID = 5
+        private const val DIALER_FRAGMENT_ID = 3
+        private const val CHAT_FRAGMENT_ID = 4
+        private const val VOXSETTINGS_FRAGMENT_ID = 5
+        private const val MEETINGS_FRAGMENT_ID = 6
 
         const val ARGUMENTS_CHAT = "Chat"
         const val ARGUMENTS_CONVERSATION_ID = "ConversationId"
@@ -406,6 +407,9 @@ class MainActivity : GenericActivity() {
             R.id.contactsListFragment -> {
                 CONTACTS_FRAGMENT_ID
             }
+            R.id.voxDialerFragment -> {
+                DIALER_FRAGMENT_ID
+            }
             R.id.conversationsListFragment -> {
                 CHAT_FRAGMENT_ID
             }
@@ -499,6 +503,14 @@ class MainActivity : GenericActivity() {
                         findNavController().addOnDestinationChangedListener(destinationListener)
                         findNavController().navigate(
                             R.id.contactsListFragment,
+                            args,
+                            navOptions
+                        )
+                    }
+                    DIALER_FRAGMENT_ID -> {
+                        findNavController().addOnDestinationChangedListener(destinationListener)
+                        findNavController().navigate(
+                            R.id.voxDialerFragment,
                             args,
                             navOptions
                         )
