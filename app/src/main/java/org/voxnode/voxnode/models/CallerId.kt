@@ -1,26 +1,17 @@
 package org.voxnode.voxnode.models
 
-import com.google.gson.annotations.SerializedName
+class CallerId {
+    var callerIDId: Int = 0
+    var callerID: String? = null
+    var authorized: Int = 0
+    var isCurrentCallerID: Int = 0
+    var isStatus: Boolean = false
+    var message: String? = null
 
-data class CallerId(
-    @SerializedName("id")
-    val id: Int = 0,
+    fun isAuthorized(): Boolean {
+        return authorized == 1
+    }
 
-    @SerializedName("callerId")
-    val callerId: String? = null,
-
-    @SerializedName("isVerified")
-    val isVerified: Boolean = false,
-
-    @SerializedName("isDefault")
-    val isDefault: Boolean = false,
-
-    @SerializedName("clientId")
-    val clientId: Int = 0,
-
-    @SerializedName("createdAt")
-    val createdAt: String? = null,
-
-    @SerializedName("updatedAt")
-    val updatedAt: String? = null
-)
+    val isSelected: Boolean
+        get() = isCurrentCallerID == 1
+}

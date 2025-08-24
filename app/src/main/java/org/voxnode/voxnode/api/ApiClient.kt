@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val BASE_URL = "https://api.voxnode.com/api/" // Replace with your actual API base URL
+    private const val BASE_URL = "https://api3.voxnode.com/" // Replace with your actual API base URL
     
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -16,7 +16,7 @@ object ApiClient {
     val apiService: ApiInterface by lazy {
         retrofit.create(ApiInterface::class.java)
     }
-    
+
     /**
      * Update the base URL if needed
      */

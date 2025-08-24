@@ -1,43 +1,59 @@
 package org.voxnode.voxnode.models
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class LoginResult(
-    @SerializedName("success")
-    val success: Boolean = false,
+class LoginResult {
+    @SerializedName("status")
+    @Expose
+    var status: Boolean = false
 
     @SerializedName("message")
-    val message: String? = null,
+    @Expose
+    var message: String? = null
 
     @SerializedName("clientId")
-    val clientId: Int = 0,
+    @Expose
+    var clientId: Int? = null
+
+    @SerializedName("clientEmail")
+    @Expose
+    var clientEmail: String? = null
 
     @SerializedName("clientKey")
-    val clientKey: String? = null,
+    @Expose
+    var clientKey: String? = null
 
-    @SerializedName("providerId")
-    val providerId: Int = 0,
+    @SerializedName("clientSmsEnabled")
+    @Expose
+    var clientSmsEnabled: Int? = null
 
-    @SerializedName("error")
-    val error: String? = null,
+    @SerializedName("clientBalanceEnabled")
+    @Expose
+    var clientBalanceEnabled: Int? = null
 
-    @SerializedName("userInfo")
-    val userInfo: UserInfo? = null
-)
+    @SerializedName("clientInboundEnabled")
+    @Expose
+    var clientInboundEnabled: Int? = null
 
-data class UserInfo(
-    @SerializedName("id")
-    val id: Int = 0,
+    @SerializedName("clientOutboundEnabled")
+    @Expose
+    var clientOutboundEnabled: Int? = null
 
-    @SerializedName("email")
-    val email: String? = null,
+    @SerializedName("clientBalance")
+    @Expose
+    var clientBalance: Double? = null
+        get() = if (field != null) field else 0.0
 
-    @SerializedName("firstName")
-    val firstName: String? = null,
+    @SerializedName("clientSipAddress")
+    @Expose
+    var clientSipAddress: String? = null
 
-    @SerializedName("lastName")
-    val lastName: String? = null,
+    @SerializedName("clientSipPassword")
+    @Expose
+    var clientSipPassword: String? = null
 
-    @SerializedName("phoneNumber")
-    val phoneNumber: String? = null
-)
+    @SerializedName("urlRecharge")
+    @Expose
+    var urlRecharge: String? = null
+}

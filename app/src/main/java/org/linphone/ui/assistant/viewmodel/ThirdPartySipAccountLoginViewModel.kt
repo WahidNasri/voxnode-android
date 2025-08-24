@@ -39,6 +39,7 @@ import org.linphone.core.tools.Log
 import org.linphone.ui.GenericViewModel
 import org.linphone.utils.AppUtils
 import org.linphone.utils.Event
+import org.voxnode.voxnode.api.VoxnodeRepository
 
 class ThirdPartySipAccountLoginViewModel
     @UiThread
@@ -73,6 +74,8 @@ class ThirdPartySipAccountLoginViewModel
 
     private lateinit var newlyCreatedAuthInfo: AuthInfo
     private lateinit var newlyCreatedAccount: Account
+    
+    private val voxnodeRepository = VoxnodeRepository()
 
     private val coreListener = object : CoreListenerStub() {
         @WorkerThread
@@ -147,10 +150,53 @@ class ThirdPartySipAccountLoginViewModel
 
     @UiThread
     fun login() {
+        val usernameValue = username.value.orEmpty().trim()
+        val passwordValue = password.value.orEmpty().trim()
+        
+        if (usernameValue.isEmpty() || passwordValue.isEmpty()) {
+            accountLoginErrorEvent.postValue(Event("Username and password are required"))
+            return
+        }
+        
+        // Set loading state
+        registrationInProgress.postValue(true)
+        
+        // Call VoxNode API login with hardcoded providerId = 1
+        voxnodeRepository.login(
+            email = usernameValue,
+            password = passwordValue,
+            providerId = 1L,
+            onSuccess = { loginResult ->
+                registrationInProgress.postValue(false)
+                if (loginResult.status) {
+                    Log.i("$TAG VoxNode login successful for user: $usernameValue")
 
+                    // Store login credentials in preferences for future API calls
+
+                    sipLogin(
+                        sipUsername = loginResult.clientSipAddress?.split("@")?.get(0) ?: "",
+                        domain = loginResult.clientSipAddress?.split("@")?.get(1) ?: "",
+                        authId = "",
+                        displayName = loginResult.clientSipAddress?.split("@")?.get(0) ?: "",
+                        sipPassword = loginResult.clientSipPassword ?: ""
+                    )
+                    // Trigger success event
+                    accountLoggedInEvent.postValue(Event(true))
+                } else {
+                    val errorMessage = loginResult.message ?: "Login failed"
+                    Log.e("$TAG VoxNode login failed: $errorMessage")
+                    accountLoginErrorEvent.postValue(Event(errorMessage))
+                }
+            },
+            onError = { error ->
+                registrationInProgress.postValue(false)
+                Log.e("$TAG VoxNode API error: $error")
+                accountLoginErrorEvent.postValue(Event(error))
+            }
+        )
     }
 
-    fun sipLogin(domain: String, sipUsername: String, authId: String, displayName: String) {
+    fun sipLogin(domain: String, sipUsername: String, authId: String, displayName: String, sipPassword: String) {
         coreContext.postOnCoreThread { core ->
             core.loadConfigFromXml(corePreferences.thirdPartyDefaultValuesPath)
 
@@ -205,7 +251,7 @@ class ThirdPartySipAccountLoginViewModel
             newlyCreatedAuthInfo = Factory.instance().createAuthInfo(
                 user,
                 userId,
-                password.value.orEmpty().trim(),
+                sipPassword.trim(),
                 null,
                 null,
                 domainAddress?.domain ?: domainValue
