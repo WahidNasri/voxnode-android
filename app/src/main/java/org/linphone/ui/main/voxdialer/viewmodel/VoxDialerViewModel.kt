@@ -21,8 +21,10 @@ package org.linphone.ui.main.voxdialer.viewmodel
 
 import androidx.annotation.UiThread
 import androidx.lifecycle.MutableLiveData
+import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.tools.Log
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
+import org.linphone.utils.LinphoneUtils
 
 @UiThread
 class VoxDialerViewModel
@@ -79,8 +81,21 @@ class VoxDialerViewModel
         val uri = enteredUri.value
         if (!uri.isNullOrEmpty()) {
             Log.i("$TAG Initiating call to: [$uri]")
-            // TODO: Implement actual call functionality
-            // This would typically involve the LinPhone core to make a call
+            coreContext.postOnCoreThread { core ->
+                val address = core.interpretUrl(
+                    uri,
+                    LinphoneUtils.applyInternationalPrefix()
+                )
+                if (address != null) {
+                    Log.i("$TAG Calling [${address.asStringUriOnly()}]")
+                    coreContext.startAudioCall(address)
+                    // Clear the dialer after successful call initiation
+                    clearUri()
+                } else {
+                    Log.e("$TAG Failed to parse [$uri] as SIP address")
+                    // TODO: Add appropriate error message toast
+                }
+            }
         }
     }
 

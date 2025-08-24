@@ -108,10 +108,15 @@ class VoxDialerFragment : AbstractMainFragment() {
         binding.digitStar.setOnClickListener { listViewModel.appendDigit("*") }
         binding.digitHash.setOnClickListener { listViewModel.appendDigit("#") }
         
-        // Long press on 0 for +
+        // Long press on 0 for + (international prefix)
         binding.digit0.setOnLongClickListener {
-            listViewModel.appendDigit("+")
-            true
+            val currentText = listViewModel.enteredUri.value.orEmpty()
+            if (currentText.isEmpty()) {
+                listViewModel.appendDigit("+")
+                true
+            } else {
+                false // Let normal click handle it
+            }
         }
         
         // Delete button
