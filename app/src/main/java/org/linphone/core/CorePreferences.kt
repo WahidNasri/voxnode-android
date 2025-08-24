@@ -332,7 +332,7 @@ class CorePreferences
 
     @get:WorkerThread
     val hideSipAddresses: Boolean
-        get() = config.getBool("ui", "hide_sip_addresses", false)
+        get() = config.getBool("ui", "hide_sip_addresses", true)
 
     @get:WorkerThread
     val disableChat: Boolean
