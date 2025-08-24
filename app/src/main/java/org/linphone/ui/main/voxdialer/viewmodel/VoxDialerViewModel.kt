@@ -72,6 +72,7 @@ class VoxDialerViewModel
         }
     }
 
+    @UiThread
     fun clearUri() {
         enteredUri.value = ""
         Log.d("$TAG Cleared URI")

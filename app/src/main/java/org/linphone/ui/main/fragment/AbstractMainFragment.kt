@@ -173,6 +173,14 @@ abstract class AbstractMainFragment : GenericMainFragment() {
             }
         }
 
+        viewModel.navigateToDialerEvent.observe(viewLifecycleOwner) {
+            it.consume {
+                if (currentFragmentId != R.id.voxDialerFragment) {
+                    goToDialerList()
+                }
+            }
+        }
+
         viewModel.navigateToVoxSettingsEvent.observe(viewLifecycleOwner) {
             it.consume {
                 if (currentFragmentId != R.id.voxSettingsFragment) {
