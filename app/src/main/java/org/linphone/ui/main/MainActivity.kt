@@ -57,6 +57,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.linphone.BuildConfig
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
@@ -420,7 +421,7 @@ class MainActivity : GenericActivity() {
                 MEETINGS_FRAGMENT_ID
             }
             else -> { // Default
-                HISTORY_RECORDINGS_FRAGMENT_ID
+                DIALER_FRAGMENT_ID
             }
         }
         getPreferences(MODE_PRIVATE).edit {
@@ -447,6 +448,12 @@ class MainActivity : GenericActivity() {
 
     @SuppressLint("RtlHardcoded")
     fun toggleDrawerMenu() {
+        // Only allow drawer menu operations in debug builds
+        if (!BuildConfig.DEBUG) {
+            Log.d("$TAG Drawer menu operations are disabled in release builds")
+            return
+        }
+        
         if (binding.drawerMenu.isDrawerOpen(Gravity.LEFT)) {
             closeDrawerMenu()
         } else {
@@ -455,10 +462,18 @@ class MainActivity : GenericActivity() {
     }
 
     fun closeDrawerMenu() {
+        // Only allow drawer menu operations in debug builds
+        if (!BuildConfig.DEBUG) {
+            return
+        }
         binding.drawerMenu.closeDrawer(binding.drawerMenuContent, true)
     }
 
     private fun openDrawerMenu() {
+        // Only allow drawer menu operations in debug builds
+        if (!BuildConfig.DEBUG) {
+            return
+        }
         binding.drawerMenu.openDrawer(binding.drawerMenuContent, true)
     }
 
@@ -487,14 +502,14 @@ class MainActivity : GenericActivity() {
 
             val defaultFragmentId = getPreferences(MODE_PRIVATE).getInt(
                 DEFAULT_FRAGMENT_KEY,
-                HISTORY_RECORDINGS_FRAGMENT_ID
+                DIALER_FRAGMENT_ID
             )
             Log.i(
                 "$TAG Trying to navigate to set default destination [$defaultFragmentId]"
             )
             try {
                 val navOptionsBuilder = NavOptions.Builder()
-                navOptionsBuilder.setPopUpTo(R.id.historyWithRecordingsFragment, true)
+                navOptionsBuilder.setPopUpTo(R.id.voxDialerFragment, true)
                 navOptionsBuilder.setLaunchSingleTop(true)
                 val navOptions = navOptionsBuilder.build()
                 val args = bundleOf()

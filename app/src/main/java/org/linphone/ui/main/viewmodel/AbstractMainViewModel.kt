@@ -22,6 +22,7 @@ package org.linphone.ui.main.viewmodel
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
+import org.linphone.BuildConfig
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.core.Account
@@ -75,6 +76,8 @@ open class AbstractMainViewModel
     val isFilterEmpty = MutableLiveData<Boolean>()
 
     val moreThanOneAccount = MutableLiveData<Boolean>()
+
+    val isDrawerMenuVisible = MutableLiveData<Boolean>()
 
     val focusSearchBarEvent: MutableLiveData<Event<Boolean>> by lazy {
         MutableLiveData<Event<Boolean>>()
@@ -206,6 +209,8 @@ open class AbstractMainViewModel
 
         searchBarVisible.value = false
         isFilterEmpty.value = true
+        // Only show drawer menu in debug builds
+        isDrawerMenuVisible.value = BuildConfig.DEBUG
     }
 
     @UiThread
@@ -220,7 +225,12 @@ open class AbstractMainViewModel
 
     @UiThread
     fun openDrawerMenu() {
-        openDrawerMenuEvent.value = Event(true)
+        // Only allow drawer menu in debug builds
+        if (BuildConfig.DEBUG) {
+            openDrawerMenuEvent.value = Event(true)
+        } else {
+            Log.d("$TAG Drawer menu is disabled in release builds")
+        }
     }
 
     @UiThread

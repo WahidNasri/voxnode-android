@@ -27,6 +27,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.linphone.BuildConfig
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
@@ -65,6 +66,8 @@ class MainViewModel
     }
 
     val showAlert = MutableLiveData<Boolean>()
+
+    val isDrawerMenuVisible = MutableLiveData<Boolean>()
 
     val maxAlertLevel = MutableLiveData<Int>()
 
@@ -352,6 +355,8 @@ class MainViewModel
         showAlert.value = false
         atLeastOneCall.value = false
         maxAlertLevel.value = NONE
+        // Only show drawer menu in debug builds
+        isDrawerMenuVisible.value = BuildConfig.DEBUG
         nonDefaultAccountNotificationsCount = 0
 
         pendingFilesOrTextSharing.value = false

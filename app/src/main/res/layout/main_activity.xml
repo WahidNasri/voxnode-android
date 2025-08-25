@@ -83,7 +83,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Side Menu -->
+        <!-- Side Menu (only visible in debug builds) -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/drawer_menu_content"
             android:name="org.linphone.ui.main.fragment.DrawerMenuFragment"
@@ -91,6 +91,7 @@
             android:layout_height="match_parent"
             android:background="?attr/color_main2_000"
             android:layout_gravity="start"
+            android:visibility="@{viewModel.isDrawerMenuVisible ? View.VISIBLE : View.GONE, default=gone}"
             app:layout="@layout/drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
