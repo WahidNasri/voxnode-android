@@ -128,6 +128,9 @@ class ThirdPartySipAccountLoginViewModel
         loginEnabled.addSource(username) {
             loginEnabled.value = isLoginButtonEnabled()
         }
+        loginEnabled.addSource(password) {
+            loginEnabled.value = isLoginButtonEnabled()
+        }
 
         // TODO: handle formatting errors ?
 
