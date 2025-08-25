@@ -194,6 +194,12 @@ class MainActivity : GenericActivity() {
             ViewModelProvider(this)[SharedMainViewModel::class.java]
         }
 
+        // Disable drawer swipe gestures in release builds
+        if (!BuildConfig.DEBUG) {
+            binding.drawerMenu.setDrawerLockMode(androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            Log.d("$TAG Drawer menu swipe gestures disabled in release builds")
+        }
+
         viewModel.goBackToCallEvent.observe(this) {
             it.consume {
                 coreContext.showCallActivity()
