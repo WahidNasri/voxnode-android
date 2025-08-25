@@ -25,6 +25,7 @@ import androidx.lifecycle.MutableLiveData
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.tools.Log
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
+import org.voxnode.voxnode.api.VoxnodeRepository
 import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 @UiThread
@@ -38,7 +39,11 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     // VoxNode user data
     val userEmail = MutableLiveData<String>()
     val sipAddress = MutableLiveData<String>()
+    val callerIdNumber = MutableLiveData<String>()
     val isLoggedIn = MutableLiveData<Boolean>()
+    val isCallerIdLoading = MutableLiveData<Boolean>()
+    
+    private val voxnodeRepository = VoxnodeRepository()
 
     init {
         title.value = "VoxSettings"
@@ -71,10 +76,14 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                     sipAddress.value = loginResult.clientKey ?: "Not available"
 
                     Log.i("$TAG VoxNode data loaded successfully for user: ${loginResult.clientEmail}")
+                    
+                    // Fetch caller ID after loading login data
+                    fetchCurrentCallerId(loginResult)
                 } else {
                     // Set default values when no data is available
                     userEmail.value = "Not logged in"
                     sipAddress.value = "N/A"
+                    callerIdNumber.value = "N/A"
 
                     Log.w("$TAG No VoxNode login data found")
                 }
@@ -86,6 +95,49 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                 userEmail.value = "Error loading data"
             }
         }
+    }
+
+    @UiThread
+    private fun fetchCurrentCallerId(loginResult: org.voxnode.voxnode.models.LoginResult) {
+        val clientId = loginResult.clientId ?: return
+        val clientKey = loginResult.clientKey ?: return
+        
+        Log.i("$TAG Fetching caller ID for client ID: $clientId")
+        isCallerIdLoading.value = true
+        
+        voxnodeRepository.getCallerIds(
+            providerId = 1, // VoipPhone provider ID
+            clientId = clientId,
+            clientKey = clientKey,
+            onSuccess = { callerIds ->
+                Log.i("$TAG Successfully fetched ${callerIds.size} caller IDs")
+                
+                // Find the current/selected caller ID
+                val currentCallerId = callerIds.find { it.isSelected }
+                
+                coreContext.postOnMainThread {
+                    isCallerIdLoading.value = false
+                    if (currentCallerId != null) {
+                        callerIdNumber.value = currentCallerId.callerID ?: "Not available"
+                        Log.i("$TAG Current caller ID: ${currentCallerId.callerID}")
+                    } else {
+                        // If no current caller ID is selected, show the first one or fallback
+                        val firstCallerId = callerIds.firstOrNull()
+                        callerIdNumber.value = firstCallerId?.callerID ?: sipAddress.value ?: "Not available"
+                        Log.w("$TAG No current caller ID selected, using: ${callerIdNumber.value}")
+                    }
+                }
+            },
+            onError = { error ->
+                Log.e("$TAG Failed to fetch caller IDs: $error")
+                coreContext.postOnMainThread {
+                    isCallerIdLoading.value = false
+                    // Fallback to SIP address if caller ID fetch fails
+                    callerIdNumber.value = sipAddress.value ?: "Not available"
+                    // showRedToast("Failed to load caller ID: $error", org.linphone.R.drawable.warning_circle)
+                }
+            }
+        )
     }
 
     @UiThread

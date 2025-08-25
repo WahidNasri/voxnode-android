@@ -155,13 +155,22 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     tools:text="+33123123"
-                                    android:text="@{viewModel.sipAddress}"
+                                    android:text="@{viewModel.isCallerIdLoading ? `Loading...` : (viewModel.callerIdNumber ?? viewModel.sipAddress)}"
                                     android:textColor="@android:color/black"
                                     android:textSize="16sp"
                                     android:textStyle="bold"
+                                    android:visibility="@{viewModel.isCallerIdLoading ? View.GONE : View.VISIBLE}"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/caller_id_label" />
+
+                                <ProgressBar
+                                    android:id="@+id/caller_id_loading"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="@{viewModel.isCallerIdLoading ? View.VISIBLE : View.GONE}" />
 
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
