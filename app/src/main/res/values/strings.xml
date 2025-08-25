@@ -1019,4 +1019,14 @@
         <item>50e603d333c6049a37bd751375d08f3bd0abebd33facd30bd17b64b89658b421,
             com.google.android.apps.automotive.templates.host</item>
         </string-array>
+
+    <!-- VoxSettings -->
+    <string name="vox_settings_title">Options</string>
+    <string name="vox_settings_provider">VoIP Provider: VoipPhone</string>
+    <string name="vox_settings_caller_id">Caller ID</string>
+    <string name="vox_settings_language">Language</string>
+    <string name="vox_settings_language_english">English</string>
+    <string name="vox_settings_logout">Logout</string>
+    <string name="vox_settings_not_logged_in">Please log in through the assistant to view your VoxNode settings.</string>
+
 </resources>

@@ -40,6 +40,7 @@ import org.linphone.ui.GenericViewModel
 import org.linphone.utils.AppUtils
 import org.linphone.utils.Event
 import org.voxnode.voxnode.api.VoxnodeRepository
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 class ThirdPartySipAccountLoginViewModel
     @UiThread
@@ -171,7 +172,11 @@ class ThirdPartySipAccountLoginViewModel
                 if (loginResult.status) {
                     Log.i("$TAG VoxNode login successful for user: $usernameValue")
 
-                    // Store login credentials in preferences for future API calls
+                    // Save the complete login result locally for future use
+                    coreContext.postOnCoreThread {
+                        VoxNodeDataManager.saveLoginResult(loginResult)
+                        Log.i("$TAG VoxNode login result saved successfully")
+                    }
 
                     sipLogin(
                         sipUsername = loginResult.clientSipAddress?.split("@")?.get(0) ?: "",

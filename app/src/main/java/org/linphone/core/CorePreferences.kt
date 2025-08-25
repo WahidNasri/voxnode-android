@@ -448,6 +448,46 @@ class CorePreferences
     val messageReceivedInVisibleConversationNotificationSound: String
         get() = context.filesDir.absolutePath + "/share/sounds/linphone/incoming_chat.wav"
 
+    // VoxNode data storage
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeUserEmail: String
+        get() = config.getString("voxnode", "user_email", "").orEmpty()
+        set(value) {
+            config.setString("voxnode", "user_email", value)
+        }
+
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeClientId: Int
+        get() = config.getInt("voxnode", "client_id", -1)
+        set(value) {
+            config.setInt("voxnode", "client_id", value)
+        }
+
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeClientKey: String
+        get() = config.getString("voxnode", "client_key", "").orEmpty()
+        set(value) {
+            config.setString("voxnode", "client_key", value)
+        }
+
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeSipAddress: String
+        get() = config.getString("voxnode", "sip_address", "").orEmpty()
+        set(value) {
+            config.setString("voxnode", "sip_address", value)
+        }
+
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeUrlRecharge: String
+        get() = config.getString("voxnode", "url_recharge", "").orEmpty()
+        set(value) {
+            config.setString("voxnode", "url_recharge", value)
+        }
+
+    @get:AnyThread
+    val voxnodeDataFile: String
+        get() = context.filesDir.absolutePath + "/voxnode_data.json"
+
     @UiThread
     fun copyAssetsFromPackage() {
         copy("linphonerc_default", configPath)
