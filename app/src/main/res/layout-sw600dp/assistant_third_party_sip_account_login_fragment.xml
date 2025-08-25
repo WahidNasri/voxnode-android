@@ -26,168 +26,129 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="40dp">
 
+                <!-- VoIP PHONE Logo Section -->
                 <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="@null"
-                    android:src="@drawable/assistant_logo"
-                    app:layout_constraintStart_toEndOf="@id/username"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/mountains"
-                    app:layout_constraintTop_toBottomOf="@id/title" />
-
-                <ImageView
-                    android:id="@+id/back"
-                    android:onClick="@{backClickListener}"
-                    android:layout_width="@dimen/top_bar_height"
-                    android:layout_height="@dimen/top_bar_height"
-                    android:layout_marginStart="40dp"
-                    android:padding="15dp"
-                    android:src="@drawable/caret_left"
-                    android:contentDescription="@string/content_description_go_back_icon"
-                    android:background="@drawable/circle_transparent_button_background"
-                    app:tint="?attr/color_main2_500"
-                    app:layout_constraintTop_toTopOf="@id/title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/title"/>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/assistant_page_title_style"
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/top_bar_height"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="@dimen/assistant_title_top_margin"
-                    android:text="@string/assistant_login_third_party_sip_account_title"
-                    android:textColor="?attr/color_text"
-                    android:textSize="28sp"
-                    android:drawableStart="@drawable/user_circle"
-                    android:drawablePadding="10dp"
-                    app:layout_constraintWidth_min="@dimen/button_max_width"
+                    android:id="@+id/voip_logo"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="60dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="VoIP Phone Logo"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/back"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/header_style"
-                    android:id="@+id/username_label"
+                    android:id="@+id/voip_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
-                    android:labelFor="@id/username"
-                    android:text="@{@string/username + `*`}"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    app:layout_constraintTop_toBottomOf="@id/title"
-                    app:layout_constraintBottom_toTopOf="@id/username"
-                    app:layout_constraintStart_toStartOf="@id/username"/>
+                    android:layout_marginTop="20dp"
+                    android:text="VoIP PHONE"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#2196F3"
+                    android:letterSpacing="0.1"
+                    app:layout_constraintTop_toBottomOf="@id/voip_logo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
+
+                <!-- Email Field with Icon -->
                 <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/default_text_style"
                     android:id="@+id/username"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="@={viewModel.username, default=`johndoe`}"
-                    android:textSize="14sp"
-                    android:textColor="?attr/color_main2_600"
+                    android:layout_width="400dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="52dp"
+                    android:paddingEnd="16dp"
+                    android:text="@={viewModel.username, default=`nasriwahid90@gmail.com`}"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
                     android:background="@drawable/edit_text_background"
-                    android:inputType="text"
-                    android:hint="@string/username"
-                    app:layout_constraintWidth_max="@dimen/button_max_width"
-                    app:layout_constraintTop_toBottomOf="@id/username_label"
-                    app:layout_constraintBottom_toTopOf="@id/password_label"
-                    app:layout_constraintStart_toStartOf="@id/title"
-                    app:layout_constraintEnd_toEndOf="@id/title"/>
+                    android:inputType="textEmailAddress"
+                    android:hint="Email"
+                    app:layout_constraintTop_toBottomOf="@id/voip_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/header_style"
-                    android:id="@+id/password_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
-                    android:labelFor="@id/password"
-                    android:text="@{@string/password + `*`}"
-                    app:layout_constraintTop_toBottomOf="@id/username"
-                    app:layout_constraintBottom_toTopOf="@id/password"
-                    app:layout_constraintStart_toStartOf="@id/password"/>
+                <ImageView
+                    android:id="@+id/email_icon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/envelope_simple"
+                    android:contentDescription="Email icon"
+                    app:tint="#2196F3"
+                    app:layout_constraintStart_toStartOf="@id/username"
+                    app:layout_constraintTop_toTopOf="@id/username"
+                    app:layout_constraintBottom_toBottomOf="@id/username"
+                    android:layout_marginStart="16dp" />
 
+                <!-- Password Field with Icons -->
                 <androidx.appcompat.widget.AppCompatEditText
-                    style="@style/default_text_style"
                     android:id="@+id/password"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="@={viewModel.password, default=`johndoe`}"
-                    android:textSize="14sp"
-                    android:textColor="?attr/color_main2_600"
+                    android:layout_width="400dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="52dp"
+                    android:paddingEnd="52dp"
+                    android:text="@={viewModel.password, default=`password123`}"
+                    android:textSize="18sp"
+                    android:textColor="#333333"
                     android:background="@drawable/edit_text_background"
-                    android:hint="@string/password"
+                    android:hint="Password"
                     passwordInputType="@{viewModel.showPassword ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD, default=textPassword}"
-                    app:layout_constraintWidth_max="@dimen/text_input_max_width"
-                    app:layout_constraintTop_toBottomOf="@id/password_label"
-                    app:layout_constraintBottom_toTopOf="@id/username"
-                    app:layout_constraintStart_toStartOf="@id/title"
-                    app:layout_constraintEnd_toEndOf="@id/title"/>
+                    app:layout_constraintTop_toBottomOf="@id/username"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <ImageView
+                    android:id="@+id/lock_icon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/lock_simple"
+                    android:contentDescription="Lock icon"
+                    app:tint="#2196F3"
+                    app:layout_constraintStart_toStartOf="@id/password"
+                    app:layout_constraintTop_toTopOf="@id/password"
+                    app:layout_constraintBottom_toBottomOf="@id/password"
+                    android:layout_marginStart="16dp" />
 
                 <ImageView
                     android:onClick="@{() -> viewModel.toggleShowPassword()}"
                     android:id="@+id/eye"
-                    android:layout_width="@dimen/icon_size"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="20dp"
-                    android:padding="4dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:padding="2dp"
                     android:contentDescription="@string/content_description_toggle_password_visibility"
                     android:src="@{viewModel.showPassword ? @drawable/eye_slash : @drawable/eye, default=@drawable/eye}"
-                    app:tint="?attr/color_main2_500"
+                    app:tint="#2196F3"
                     app:layout_constraintEnd_toEndOf="@id/password"
                     app:layout_constraintTop_toTopOf="@id/password"
-                    app:layout_constraintBottom_toBottomOf="@id/password" />
+                    app:layout_constraintBottom_toBottomOf="@id/password"
+                    android:layout_marginEnd="16dp" />
 
+                <!-- Login Button -->
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/primary_button_label_style"
                     android:onClick="@{() -> viewModel.login()}"
-                    android:enabled="@{viewModel.loginEnabled &amp;&amp; !viewModel.registrationInProgress, default=false}"
+                    android:enabled="@{viewModel.loginEnabled &amp;&amp; !viewModel.registrationInProgress, default=true}"
                     android:id="@+id/login"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="@dimen/screen_bottom_margin"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="@string/assistant_account_login"
-                    app:layout_constraintWidth_max="@dimen/button_max_width"
+                    android:layout_width="400dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"
+                    android:gravity="center"
+                    android:text="Login"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/primary_button_background"
                     app:layout_constraintTop_toBottomOf="@id/password"
-                    app:layout_constraintBottom_toTopOf="@id/mountains"
-                    app:layout_constraintStart_toStartOf="@id/title" />
-
-                <ImageView
-                    android:id="@+id/mountains"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mountains"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="@null"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:tint="?attr/color_main1_500" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
