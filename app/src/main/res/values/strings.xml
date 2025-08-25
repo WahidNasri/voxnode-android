@@ -1036,4 +1036,12 @@
     <string name="content_description_selected">Selected</string>
     <string name="content_description_close">Close</string>
 
+    <!-- Language Change Messages -->
+    <string name="language_change_success_english">Language changed to English</string>
+    <string name="language_change_success_french">Language changed to French</string>
+    <string name="language_change_error">Failed to change language</string>
+    <string name="language_display_english">English</string>
+    <string name="language_display_french">Français</string>
+    <string name="language_display_default">English</string>
+
 </resources>

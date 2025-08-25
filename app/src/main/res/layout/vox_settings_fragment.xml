@@ -67,6 +67,7 @@
                         android:orientation="horizontal"
                         android:background="?attr/color_main1_500"
                         android:padding="20dp"
+                        android:gravity="center"
                         android:visibility="@{viewModel.isLoggedIn ? View.VISIBLE : View.GONE}">
 
                         <ImageView
@@ -99,19 +100,6 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/user_avatar"
                                 app:layout_constraintTop_toTopOf="@+id/user_avatar" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/provider_info"
-                                style="@style/default_text_style"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="@string/vox_settings_provider"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/user_avatar"
-                                app:layout_constraintTop_toBottomOf="@+id/user_email" />
 
                         </LinearLayout>
 

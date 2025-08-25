@@ -226,15 +226,15 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
             
             // Show confirmation based on selected language
             val confirmationMessage = when (languageCode) {
-                "fr" -> "Langue changée en Français"
-                "en" -> "Language changed to English"
-                else -> "Language changed to ${LanguageManager.getLanguageDisplayName(languageCode)}"
+                "fr" -> coreContext.context.getString(org.linphone.R.string.language_change_success_french)
+                "en" -> coreContext.context.getString(org.linphone.R.string.language_change_success_english)
+                else -> coreContext.context.getString(org.linphone.R.string.language_change_success_english)
             }
             showFormattedGreenToast(confirmationMessage, org.linphone.R.drawable.check)
             
         } catch (e: Exception) {
             Log.e("$TAG Failed to change language: ${e.message}")
-            showFormattedRedToast("Failed to change language", org.linphone.R.drawable.warning_circle)
+            showFormattedRedToast(coreContext.context.getString(org.linphone.R.string.language_change_error), org.linphone.R.drawable.warning_circle)
         }
     }
 
@@ -244,7 +244,7 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     }
 
     private fun getLanguageDisplayName(languageCode: String): String {
-        return LanguageManager.getLanguageDisplayName(languageCode)
+        return LanguageManager.getLanguageDisplayName(languageCode, coreContext.context)
     }
 
     @UiThread

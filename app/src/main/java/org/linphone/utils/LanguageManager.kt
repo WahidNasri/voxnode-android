@@ -184,21 +184,21 @@ object LanguageManager {
     /**
      * Get display name for language code
      */
-    fun getLanguageDisplayName(languageCode: String): String {
+    fun getLanguageDisplayName(languageCode: String, context: Context? = null): String {
         return when (languageCode) {
-            "en" -> "English"
-            "fr" -> "Français"
-            else -> "English" // Default fallback
+            "en" -> context?.getString(org.linphone.R.string.language_display_english) ?: "English"
+            "fr" -> context?.getString(org.linphone.R.string.language_display_french) ?: "Français"
+            else -> context?.getString(org.linphone.R.string.language_display_default) ?: "English"
         }
     }
 
     /**
      * Get available languages
      */
-    fun getAvailableLanguages(): List<Pair<String, String>> {
+    fun getAvailableLanguages(context: Context? = null): List<Pair<String, String>> {
         return listOf(
-            Pair("en", "English"),
-            Pair("fr", "Français")
+            Pair("en", getLanguageDisplayName("en", context)),
+            Pair("fr", getLanguageDisplayName("fr", context))
         )
     }
 }

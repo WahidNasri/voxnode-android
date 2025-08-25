@@ -146,6 +146,16 @@
     <string name="bottom_navigation_calls_label">Appels</string>
     <string name="bottom_navigation_conversations_label">Conversations</string>
     <string name="bottom_navigation_meetings_label">Réunions</string>
+    <string name="bottom_navigation_voxsettings_label">Paramètres</string>
+    <string name="bottom_navigation_history_recordings_label">Historique</string>
+    <string name="bottom_navigation_dialer_label">Clavier</string>
+
+    <!-- History with Recordings tabs -->
+    <string name="history_recordings_tab_calls">Appels</string>
+    <string name="history_recordings_tab_recordings">Enregistrements</string>
+    
+    <!-- Search hint -->
+    <string name="search_recordings_hint">Rechercher des enregistrements...</string>
 
     <!-- Side menu -->
     <string name="drawer_menu_manage_account">Mon compte</string>
@@ -961,4 +971,12 @@
     <string name="language_french">Français</string>
     <string name="content_description_selected">Sélectionné</string>
     <string name="content_description_close">Fermer</string>
+
+    <!-- Language Change Messages -->
+    <string name="language_change_success_english">Langue changée en Anglais</string>
+    <string name="language_change_success_french">Langue changée en Français</string>
+    <string name="language_change_error">Échec du changement de langue</string>
+    <string name="language_display_english">English</string>
+    <string name="language_display_french">Français</string>
+    <string name="language_display_default">English</string>
 </resources>
