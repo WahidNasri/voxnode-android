@@ -43,6 +43,7 @@ import org.linphone.core.LogCollectionState
 import org.linphone.core.LogLevel
 import org.linphone.core.VFS
 import org.linphone.core.tools.Log
+import org.linphone.utils.LanguageManager
 
 @MainThread
 class LinphoneApplication : Application(), SingletonImageLoader.Factory {
@@ -91,6 +92,14 @@ class LinphoneApplication : Application(), SingletonImageLoader.Factory {
         Factory.instance().enableLogcatLogs(corePreferences.printLogsInLogcat)
 
         Log.i("$TAG Report Core preferences initialized")
+
+        // Initialize language settings after corePreferences is ready
+        try {
+            LanguageManager.initializeLanguage(context)
+            Log.i("$TAG Language manager initialized")
+        } catch (e: Exception) {
+            Log.e("$TAG Failed to initialize language manager: ${e.message}")
+        }
         Compatibility.setupAppStartupListener(context)
 
         coreContext = CoreContext(context)

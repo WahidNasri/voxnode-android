@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?attr/color_main2_000">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/language_selection_title"
+            android:textColor="?attr/color_main2_600"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/x"
+            android:contentDescription="@string/content_description_close"
+            app:tint="?attr/color_main2_500"
+            android:padding="2dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+    </RelativeLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/color_main2_200"
+        android:layout_marginBottom="16dp" />
+
+    <!-- English Option -->
+    <RelativeLayout
+        android:id="@+id/english_option"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/language_english"
+            android:textColor="?attr/color_main2_600"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/english_check"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/check"
+            android:visibility="gone"
+            app:tint="?attr/color_main1_500"
+            android:contentDescription="@string/content_description_selected" />
+
+    </RelativeLayout>
+
+    <!-- French Option -->
+    <RelativeLayout
+        android:id="@+id/french_option"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/language_french"
+            android:textColor="?attr/color_main2_600"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/french_check"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/check"
+            android:visibility="gone"
+            app:tint="?attr/color_main1_500"
+            android:contentDescription="@string/content_description_selected" />
+
+    </RelativeLayout>
+
+    <!-- Bottom padding -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+</LinearLayout>

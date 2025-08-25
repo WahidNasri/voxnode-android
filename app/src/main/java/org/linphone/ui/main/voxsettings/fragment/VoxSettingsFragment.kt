@@ -91,6 +91,27 @@ class VoxSettingsFragment : AbstractMainFragment() {
     private fun observeEvents() {
         // Add any specific observers for VoxSettings functionality here
         Log.i("$TAG Setting up observers for VoxSettings")
+        
+        // Set up language card click listener
+        binding.languageSection.setOnClickListener {
+            Log.i("$TAG Language card clicked")
+            listViewModel.onLanguageCardClicked()
+        }
+        
+        // Observe language bottom sheet event
+        listViewModel.showLanguageBottomSheetEvent.observe(viewLifecycleOwner) { event ->
+            event.consume { currentLanguage ->
+                Log.i("$TAG Showing language selection bottom sheet")
+                val bottomSheet = LanguageSelectionBottomSheet.newInstance(
+                    currentLanguage = currentLanguage,
+                    onLanguageSelected = { selectedLanguage ->
+                        Log.i("$TAG Language selected: $selectedLanguage")
+                        listViewModel.changeLanguage(selectedLanguage)
+                    }
+                )
+                bottomSheet.show(parentFragmentManager, "LanguageSelectionBottomSheet")
+            }
+        }
     }
 
     override fun onDefaultAccountChanged() {

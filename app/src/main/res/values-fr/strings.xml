@@ -945,4 +945,20 @@
     <string name="content_description_call_voicemail">Faire un appui long pour appeler la boite vocale</string>
     <string name="content_description_cancel_files_or_text_pending_sharing">Cliquer pour annuler le partage des fichiers ou du texte en attente</string>
     <string name="content_description_close_drawer_menu">Ferme le menu</string>
+
+    <!-- VoxSettings -->
+    <string name="vox_settings_title">Options</string>
+    <string name="vox_settings_provider">Fournisseur VoIP: VoipPhone</string>
+    <string name="vox_settings_caller_id">ID d\'appelant</string>
+    <string name="vox_settings_language">Langue</string>
+    <string name="vox_settings_language_english">Français</string>
+    <string name="vox_settings_logout">Déconnexion</string>
+    <string name="vox_settings_not_logged_in">Veuillez vous connecter via l\'assistant pour afficher vos paramètres VoxNode.</string>
+
+    <!-- Language Selection -->
+    <string name="language_selection_title">Sélectionner la langue</string>
+    <string name="language_english">English</string>
+    <string name="language_french">Français</string>
+    <string name="content_description_selected">Sélectionné</string>
+    <string name="content_description_close">Fermer</string>
 </resources>

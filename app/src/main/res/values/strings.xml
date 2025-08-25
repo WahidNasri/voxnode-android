@@ -1029,4 +1029,11 @@
     <string name="vox_settings_logout">Logout</string>
     <string name="vox_settings_not_logged_in">Please log in through the assistant to view your VoxNode settings.</string>
 
+    <!-- Language Selection -->
+    <string name="language_selection_title">Select Language</string>
+    <string name="language_english">English</string>
+    <string name="language_french">Français</string>
+    <string name="content_description_selected">Selected</string>
+    <string name="content_description_close">Close</string>
+
 </resources>

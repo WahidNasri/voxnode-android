@@ -41,6 +41,7 @@ import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.compatibility.Compatibility
 import org.linphone.core.tools.Log
+import org.linphone.utils.LanguageManager
 import org.linphone.utils.ToastUtils
 import org.linphone.utils.slideInToastFromTop
 import org.linphone.utils.slideInToastFromTopForDuration
@@ -93,6 +94,32 @@ open class GenericActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
+    }
+
+    override fun attachBaseContext(newBase: android.content.Context?) {
+        if (newBase != null) {
+            try {
+                val languageCode = LanguageManager.getSavedLanguage(newBase)
+                val context = LanguageManager.applyLanguageToContext(newBase, languageCode)
+                super.attachBaseContext(context)
+            } catch (e: Exception) {
+                Log.w("$TAG Failed to apply language context: ${e.message}")
+                super.attachBaseContext(newBase)
+            }
+        } else {
+            super.attachBaseContext(newBase)
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Reapply language after configuration change
+        try {
+            val languageCode = LanguageManager.getSavedLanguage(this)
+            LanguageManager.applyLanguageToContext(this, languageCode)
+        } catch (e: Exception) {
+            Log.w("$TAG Failed to reapply language on configuration change: ${e.message}")
+        }
     }
 
     protected fun checkMainColorTheme() {

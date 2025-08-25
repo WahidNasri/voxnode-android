@@ -25,6 +25,8 @@ import androidx.lifecycle.MutableLiveData
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.tools.Log
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
+import org.linphone.utils.Event
+import org.linphone.utils.LanguageManager
 import org.voxnode.voxnode.api.VoxnodeRepository
 import org.voxnode.voxnode.storage.VoxNodeDataManager
 
@@ -43,6 +45,11 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     val isLoggedIn = MutableLiveData<Boolean>()
     val isCallerIdLoading = MutableLiveData<Boolean>()
     
+    // Language settings
+    val currentLanguage = MutableLiveData<String>()
+    val currentLanguageDisplayName = MutableLiveData<String>()
+    val showLanguageBottomSheetEvent = MutableLiveData<Event<String>>()
+    
     private val voxnodeRepository = VoxnodeRepository()
 
     init {
@@ -52,6 +59,9 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
 
         // Load VoxNode data
         loadVoxNodeData()
+        
+        // Initialize language settings
+        initializeLanguageSettings()
     }
 
     @UiThread
@@ -179,6 +189,62 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                 Log.i("$TAG User logout completed")
             }
         }
+    }
+
+    @UiThread
+    fun initializeLanguageSettings() {
+        val currentLang = LanguageManager.getSavedLanguage()
+        currentLanguage.value = currentLang
+        updateLanguageDisplayName(currentLang)
+        Log.i("$TAG Current language initialized: $currentLang")
+    }
+
+    @UiThread
+    fun onLanguageCardClicked() {
+        Log.i("$TAG Language card clicked, showing bottom sheet")
+        showLanguageBottomSheetEvent.value = Event(currentLanguage.value ?: "en")
+    }
+
+    @UiThread
+    fun changeLanguage(languageCode: String) {
+        Log.i("$TAG Changing language to: $languageCode")
+        
+        if (currentLanguage.value == languageCode) {
+            Log.i("$TAG Language is already set to $languageCode")
+            return
+        }
+        
+        try {
+            // Use the global language manager to change language app-wide
+            LanguageManager.changeLanguageGlobally(languageCode)
+            
+            // Update local UI state
+            currentLanguage.value = languageCode
+            updateLanguageDisplayName(languageCode)
+            
+            Log.i("$TAG Language successfully changed globally to: $languageCode")
+            
+            // Show confirmation based on selected language
+            val confirmationMessage = when (languageCode) {
+                "fr" -> "Langue changée en Français"
+                "en" -> "Language changed to English"
+                else -> "Language changed to ${LanguageManager.getLanguageDisplayName(languageCode)}"
+            }
+            showFormattedGreenToast(confirmationMessage, org.linphone.R.drawable.check)
+            
+        } catch (e: Exception) {
+            Log.e("$TAG Failed to change language: ${e.message}")
+            showFormattedRedToast("Failed to change language", org.linphone.R.drawable.warning_circle)
+        }
+    }
+
+    @UiThread
+    private fun updateLanguageDisplayName(languageCode: String) {
+        currentLanguageDisplayName.value = getLanguageDisplayName(languageCode)
+    }
+
+    private fun getLanguageDisplayName(languageCode: String): String {
+        return LanguageManager.getLanguageDisplayName(languageCode)
     }
 
     @UiThread
