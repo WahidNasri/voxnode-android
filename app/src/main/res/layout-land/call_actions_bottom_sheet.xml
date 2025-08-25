@@ -52,6 +52,7 @@
             android:padding="@dimen/call_button_icon_padding"
             android:src="@drawable/phone_transfer"
             android:contentDescription="@string/call_action_transfer"
+            android:visibility="gone"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/transfer_label"
             app:layout_constraintStart_toStartOf="@id/transfer_label"
@@ -68,6 +69,7 @@
             android:padding="@dimen/call_button_icon_padding"
             android:src="@drawable/phone_plus"
             android:contentDescription="@string/call_action_start_new_call"
+            android:visibility="gone"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/new_call_label"
             app:layout_constraintStart_toStartOf="@id/new_call_label"
@@ -84,6 +86,7 @@
             android:padding="@dimen/call_button_icon_padding"
             android:src="@drawable/phone_list"
             android:contentDescription="@string/call_action_go_to_calls_list"
+            android:visibility="gone"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/calls_list_label"
             app:layout_constraintStart_toStartOf="@id/calls_list_label"
@@ -98,7 +101,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="25dp"
             android:text="@{String.valueOf(callsViewModel.callsCount), default=`1`}"
-            android:visibility="@{callsViewModel.callsCount > 1 ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/main_actions"
             app:layout_constraintStart_toStartOf="@id/calls_list"
             app:layout_constraintEnd_toEndOf="@id/calls_list"/>
@@ -107,17 +110,17 @@
             android:id="@+id/numpad"
             android:onClick="@{() -> viewModel.showNumpad()}"
             android:enabled="@{!viewModel.isPaused &amp;&amp; !viewModel.isPausedByRemote}"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/call_button_size"
             android:layout_height="@dimen/call_button_size"
             android:layout_marginTop="@dimen/call_extra_button_top_margin"
             android:background="@drawable/in_call_button_background_red"
             android:padding="@dimen/call_button_icon_padding"
             android:src="@drawable/numpad"
             android:contentDescription="@string/call_action_show_dialer"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/numpad_label"
-            app:layout_constraintStart_toStartOf="@id/numpad_label"
             app:layout_constraintTop_toBottomOf="@id/main_actions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/pause_call"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:tint="@color/in_call_button_tint_color" />
 
         <ImageView
@@ -131,6 +134,7 @@
             android:src="@drawable/chat_teardrop_text"
             android:contentDescription="@string/call_action_show_messages"
             android:enabled="@{!viewModel.operationInProgress}"
+            android:visibility="gone"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/chat_label"
             app:layout_constraintStart_toStartOf="@id/chat_label"
@@ -142,7 +146,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:indeterminate="true"
-            android:visibility="@{viewModel.operationInProgress ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:indicatorColor="?attr/color_main1_500"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="@id/chat"
@@ -158,7 +162,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="25dp"
             android:text="@{String.valueOf(viewModel.unreadMessagesCount), default=`1`}"
-            android:visibility="@{viewModel.unreadMessagesCount > 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/main_actions"
             app:layout_constraintStart_toStartOf="@id/chat"
             app:layout_constraintEnd_toEndOf="@id/chat"/>
@@ -168,24 +172,23 @@
             android:onClick="@{() -> viewModel.togglePause()}"
             android:enabled="@{viewModel.canBePaused}"
             android:selected="@{viewModel.isPaused}"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/call_button_size"
             android:layout_height="@dimen/call_button_size"
             android:layout_marginTop="@dimen/call_extra_button_top_margin"
             android:background="@drawable/in_call_button_background_green"
             android:padding="@dimen/call_button_icon_padding"
             android:contentDescription="@{viewModel.isPaused ? @string/call_action_resume_call : @string/call_action_pause_call}"
             android:src="@{viewModel.isPaused ? @drawable/play : @drawable/pause, default=@drawable/pause}"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/pause_call_label"
-            app:layout_constraintStart_toStartOf="@id/pause_call_label"
             app:layout_constraintTop_toBottomOf="@id/main_actions"
+            app:layout_constraintStart_toEndOf="@id/numpad"
+            app:layout_constraintEnd_toStartOf="@id/record_call"
             app:tint="@color/in_call_button_tint_color" />
 
         <ImageView
             android:id="@+id/record_call"
             android:onClick="@{() -> viewModel.toggleRecording()}"
             android:enabled="@{viewModel.isRecordingEnabled &amp;&amp; !viewModel.isPaused &amp;&amp; !viewModel.isPausedByRemote}"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/call_button_size"
             android:layout_height="@dimen/call_button_size"
             android:layout_marginTop="@dimen/call_extra_button_top_margin"
             android:background="@drawable/in_call_button_background_red"
@@ -193,10 +196,9 @@
             android:src="@drawable/record_fill"
             android:contentDescription="@string/call_action_record_call"
             android:selected="@{viewModel.isRecording()}"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/record_call_label"
-            app:layout_constraintStart_toStartOf="@id/record_call_label"
             app:layout_constraintTop_toBottomOf="@id/main_actions"
+            app:layout_constraintStart_toEndOf="@id/pause_call"
+            app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/in_call_button_tint_color" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -208,6 +210,7 @@
             android:paddingBottom="15dp"
             android:text="@string/call_action_transfer"
             android:labelFor="@id/transfer"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/new_call_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/transfer"/>
@@ -221,6 +224,7 @@
             android:paddingBottom="15dp"
             android:text="@string/call_action_start_new_call"
             android:labelFor="@id/new_call"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/calls_list_label"
             app:layout_constraintStart_toEndOf="@id/transfer_label"
             app:layout_constraintTop_toBottomOf="@id/new_call"/>
@@ -234,6 +238,7 @@
             android:paddingBottom="15dp"
             android:text="@string/call_action_go_to_calls_list"
             android:labelFor="@id/calls_list"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/numpad_label"
             app:layout_constraintStart_toEndOf="@id/new_call_label"
             app:layout_constraintTop_toBottomOf="@id/calls_list"/>
@@ -248,8 +253,8 @@
             android:paddingBottom="15dp"
             android:text="@string/call_action_show_dialer"
             android:labelFor="@id/numpad"
-            app:layout_constraintEnd_toStartOf="@id/chat_label"
-            app:layout_constraintStart_toEndOf="@id/calls_list_label"
+            app:layout_constraintEnd_toEndOf="@id/numpad"
+            app:layout_constraintStart_toStartOf="@id/numpad"
             app:layout_constraintTop_toBottomOf="@id/numpad" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -262,6 +267,7 @@
             android:text="@string/call_action_show_messages"
             android:labelFor="@id/chat"
             android:enabled="@{!viewModel.operationInProgress}"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/pause_call_label"
             app:layout_constraintStart_toEndOf="@id/numpad_label"
             app:layout_constraintTop_toBottomOf="@id/chat" />
@@ -277,8 +283,8 @@
             android:selected="@{viewModel.isPaused}"
             android:text="@{viewModel.isPaused ? @string/call_action_resume_call : @string/call_action_pause_call, default=@string/call_action_pause_call}"
             android:labelFor="@id/pause_call"
-            app:layout_constraintEnd_toStartOf="@id/record_call_label"
-            app:layout_constraintStart_toEndOf="@id/chat_label"
+            app:layout_constraintEnd_toEndOf="@id/pause_call"
+            app:layout_constraintStart_toStartOf="@id/pause_call"
             app:layout_constraintTop_toBottomOf="@id/pause_call" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -291,8 +297,8 @@
             android:paddingBottom="15dp"
             android:text="@string/call_action_record_call"
             android:labelFor="@id/record_call"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/pause_call_label"
+            app:layout_constraintEnd_toEndOf="@id/record_call"
+            app:layout_constraintStart_toStartOf="@id/record_call"
             app:layout_constraintTop_toBottomOf="@id/record_call" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
