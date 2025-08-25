@@ -184,7 +184,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/illu"
+                android:src="@drawable/shape_empty"
                 android:contentDescription="@null"
                 android:visibility="@{viewModel.isEmpty ? View.VISIBLE : View.GONE}"
                 app:layout_constraintDimensionRatio="1:1"

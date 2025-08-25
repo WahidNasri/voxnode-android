@@ -94,7 +94,7 @@
                     android:id="@+id/no_account_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/illu"
+                    android:src="@drawable/shape_empty"
                     android:layout_margin="10dp"
                     android:contentDescription="@null" />
 
