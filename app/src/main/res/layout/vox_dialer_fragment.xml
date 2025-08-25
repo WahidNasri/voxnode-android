@@ -77,7 +77,6 @@
                             android:textColor="?attr/color_main2_900"
                             android:textAlignment="center"
                             android:fontFamily="@font/noto_sans_600"
-                            android:hint="Enter phone number"
                             android:textColorHint="?attr/color_main2_400"
                             android:minHeight="48dp"
                             android:gravity="center"
@@ -115,137 +114,440 @@
                         app:layout_constraintTop_toBottomOf="@+id/number_display_container">
 
                         <!-- Row 1: 1, 2, 3 -->
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_1"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_1_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:text="1"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_2"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_2_container"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="spread">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="1"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_2"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_2_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:text="2\nABC"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_3"
-                            app:layout_constraintStart_toEndOf="@+id/digit_1"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_3_container"
+                            app:layout_constraintStart_toEndOf="@+id/digit_1_container"
+                            app:layout_constraintTop_toTopOf="parent">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_2_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="2"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_2_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="ABC"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_3"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_3_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:text="3\nDEF"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/digit_2"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintStart_toEndOf="@+id/digit_2_container"
+                            app:layout_constraintTop_toTopOf="parent">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_3_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="3"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_3_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="DEF"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
                         <!-- Row 2: 4, 5, 6 -->
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_4"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_4_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="4\nGHI"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_5"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_5_container"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_1" />
+                            app:layout_constraintTop_toBottomOf="@+id/digit_1_container"
+                            app:layout_constraintHorizontal_chainStyle="spread">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_4_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="4"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_4_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="GHI"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_5"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_5_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="5\nJKL"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_6"
-                            app:layout_constraintStart_toEndOf="@+id/digit_4"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_2" />
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_6_container"
+                            app:layout_constraintStart_toEndOf="@+id/digit_4_container"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_2_container">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_5_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="5"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_5_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="JKL"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_6"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_6_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="6\nMNO"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/digit_5"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_3" />
+                            app:layout_constraintStart_toEndOf="@+id/digit_5_container"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_3_container">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_6_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="6"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_6_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="MNO"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
                         <!-- Row 3: 7, 8, 9 -->
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_7"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_7_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="7\nPQRS"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_8"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_8_container"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_4" />
+                            app:layout_constraintTop_toBottomOf="@+id/digit_4_container"
+                            app:layout_constraintHorizontal_chainStyle="spread">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_7_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="7"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_7_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="PQRS"
+                                android:textSize="11sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.05"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_8"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_8_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="8\nTUV"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_9"
-                            app:layout_constraintStart_toEndOf="@+id/digit_7"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_5" />
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_9_container"
+                            app:layout_constraintStart_toEndOf="@+id/digit_7_container"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_5_container">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_8_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="8"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_8_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="TUV"
+                                android:textSize="12sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_9"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_9_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="9\nWXYZ"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/digit_8"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_6" />
+                            app:layout_constraintStart_toEndOf="@+id/digit_8_container"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_6_container">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_9_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="9"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_9_letters"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="WXYZ"
+                                android:textSize="10sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:letterSpacing="0.02"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
                         <!-- Row 4: *, 0, # -->
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_star"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_star_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="*"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_0"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_0_container"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_7" />
+                            app:layout_constraintTop_toBottomOf="@+id/digit_7_container"
+                            app:layout_constraintHorizontal_chainStyle="spread">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_star"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="*"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_0"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_0_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="0\n+"
-                            app:layout_constraintEnd_toStartOf="@+id/digit_hash"
-                            app:layout_constraintStart_toEndOf="@+id/digit_star"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_8" />
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:layout_constraintEnd_toStartOf="@+id/digit_hash_container"
+                            app:layout_constraintStart_toEndOf="@+id/digit_star_container"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_8_container">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_0_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="-8dp"
+                                android:text="0"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                                
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_0_plus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="16dp"
+                                android:text="+"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/noto_sans_500"
+                                android:textColor="?attr/color_main2_600"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/digit_hash"
-                            style="@style/dialer_digit_button_style"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/digit_hash_container"
+                            android:layout_width="72dp"
                             android:layout_height="72dp"
-                            android:layout_marginTop="16dp"
-                            android:text="#"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/shape_round_in_call_pressed_button_background"
+                            android:clickable="true"
+                            android:focusable="true"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/digit_0"
-                            app:layout_constraintTop_toBottomOf="@+id/digit_9" />
+                            app:layout_constraintStart_toEndOf="@+id/digit_0_container"
+                            app:layout_constraintTop_toBottomOf="@+id/digit_9_container">
+                            
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/digit_hash"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="#"
+                                android:textSize="32sp"
+                                android:fontFamily="@font/noto_sans_600"
+                                android:textColor="?attr/color_main2_900"
+                                android:gravity="center"
+                                android:background="@android:color/transparent" />
+                        </FrameLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

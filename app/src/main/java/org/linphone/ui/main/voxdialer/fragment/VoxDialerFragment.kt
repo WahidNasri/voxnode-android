@@ -93,23 +93,23 @@ class VoxDialerFragment : AbstractMainFragment() {
         Log.i("$TAG Setting up dialer click listeners")
         
         // Number digit buttons
-        binding.digit1.setOnClickListener { listViewModel.appendDigit("1") }
-        binding.digit2.setOnClickListener { listViewModel.appendDigit("2") }
-        binding.digit3.setOnClickListener { listViewModel.appendDigit("3") }
-        binding.digit4.setOnClickListener { listViewModel.appendDigit("4") }
-        binding.digit5.setOnClickListener { listViewModel.appendDigit("5") }
-        binding.digit6.setOnClickListener { listViewModel.appendDigit("6") }
-        binding.digit7.setOnClickListener { listViewModel.appendDigit("7") }
-        binding.digit8.setOnClickListener { listViewModel.appendDigit("8") }
-        binding.digit9.setOnClickListener { listViewModel.appendDigit("9") }
-        binding.digit0.setOnClickListener { listViewModel.appendDigit("0") }
+        binding.digit1Container.setOnClickListener { listViewModel.appendDigit("1") }
+        binding.digit2Container.setOnClickListener { listViewModel.appendDigit("2") }
+        binding.digit3Container.setOnClickListener { listViewModel.appendDigit("3") }
+        binding.digit4Container.setOnClickListener { listViewModel.appendDigit("4") }
+        binding.digit5Container.setOnClickListener { listViewModel.appendDigit("5") }
+        binding.digit6Container.setOnClickListener { listViewModel.appendDigit("6") }
+        binding.digit7Container.setOnClickListener { listViewModel.appendDigit("7") }
+        binding.digit8Container.setOnClickListener { listViewModel.appendDigit("8") }
+        binding.digit9Container.setOnClickListener { listViewModel.appendDigit("9") }
+        binding.digit0Container.setOnClickListener { listViewModel.appendDigit("0") }
         
         // Special characters
-        binding.digitStar.setOnClickListener { listViewModel.appendDigit("*") }
-        binding.digitHash.setOnClickListener { listViewModel.appendDigit("#") }
+        binding.digitStarContainer.setOnClickListener { listViewModel.appendDigit("*") }
+        binding.digitHashContainer.setOnClickListener { listViewModel.appendDigit("#") }
         
         // Long press on 0 for + (international prefix)
-        binding.digit0.setOnLongClickListener {
+        binding.digit0Container.setOnLongClickListener {
             val currentText = listViewModel.enteredUri.value.orEmpty()
             if (currentText.isEmpty()) {
                 listViewModel.appendDigit("+")
