@@ -100,7 +100,7 @@ android {
         applicationId = packageName
         minSdk = 28
         targetSdk = 36
-        versionCode = 1 // 6.00.013
+        versionCode = 2
         versionName = "1.0.0"
 
         manifestPlaceholders["appAuthRedirectScheme"] = packageName
@@ -116,7 +116,7 @@ android {
         variant.outputs
             .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
             .forEach { output ->
-                output.outputFileName = "linphone-android-${variant.buildType.name}-${project.version}.apk"
+                output.outputFileName = "voxnode-android-${variant.buildType.name}-${project.version}.apk"
             }
     }
 
