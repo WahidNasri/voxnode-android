@@ -33,6 +33,7 @@ class VoxDialerViewModel
     constructor() : AbstractMainViewModel() {
     companion object {
         private const val TAG = "[VoxDialer ViewModel]"
+        private const val MAX_INPUT_LENGTH = 18
     }
 
     val enteredUri = MutableLiveData<String>()
@@ -86,8 +87,12 @@ class VoxDialerViewModel
     fun appendDigit(digit: String) {
         val current = enteredUri.value ?: ""
         val next = (current + digit)
-        enteredUri.value = next
-        Log.d("$TAG Appended digit [$digit], current URI: [${enteredUri.value}]")
+        if (next.length <= MAX_INPUT_LENGTH) {
+            enteredUri.value = next
+            Log.d("$TAG Appended digit [$digit], current URI: [${enteredUri.value}]")
+        } else {
+            Log.d("$TAG Input too long, ignoring digit [$digit]")
+        }
     }
 
     fun deleteLastDigit() {
@@ -106,6 +111,24 @@ class VoxDialerViewModel
     private fun clearUriFromBackgroundThread() {
         enteredUri.postValue("")
         Log.d("$TAG Cleared URI from background thread")
+    }
+
+    fun pasteNumber() {
+        // This will be called from the fragment when paste is detected
+        // The actual paste logic will be handled in the fragment
+        Log.d("$TAG Paste requested")
+    }
+
+    fun setPastedNumber(number: String) {
+        val cleaned = number.filter { it.isDigit() || it == '+' || it == '*' || it == '#' }
+        if (cleaned.length <= MAX_INPUT_LENGTH) {
+            enteredUri.value = cleaned
+            Log.d("$TAG Pasted number: [$cleaned]")
+        } else {
+            // Truncate to max length
+            enteredUri.value = cleaned.take(MAX_INPUT_LENGTH)
+            Log.d("$TAG Pasted number truncated to: [${enteredUri.value}]")
+        }
     }
 
     fun makeCall() {

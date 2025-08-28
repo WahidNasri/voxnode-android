@@ -19,6 +19,8 @@
  */
 package org.linphone.ui.main.voxdialer.fragment
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -81,6 +83,48 @@ class VoxDialerFragment : AbstractMainFragment() {
         
         setupDialerClickListeners()
         observeEvents()
+        setupPasteHandling()
+    }
+
+    private fun setupPasteHandling() {
+        binding.phoneNumberDisplay.apply {
+            // Enable long press for paste menu
+            isLongClickable = true
+            
+            // Override onTextContextMenuItem to handle paste
+            setOnLongClickListener {
+                // Show paste option in context menu
+                true
+            }
+            
+            // Override the text context menu to handle paste
+            setOnEditorActionListener { _, _, _ ->
+                false
+            }
+        }
+        
+        // Override the text context menu to handle paste
+        binding.phoneNumberDisplay.setOnLongClickListener {
+            showPasteDialog()
+            true
+        }
+    }
+
+    private fun showPasteDialog() {
+        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        if (clipboard.hasPrimaryClip()) {
+            val clipData = clipboard.primaryClip
+            if (clipData != null && clipData.itemCount > 0) {
+                val pastedText = clipData.getItemAt(0).text?.toString() ?: ""
+                if (pastedText.isNotEmpty()) {
+                    // Clean and validate the pasted text
+                    val cleanedText = pastedText.filter { it.isDigit() || it == '+' || it == '*' || it == '#' }
+                    if (cleanedText.isNotEmpty()) {
+                        listViewModel.setPastedNumber(cleanedText)
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {

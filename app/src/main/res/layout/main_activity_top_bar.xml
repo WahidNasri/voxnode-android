@@ -85,6 +85,7 @@
             android:layout_marginEnd="5dp"
             android:src="@drawable/magnifying_glass"
             android:contentDescription="@string/content_description_open_filter"
+            android:visibility="@{viewModel.contactsSelected ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toStartOf="@id/extra_action"
