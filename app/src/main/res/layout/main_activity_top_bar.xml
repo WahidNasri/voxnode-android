@@ -101,7 +101,7 @@
             android:layout_marginEnd="5dp"
             android:src="@{extraActionIcon, default=@drawable/dots_three_vertical}"
             android:contentDescription="@{extraActionContentDescription}"
-            android:visibility="@{!viewModel.searchBarVisible &amp;&amp; enableExtraAction ? View.VISIBLE : View.GONE, default=gone}"
+            android:visibility="@{viewModel.searchBarVisible ? View.GONE : (enableExtraAction ? View.VISIBLE : View.GONE), default=gone}"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"

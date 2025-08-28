@@ -1045,4 +1045,6 @@
     <string name="language_display_french">Français</string>
     <string name="language_display_default">English</string>
 
+    <string name="add_contact">Add contact</string>
+
 </resources>

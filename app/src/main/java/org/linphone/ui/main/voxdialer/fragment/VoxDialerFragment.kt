@@ -28,6 +28,7 @@ import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import org.linphone.R
 import org.linphone.core.tools.Log
 import org.linphone.databinding.VoxDialerFragmentBinding
@@ -181,6 +182,16 @@ class VoxDialerFragment : AbstractMainFragment() {
         // Example: observe call button state
         listViewModel.callButtonEnabled.observe(viewLifecycleOwner) { enabled ->
             Log.d("$TAG Call button enabled: $enabled")
+        }
+
+        listViewModel.addContactEvent.observe(viewLifecycleOwner) { evt ->
+            evt.consume { number ->
+                try {
+                    findNavController().navigate(R.id.newContactFragment)
+                } catch (e: Exception) {
+                    Log.e("[VoxDialerFragment] Failed to navigate to new contact: $e")
+                }
+            }
         }
     }
 

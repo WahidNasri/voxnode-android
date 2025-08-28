@@ -26,6 +26,7 @@ import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.tools.Log
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
 import org.linphone.ui.main.voxdialer.viewmodel.VoxDialerViewModel.CountryData.COUNTRY_CALLING_CODE_TO_ISO
+import org.linphone.utils.Event
 import org.linphone.utils.LinphoneUtils
 
 @UiThread
@@ -44,6 +45,9 @@ class VoxDialerViewModel
     val isFlagVisible = MediatorLiveData<Boolean>()
     val callButtonEnabled = MutableLiveData<Boolean>()
     val deleteButtonEnabled = MutableLiveData<Boolean>()
+    val addContactEvent: MutableLiveData<Event<String>> by lazy {
+        MutableLiveData<Event<String>>()
+    }
 
     init {
         Log.i("$TAG Initialized")
@@ -156,6 +160,13 @@ class VoxDialerViewModel
     fun longPressDelete() {
         clearUri()
         Log.d("$TAG Long press delete - cleared all")
+    }
+
+    fun onExtraActionClicked() {
+        val number = (enteredUri.value ?: "").replace(" ", "")
+        if (number.isNotEmpty()) {
+            addContactEvent.value = Event(number)
+        }
     }
 
     private fun normalizeInput(input: String): String {
