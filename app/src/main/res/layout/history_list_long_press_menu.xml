@@ -61,7 +61,7 @@
             android:onClick="@{copyNumberClickListener}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/menu_copy_sip_address"
+            android:text="@string/copy"
             style="@style/context_menu_action_label_style"
             android:background="@drawable/menu_item_background"
             android:layout_marginBottom="1dp"

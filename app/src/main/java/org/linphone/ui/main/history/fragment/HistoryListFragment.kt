@@ -277,11 +277,25 @@ class HistoryListFragment : AbstractMainFragment() {
 
     private fun copyNumberOrAddressToClipboard(value: String) {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val label = "SIP address"
-        clipboard.setPrimaryClip(ClipData.newPlainText(label, value))
+        val label = "Phone number"
+        
+        // Extract only the number between "sip:" and "@" from the SIP address
+        val numberToCopy = if (value.startsWith("sip:")) {
+            val startIndex = 4 // Length of "sip:"
+            val endIndex = value.indexOf("@")
+            if (endIndex > startIndex) {
+                value.substring(startIndex, endIndex)
+            } else {
+                value.substring(startIndex) // If no "@" found, take everything after "sip:"
+            }
+        } else {
+            value // If it doesn't start with "sip:", use the original value
+        }
+        
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, numberToCopy))
 
         (requireActivity() as GenericActivity).showGreenToast(
-            getString(R.string.sip_address_copied_to_clipboard_toast),
+            getString(R.string.phone_number_copied_to_clipboard_toast),
             R.drawable.check
         )
     }

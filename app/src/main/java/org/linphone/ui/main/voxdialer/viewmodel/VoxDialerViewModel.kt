@@ -51,8 +51,9 @@ class VoxDialerViewModel
 
     init {
         Log.i("$TAG Initialized")
-        title.value = "Dialer"
+        title.value = ""
         searchBarVisible.value = false
+        contactsSelected.value = false
         
         enteredUri.value = ""
         callButtonEnabled.value = false
