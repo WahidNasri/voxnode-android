@@ -92,6 +92,12 @@ class VoxSettingsFragment : AbstractMainFragment() {
         // Add any specific observers for VoxSettings functionality here
         Log.i("$TAG Setting up observers for VoxSettings")
         
+        // Set up caller ID card click listener
+        binding.callerIdCard.setOnClickListener {
+            Log.i("$TAG Caller ID card clicked")
+            listViewModel.onCallerIdCardClicked()
+        }
+        
         // Set up language card click listener
         binding.languageSection.setOnClickListener {
             Log.i("$TAG Language card clicked")
@@ -110,6 +116,22 @@ class VoxSettingsFragment : AbstractMainFragment() {
                     }
                 )
                 bottomSheet.show(parentFragmentManager, "LanguageSelectionBottomSheet")
+            }
+        }
+        
+        // Observe caller ID bottom sheet event
+        listViewModel.showCallerIdBottomSheetEvent.observe(viewLifecycleOwner) { event ->
+            event.consume { (callerIds, currentCallerId) ->
+                Log.i("$TAG Showing caller ID selection bottom sheet")
+                val bottomSheet = CallerIdSelectionBottomSheet.newInstance(
+                    callerIds = callerIds,
+                    currentCallerId = currentCallerId,
+                    onCallerIdSelected = { selectedCallerId ->
+                        Log.i("$TAG Caller ID selected: ${selectedCallerId.callerID}")
+                        listViewModel.chooseCallerId(selectedCallerId)
+                    }
+                )
+                bottomSheet.show(parentFragmentManager, "CallerIdSelectionBottomSheet")
             }
         }
         

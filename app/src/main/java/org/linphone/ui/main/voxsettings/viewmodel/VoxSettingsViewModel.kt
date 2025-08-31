@@ -45,6 +45,10 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     val isLoggedIn = MutableLiveData<Boolean>()
     val isCallerIdLoading = MutableLiveData<Boolean>()
     
+    // Caller ID data
+    private var allCallerIds: List<org.voxnode.voxnode.models.CallerId> = emptyList()
+    private var currentCallerId: org.voxnode.voxnode.models.CallerId? = null
+    
     // Language settings
     val currentLanguage = MutableLiveData<String>()
     val currentLanguageDisplayName = MutableLiveData<String>()
@@ -53,6 +57,12 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     // Navigation events
     val navigateToPermissionsEvent: MutableLiveData<Event<Boolean>> by lazy {
         MutableLiveData<Event<Boolean>>()
+    }
+    
+    // Caller ID events
+    val showCallerIdBottomSheetEvent:
+        MutableLiveData<Event<Pair<List<org.voxnode.voxnode.models.CallerId>, org.voxnode.voxnode.models.CallerId?>>> by lazy {
+        MutableLiveData<Event<Pair<List<org.voxnode.voxnode.models.CallerId>, org.voxnode.voxnode.models.CallerId?>>>()
     }
     
     private val voxnodeRepository = VoxnodeRepository()
@@ -127,14 +137,17 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
             onSuccess = { callerIds ->
                 Log.i("$TAG Successfully fetched ${callerIds.size} caller IDs")
                 
+                // Store all caller IDs
+                allCallerIds = callerIds
+                
                 // Find the current/selected caller ID
-                val currentCallerId = callerIds.find { it.isSelected }
+                currentCallerId = callerIds.find { it.isSelected }
                 
                 coreContext.postOnMainThread {
                     isCallerIdLoading.value = false
                     if (currentCallerId != null) {
-                        callerIdNumber.value = currentCallerId.callerID ?: "Not available"
-                        Log.i("$TAG Current caller ID: ${currentCallerId.callerID}")
+                        callerIdNumber.value = currentCallerId?.callerID ?: "Not available"
+                        Log.i("$TAG Current caller ID: ${currentCallerId?.callerID}")
                     } else {
                         // If no current caller ID is selected, show the first one or fallback
                         val firstCallerId = callerIds.firstOrNull()
@@ -214,6 +227,63 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     fun openPermissions() {
         Log.i("$TAG Opening permissions fragment")
         navigateToPermissionsEvent.value = Event(true)
+    }
+
+    @UiThread
+    fun onCallerIdCardClicked() {
+        Log.i("$TAG Caller ID card clicked, showing bottom sheet")
+        if (allCallerIds.isNotEmpty()) {
+            showCallerIdBottomSheetEvent.value = Event(Pair(allCallerIds, currentCallerId))
+        } else {
+            Log.w("$TAG No caller IDs available to show")
+            showFormattedRedToast("No caller IDs available", org.linphone.R.drawable.warning_circle)
+        }
+    }
+
+    @UiThread
+    fun chooseCallerId(callerId: org.voxnode.voxnode.models.CallerId) {
+        Log.i("$TAG Choosing caller ID: ${callerId.callerID}")
+        
+        val loginResult = VoxNodeDataManager.getLoginResult()
+        val clientId = loginResult?.clientId
+        val clientKey = loginResult?.clientKey
+        
+        if (clientId == null || clientKey == null) {
+            Log.e("$TAG Missing client ID or client key for caller ID selection")
+            showFormattedRedToast("Failed to update caller ID: Missing credentials", org.linphone.R.drawable.warning_circle)
+            return
+        }
+        
+        isCallerIdLoading.value = true
+        
+        voxnodeRepository.chooseCallerId(
+            clientId = clientId,
+            callerIDId = callerId.callerIDId,
+            clientKey = clientKey,
+            onSuccess = { response ->
+                Log.i("$TAG Successfully chose caller ID: ${callerId.callerID}")
+                
+                coreContext.postOnMainThread {
+                    isCallerIdLoading.value = false
+                    currentCallerId = callerId
+                    callerIdNumber.value = callerId.callerID ?: "Not available"
+                    
+                    // Update the isSelected status in the list
+                    allCallerIds.forEach { it.isCurrentCallerID = 0 }
+                    callerId.isCurrentCallerID = 1
+                    
+                    showFormattedGreenToast("Caller ID updated successfully", org.linphone.R.drawable.check)
+                }
+            },
+            onError = { error ->
+                Log.e("$TAG Failed to choose caller ID: $error")
+                
+                coreContext.postOnMainThread {
+                    isCallerIdLoading.value = false
+                    showFormattedRedToast("Failed to update caller ID: $error", org.linphone.R.drawable.warning_circle)
+                }
+            }
+        )
     }
 
     @UiThread
