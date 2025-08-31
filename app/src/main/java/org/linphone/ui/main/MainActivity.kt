@@ -257,6 +257,9 @@ class MainActivity : GenericActivity() {
 
         viewModel.lastAccountRemovedEvent.observe(this) {
             it.consume {
+                // When no account is configured, navigate to dialer fragment instead of assistant
+                Log.i("$TAG No account configured, navigating to dialer fragment")
+                navigateToDialerFragment()
                 startActivity(Intent(this, AssistantActivity::class.java))
             }
         }
@@ -522,6 +525,26 @@ class MainActivity : GenericActivity() {
         coreContext.contactsManager.loadContacts(this)
     }
 
+    private fun navigateToDialerFragment() {
+        try {
+            Log.i("$TAG Navigating to dialer fragment")
+            val navOptionsBuilder = NavOptions.Builder()
+            navOptionsBuilder.setPopUpTo(R.id.voxDialerFragment, true)
+            navOptionsBuilder.setLaunchSingleTop(true)
+            val navOptions = navOptionsBuilder.build()
+            val args = bundleOf()
+            
+            findNavController().addOnDestinationChangedListener(destinationListener)
+            findNavController().navigate(
+                R.id.voxDialerFragment,
+                args,
+                navOptions
+            )
+        } catch (ise: IllegalStateException) {
+            Log.e("$TAG Can't navigate to dialer fragment: $ise")
+        }
+    }
+
     private fun goToLatestVisitedFragment() {
         try {
             // Prevent navigating to default fragment upon rotation (we only want to do it on first start)
@@ -665,12 +688,12 @@ class MainActivity : GenericActivity() {
                     }
                 }
             } else if (core.accountList.isEmpty()) {
-                Log.w("$TAG No account found, showing Assistant activity")
+                Log.w("$TAG No account found, navigating to dialer fragment")
                 coreContext.postOnMainThread {
                     try {
-                        startActivity(Intent(this, AssistantActivity::class.java))
+                        navigateToDialerFragment()
                     } catch (ise: IllegalStateException) {
-                        Log.e("$TAG Can't start activity: $ise")
+                        Log.e("$TAG Can't navigate to dialer fragment: $ise")
                     }
                 }
             } else {
