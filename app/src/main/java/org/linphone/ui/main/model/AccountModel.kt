@@ -41,6 +41,7 @@ import org.linphone.core.SecurityLevel
 import org.linphone.core.tools.Log
 import org.linphone.utils.AppUtils
 import org.linphone.utils.LinphoneUtils
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 class AccountModel
     @WorkerThread
@@ -51,6 +52,8 @@ class AccountModel
     companion object {
         private const val TAG = "[Account Model]"
     }
+
+    private var providerLogoSet = false
 
     val displayName = MutableLiveData<String>()
 
@@ -195,12 +198,51 @@ class AccountModel
         val name = LinphoneUtils.getDisplayName(account.params.identityAddress)
         displayName.postValue(name)
 
-        initials.postValue(AppUtils.getInitials(name))
+        // Check if we have a provider logo before setting initials
+        val voxNodeLoginResult = VoxNodeDataManager.getLoginResult()
+        val providerLogoUrl = voxNodeLoginResult?.providerLogo
+        
+        if (!providerLogoSet && providerLogoUrl.isNullOrEmpty()) {
+            // Only set initials if we don't have a provider logo
+            initials.postValue(AppUtils.getInitials(name))
+            Log.d("$TAG Setting initials: ${AppUtils.getInitials(name)}")
+        } else {
+            // Clear initials when we have a provider logo
+            initials.postValue("")
+            Log.d("$TAG Clearing initials because provider logo is available")
+        }
 
-        val pictureUri = account.params.pictureUri.orEmpty()
-        if (pictureUri != picturePath.value.orEmpty()) {
-            picturePath.postValue(pictureUri)
-            Log.d("$TAG Account picture URI is [$pictureUri]")
+        // Check if we already have a provider logo set (from VoxNode)
+        val currentPicturePath = picturePath.value.orEmpty()
+        
+        // Only update picture if we don't already have a provider logo set
+        if (!providerLogoSet && (currentPicturePath.isEmpty())) {
+            if (!providerLogoUrl.isNullOrEmpty()) {
+                try {
+                    picturePath.postValue(providerLogoUrl)
+                    providerLogoSet = true
+                    // Clear initials when provider logo is set
+                    initials.postValue("")
+                    Log.d("$TAG Using provider logo from VoxNode: [$providerLogoUrl] and cleared initials")
+                } catch (e: Exception) {
+                    Log.w("$TAG Failed to load provider logo, falling back to account picture: ${e.message}")
+                    // Fall back to account picture
+                    val pictureUri = account.params.pictureUri.orEmpty()
+                    if (pictureUri != picturePath.value.orEmpty()) {
+                        picturePath.postValue(pictureUri)
+                        Log.d("$TAG Account picture URI is [$pictureUri]")
+                    }
+                }
+            } else {
+                // No provider logo available, use account picture
+                val pictureUri = account.params.pictureUri.orEmpty()
+                if (pictureUri != picturePath.value.orEmpty()) {
+                    picturePath.postValue(pictureUri)
+                    Log.d("$TAG Account picture URI is [$pictureUri]")
+                }
+            }
+        } else {
+            Log.d("$TAG Provider logo already set (flag: $providerLogoSet), keeping current picture: [$currentPicturePath]")
         }
 
         isDefault.postValue(coreContext.core.defaultAccount == account)
@@ -256,6 +298,36 @@ class AccountModel
     @WorkerThread
     fun computeNotificationsCount() {
         notificationsCount.postValue(account.unreadChatMessageCount + account.missedCallsCount)
+    }
+
+    /**
+     * Refreshes the avatar with the latest VoxNode provider logo
+     */
+    @UiThread
+    fun refreshAvatarWithProviderLogo() {
+        Log.d("$TAG AccountModel.refreshAvatarWithProviderLogo() called")
+        coreContext.postOnCoreThread {
+            try {
+                Log.d("$TAG Checking VoxNode login result...")
+                val voxNodeLoginResult = VoxNodeDataManager.getLoginResult()
+                val providerLogoUrl = voxNodeLoginResult?.providerLogo
+                
+                Log.d("$TAG VoxNode login result: ${voxNodeLoginResult != null}, provider logo: $providerLogoUrl")
+                
+                if (!providerLogoUrl.isNullOrEmpty()) {
+                    picturePath.postValue(providerLogoUrl)
+                    providerLogoSet = true
+                    // Clear initials when provider logo is set
+                    initials.postValue("")
+                    Log.d("$TAG Refreshed avatar with provider logo: [$providerLogoUrl] and cleared initials")
+                } else {
+                    Log.d("$TAG No provider logo available, keeping current avatar")
+                }
+            } catch (e: Exception) {
+                Log.w("$TAG Failed to refresh avatar with provider logo: ${e.message}")
+                // Keep current avatar on error
+            }
+        }
     }
 }
 

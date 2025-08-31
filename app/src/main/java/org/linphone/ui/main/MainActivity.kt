@@ -76,6 +76,7 @@ import org.linphone.utils.DialogUtils
 import org.linphone.utils.Event
 import org.linphone.utils.FileUtils
 import org.linphone.utils.LinphoneUtils
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 import androidx.core.content.edit
 
 @UiThread
@@ -193,6 +194,9 @@ class MainActivity : GenericActivity() {
         sharedViewModel = run {
             ViewModelProvider(this)[SharedMainViewModel::class.java]
         }
+
+        // Refresh avatar with VoxNode provider logo if available
+        refreshAvatarWithProviderLogo()
 
         // Disable drawer swipe gestures in release builds
         if (!BuildConfig.DEBUG) {
@@ -473,6 +477,33 @@ class MainActivity : GenericActivity() {
             return
         }
         binding.drawerMenu.closeDrawer(binding.drawerMenuContent, true)
+    }
+
+    /**
+     * Refreshes the avatar with VoxNode provider logo if available
+     */
+    fun refreshAvatarWithProviderLogo() {
+        Log.d("$TAG MainActivity.refreshAvatarWithProviderLogo() called")
+        try {
+            // Check if VoxNode data is available
+            Log.d("$TAG Checking if user is logged in to VoxNode...")
+            if (VoxNodeDataManager.isUserLoggedIn()) {
+                Log.d("$TAG User is logged in to VoxNode")
+                val loginResult = VoxNodeDataManager.getLoginResult()
+                Log.d("$TAG Login result: ${loginResult != null}, provider logo: ${loginResult?.providerLogo}")
+                if (!loginResult?.providerLogo.isNullOrEmpty()) {
+                    Log.i("$TAG Refreshing avatar with VoxNode provider logo")
+                    viewModel.refreshAvatarWithProviderLogo()
+                } else {
+                    Log.d("$TAG No VoxNode provider logo available")
+                }
+            } else {
+                Log.d("$TAG User not logged in to VoxNode")
+            }
+        } catch (e: Exception) {
+            Log.w("$TAG Failed to refresh avatar with VoxNode provider logo: ${e.message}")
+            // Continue with default avatar on error
+        }
     }
 
     private fun openDrawerMenu() {

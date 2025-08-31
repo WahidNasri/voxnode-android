@@ -63,6 +63,7 @@ coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil" }
 coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
 coil-video = { group = "io.coil-kt.coil3", name = "coil-video", version.ref = "coil" }
+coil-http = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 dots-indicator = { group = "com.tbuonomo", name = "dotsindicator", version.ref = "dotsIndicator" }
 photoview = { group = "com.github.chrisbanes", name = "PhotoView", version.ref = "photoview" }
 openid-appauth = { group = "net.openid", name = "appauth", version.ref = "openidAppauth" }

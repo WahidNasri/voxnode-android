@@ -245,6 +245,7 @@ dependencies {
     implementation(libs.coil.gif)
     implementation(libs.coil.svg)
     implementation(libs.coil.video)
+    implementation(libs.coil.http)
     // https://github.com/tommybuonomo/dotsindicator/blob/master/LICENSE Apache v2.0
     implementation(libs.dots.indicator)
     // https://github.com/Baseflow/PhotoView/blob/master/LICENSE Apache v2.0

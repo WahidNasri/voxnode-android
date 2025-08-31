@@ -12,6 +12,10 @@ class LoginResult {
     @Expose
     var message: String? = null
 
+    @SerializedName("language")
+    @Expose
+    var language: String? = null
+
     @SerializedName("clientId")
     @Expose
     var clientId: Int? = null
@@ -40,6 +44,10 @@ class LoginResult {
     @Expose
     var clientOutboundEnabled: Int? = null
 
+    @SerializedName("clientRecordingEnabled")
+    @Expose
+    var clientRecordingEnabled: Int? = null
+
     @SerializedName("clientBalance")
     @Expose
     var clientBalance: Double? = null
@@ -52,6 +60,38 @@ class LoginResult {
     @SerializedName("clientSipPassword")
     @Expose
     var clientSipPassword: String? = null
+
+    @SerializedName("providerId")
+    @Expose
+    var providerId: Int? = null
+
+    @SerializedName("providerName")
+    @Expose
+    var providerName: String? = null
+
+    @SerializedName("providerSite")
+    @Expose
+    var providerSite: String? = null
+
+    @SerializedName("providerPhone")
+    @Expose
+    var providerPhone: String? = null
+
+    @SerializedName("providerEmail")
+    @Expose
+    var providerEmail: String? = null
+
+    @SerializedName("providerLogo")
+    @Expose
+    var providerLogo: String? = null
+
+    @SerializedName("providerColor1")
+    @Expose
+    var providerColor1: String? = null
+
+    @SerializedName("providerColor2")
+    @Expose
+    var providerColor2: String? = null
 
     @SerializedName("urlRecharge")
     @Expose

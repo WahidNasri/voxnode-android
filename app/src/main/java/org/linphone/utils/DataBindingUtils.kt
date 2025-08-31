@@ -481,7 +481,7 @@ private fun loadContactPictureWithCoil(
             imageView.load(image) {
                 transformations(CircleCropTransformation())
                 listener(
-                    onError = { _, _ ->
+                    onError = { req, res ->
                         imageView.load(getErrorImageLoader(context, model, size, textSize))
                     }
                 )

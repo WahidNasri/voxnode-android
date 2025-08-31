@@ -211,6 +211,25 @@ open class AbstractMainViewModel
         isFilterEmpty.value = true
         // Only show drawer menu in debug builds
         isDrawerMenuVisible.value = BuildConfig.DEBUG
+        
+        // Observe account changes to automatically refresh avatar when account becomes available
+        account.observeForever { accountModel ->
+            if (accountModel != null) {
+                Log.d("$TAG Account became available, checking if VoxNode avatar refresh is needed")
+                // Check if we need to refresh with VoxNode provider logo
+                try {
+                    val voxNodeLoginResult = org.voxnode.voxnode.storage.VoxNodeDataManager.getLoginResult()
+                    if (!voxNodeLoginResult?.providerLogo.isNullOrEmpty()) {
+                        Log.d("$TAG VoxNode provider logo available, refreshing avatar")
+                        accountModel.refreshAvatarWithProviderLogo()
+                    } else {
+                        Log.d("$TAG No VoxNode provider logo available")
+                    }
+                } catch (e: Exception) {
+                    Log.w("$TAG Error checking VoxNode data: ${e.message}")
+                }
+            }
+        }
     }
 
     @UiThread
@@ -363,6 +382,39 @@ open class AbstractMainViewModel
         )
         val hideGroupCall = corePreferences.disableMeetings || !conferencingAvailable
         hideMeetings.postValue(hideGroupCall)
+    }
+
+    /**
+     * Refreshes the avatar with the latest VoxNode provider logo
+     */
+    @UiThread
+    fun refreshAvatarWithProviderLogo() {
+        Log.d("$TAG refreshAvatarWithProviderLogo() called")
+        if (account.value != null) {
+            Log.d("$TAG Account is available, refreshing avatar")
+            account.value?.refreshAvatarWithProviderLogo()
+        } else {
+            Log.w("$TAG Account is null, scheduling avatar refresh for later")
+            // Schedule the refresh to happen when account becomes available
+            scheduleAvatarRefreshWhenAccountAvailable()
+        }
+    }
+
+    /**
+     * Schedules avatar refresh to happen when account becomes available
+     */
+    private fun scheduleAvatarRefreshWhenAccountAvailable() {
+        // Post the refresh call to happen after the current execution cycle
+        // This ensures the account has time to be set up
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            Log.d("$TAG Attempting delayed avatar refresh")
+            if (account.value != null) {
+                Log.d("$TAG Account is now available, refreshing avatar")
+                account.value?.refreshAvatarWithProviderLogo()
+            } else {
+                Log.w("$TAG Account is still null after delay, cannot refresh avatar")
+            }
+        }, 1000) // 1 second delay
     }
 
     @WorkerThread

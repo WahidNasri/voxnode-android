@@ -24,7 +24,6 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.linphone.BuildConfig
@@ -51,7 +50,7 @@ import org.linphone.utils.LinphoneUtils
 
 class MainViewModel
     @UiThread
-    constructor() : ViewModel() {
+    constructor() : AbstractMainViewModel() {
     companion object {
         private const val TAG = "[Main ViewModel]"
 
@@ -66,8 +65,6 @@ class MainViewModel
     }
 
     val showAlert = MutableLiveData<Boolean>()
-
-    val isDrawerMenuVisible = MutableLiveData<Boolean>()
 
     val maxAlertLevel = MutableLiveData<Int>()
 
