@@ -30,7 +30,7 @@
                     layout="@layout/main_activity_top_bar"
                     bind:viewModel="@{viewModel}"
                     bind:enableExtraAction="@{viewModel.deleteButtonEnabled}"
-                    bind:extraActionIcon="@{@drawable/inset_user_circle}"
+                    bind:extraActionIcon="@{@drawable/ic_add_icon}"
                     bind:extraActionContentDescription="@{@string/add_contact}"
                     bind:extraActionClickListener="@{() -> viewModel.onExtraActionClicked()}"
                     android:layout_width="0dp"

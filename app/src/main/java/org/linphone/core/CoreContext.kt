@@ -849,6 +849,9 @@ class CoreContext
     ) {
         if (!core.isNetworkReachable) {
             Log.e("$TAG Network unreachable, abort outgoing call")
+            showFormattedRedToastEvent.postValue(
+                Event(Pair(context.getString(org.linphone.R.string.dialer_no_internet_connection), org.linphone.R.drawable.warning_circle))
+            )
             return
         }
 
