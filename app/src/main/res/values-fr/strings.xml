@@ -145,7 +145,7 @@
     <!-- Main navigation items -->
     <string name="bottom_navigation_contacts_label">Contacts</string>
     <string name="bottom_navigation_calls_label">Appels</string>
-    <string name="bottom_navigation_conversations_label">Conversations</string>
+    <string name="bottom_navigation_conversations_label">SMS</string>
     <string name="bottom_navigation_meetings_label">Réunions</string>
     <string name="bottom_navigation_voxsettings_label">Paramètres</string>
     <string name="bottom_navigation_history_recordings_label">Historique</string>
@@ -465,7 +465,7 @@
     <string name="contact_device_without_name">Appareil sans nom</string>
 
     <!-- Chat -->
-    <string name="conversations_list_empty">Aucune conversation liée à ce compte pour le moment…</string>
+    <string name="conversations_list_empty">Aucun SMS trouvé…</string>
     <string name="conversations_list_is_being_removed_label">En cours de suppression…</string>
     <string name="conversations_last_message_format">%s :</string>
     <plurals name="conversations_files_waiting_to_be_shared_toast" tools:ignore="MissingQuantity">

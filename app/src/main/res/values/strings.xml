@@ -188,7 +188,7 @@
     <!-- Main navigation items -->
     <string name="bottom_navigation_contacts_label">Contacts</string>
     <string name="bottom_navigation_calls_label">Calls</string>
-    <string name="bottom_navigation_conversations_label">Conversations</string>
+    <string name="bottom_navigation_conversations_label">SMS</string>
     <string name="bottom_navigation_meetings_label">Meetings</string>
     <string name="bottom_navigation_voxsettings_label">Settings</string>
     <string name="bottom_navigation_history_recordings_label">History</string>
@@ -509,7 +509,7 @@
     <string name="contact_device_without_name">Unnamed device</string>
 
     <!-- Chat -->
-    <string name="conversations_list_empty">No conversation related to this account for the moment…</string>
+    <string name="conversations_list_empty">No SMS found…</string>
     <string name="conversations_list_is_being_removed_label">Removal in progress…</string>
     <string name="conversations_last_message_format">%s:</string>
     <plurals name="conversations_files_waiting_to_be_shared_toast">
