@@ -73,7 +73,6 @@ class VoxDialerFragment : AbstractMainFragment() {
         observeToastEvents(listViewModel)
         
         // AbstractMainFragment related - set up the title and initialize main fragment components
-        listViewModel.title.value = getString(R.string.bottom_navigation_dialer_label)
         setViewModel(listViewModel)
         initViews(
             binding.slidingPaneLayout,

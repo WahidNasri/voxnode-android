@@ -964,6 +964,7 @@
     <string name="vox_settings_language">Langue</string>
     <string name="vox_settings_language_english">Français</string>
     <string name="vox_settings_logout">Déconnexion</string>
+    <string name="vox_settings_permissions">Permissions</string>
     <string name="vox_settings_not_logged_in">Veuillez vous connecter via l\'assistant pour afficher vos paramètres VoxNode.</string>
 
     <!-- Language Selection -->

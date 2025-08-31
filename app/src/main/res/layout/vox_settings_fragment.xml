@@ -209,6 +209,48 @@
                                 android:background="@color/browser_actions_bg_grey" />
 
                             <LinearLayout
+                                android:id="@+id/permissions_section"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:onClick="@{() -> viewModel.openPermissions()}"
+                                android:orientation="vertical"
+                                android:padding="10dp"
+                                android:visibility="@{viewModel.isLoggedIn ? View.VISIBLE : View.GONE}">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/permissions_label"
+                                    style="@style/default_text_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/vox_settings_permissions"
+                                    android:textColor="#3FCEFF"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/permissions_value"
+                                    style="@style/default_text_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/assistant_permissions_subtitle"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/permissions_label" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/browser_actions_bg_grey" />
+
+                            <LinearLayout
                                 android:id="@+id/logout_button"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

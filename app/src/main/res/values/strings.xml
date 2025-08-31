@@ -1030,6 +1030,7 @@
     <string name="vox_settings_language">Language</string>
     <string name="vox_settings_language_english">English</string>
     <string name="vox_settings_logout">Logout</string>
+    <string name="vox_settings_permissions">Permissions</string>
     <string name="vox_settings_not_logged_in">Please log in through the assistant to view your VoxNode settings.</string>
 
     <!-- Language Selection -->

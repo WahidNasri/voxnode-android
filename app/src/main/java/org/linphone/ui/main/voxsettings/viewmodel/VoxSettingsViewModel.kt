@@ -50,6 +50,11 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     val currentLanguageDisplayName = MutableLiveData<String>()
     val showLanguageBottomSheetEvent = MutableLiveData<Event<String>>()
     
+    // Navigation events
+    val navigateToPermissionsEvent: MutableLiveData<Event<Boolean>> by lazy {
+        MutableLiveData<Event<Boolean>>()
+    }
+    
     private val voxnodeRepository = VoxnodeRepository()
 
     init {
@@ -203,6 +208,12 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     fun onLanguageCardClicked() {
         Log.i("$TAG Language card clicked, showing bottom sheet")
         showLanguageBottomSheetEvent.value = Event(currentLanguage.value ?: "en")
+    }
+
+    @UiThread
+    fun openPermissions() {
+        Log.i("$TAG Opening permissions fragment")
+        navigateToPermissionsEvent.value = Event(true)
     }
 
     @UiThread

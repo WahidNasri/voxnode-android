@@ -112,6 +112,19 @@ class VoxSettingsFragment : AbstractMainFragment() {
                 bottomSheet.show(parentFragmentManager, "LanguageSelectionBottomSheet")
             }
         }
+        
+        // Observe permissions navigation event
+        listViewModel.navigateToPermissionsEvent.observe(viewLifecycleOwner) { event ->
+            event.consume {
+                Log.i("$TAG Navigating to permissions fragment")
+                // Use the activity's navigation controller
+                try {
+                    (requireActivity() as? org.linphone.ui.main.MainActivity)?.findNavController()?.navigate(R.id.action_voxSettingsFragment_to_permissionsFragment)
+                } catch (e: Exception) {
+                    Log.e("$TAG Failed to navigate to permissions: ${e.message}")
+                }
+            }
+        }
     }
 
     override fun onDefaultAccountChanged() {

@@ -54,7 +54,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="50dp"
                     android:letterSpacing="0.1"
-                    android:text="VoIP PHONE"
+                    android:text="VoIP Phone"
                     android:textColor="#2196F3"
                     android:textSize="20sp"
                     android:textStyle="bold"
