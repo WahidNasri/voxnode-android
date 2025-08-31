@@ -62,24 +62,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:tint="@color/bc_white"/>
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progress"
+        <SeekBar
+            android:id="@+id/seek_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:max="@{viewModel.recordingModel.duration, default=100}"
-            android:progress="@{viewModel.position, default=75}"
-            app:trackCornerRadius="5dp"
-            app:trackThickness="10dp"
-            app:trackColor="?attr/color_main1_100"
-            app:indicatorColor="?attr/color_main1_500"
-            app:trackStopIndicatorSize="0dp"
-            app:indicatorTrackGapSize="0dp"
+            android:progress="@{viewModel.position, default=0}"
+            android:progressTint="?attr/color_main1_500"
+            android:thumbTint="?attr/color_main1_500"
+            android:progressBackgroundTint="?attr/color_main1_100"
             app:layout_constraintTop_toTopOf="@id/play_pause_audio_playback"
             app:layout_constraintBottom_toBottomOf="@id/play_pause_audio_playback"
             app:layout_constraintStart_toEndOf="@id/play_pause_audio_playback"
-            app:layout_constraintEnd_toStartOf="@id/duration"/>
+            app:layout_constraintEnd_toStartOf="@id/current_time"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/default_text_style_700"
+            android:id="@+id/current_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@{viewModel.formattedCurrentPosition, default=`00:00`}"
+            android:textSize="13sp"
+            android:textColor="@color/bc_white"
+            app:layout_constraintTop_toTopOf="@id/play_pause_audio_playback"
+            app:layout_constraintBottom_toBottomOf="@id/play_pause_audio_playback"
+            app:layout_constraintEnd_toStartOf="@id/duration" />
 
         <androidx.appcompat.widget.AppCompatTextView
             style="@style/default_text_style_700"

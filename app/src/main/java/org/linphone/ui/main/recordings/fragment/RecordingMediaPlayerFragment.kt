@@ -83,6 +83,22 @@ class RecordingMediaPlayerFragment : GenericMainFragment() {
             exportFile(viewModel.recordingModel.filePath)
         }
 
+        binding.seekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    viewModel.seekTo(progress)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {
+                viewModel.setUserSeeking(true)
+            }
+
+            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {
+                viewModel.setUserSeeking(false)
+            }
+        })
+
         val model = sharedViewModel.playingRecording
         if (model != null) {
             Log.i("$TAG Loading recording [${model.fileName}] from shared view model")

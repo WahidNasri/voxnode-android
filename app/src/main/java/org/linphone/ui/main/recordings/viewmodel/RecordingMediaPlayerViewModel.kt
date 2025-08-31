@@ -57,9 +57,12 @@ class RecordingMediaPlayerViewModel
 
     val position = MutableLiveData<Int>()
 
+    val formattedCurrentPosition = MutableLiveData<String>()
+
     val isUsingSmffFileFormat = MutableLiveData<Boolean>()
 
     private var audioFocusRequest: AudioFocusRequestCompat? = null
+    private var isUserSeeking = false
 
     private val playerListener = PlayerListener {
         Log.i("$TAG End of file reached")
@@ -73,6 +76,7 @@ class RecordingMediaPlayerViewModel
         isVideo.value = false
         isPlaying.value = false
         position.value = 0
+        formattedCurrentPosition.value = "00:00"
     }
 
     override fun onCleared() {
@@ -162,6 +166,23 @@ class RecordingMediaPlayerViewModel
         }
     }
 
+    @UiThread
+    fun seekTo(position: Int) {
+        coreContext.postOnCoreThread {
+            if (::player.isInitialized) {
+                Log.i("$TAG Seeking to position $position")
+                player.seek(position)
+                this.position.postValue(position)
+                formattedCurrentPosition.postValue(formatTime(position))
+            }
+        }
+    }
+
+    @UiThread
+    fun setUserSeeking(seeking: Boolean) {
+        isUserSeeking = seeking
+    }
+
     @WorkerThread
     private fun startPlayback() {
         if (!::player.isInitialized) return
@@ -192,8 +213,10 @@ class RecordingMediaPlayerViewModel
             withContext(Dispatchers.IO) {
                 for (tick in tickerChannel) {
                     coreContext.postOnCoreThread {
-                        if (player.state == Player.State.Playing) {
-                            position.postValue(player.currentPosition)
+                        if (player.state == Player.State.Playing && !isUserSeeking) {
+                            val currentPos = player.currentPosition
+                            position.postValue(currentPos)
+                            formattedCurrentPosition.postValue(formatTime(currentPos))
                         }
                     }
                 }
@@ -226,7 +249,14 @@ class RecordingMediaPlayerViewModel
         Log.i("$TAG Stopping player")
         pausePlayback()
         position.postValue(0)
+        formattedCurrentPosition.postValue("00:00")
         player.seek(0)
         player.close()
+    }
+
+    private fun formatTime(seconds: Int): String {
+        val minutes = seconds / 60
+        val remainingSeconds = seconds % 60
+        return String.format("%02d:%02d", minutes, remainingSeconds)
     }
 }
