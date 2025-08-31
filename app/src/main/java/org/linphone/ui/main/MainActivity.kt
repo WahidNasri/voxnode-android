@@ -75,6 +75,7 @@ import org.linphone.utils.AppUtils
 import org.linphone.utils.DialogUtils
 import org.linphone.utils.Event
 import org.linphone.utils.FileUtils
+import org.linphone.utils.DynamicThemeManager
 import org.linphone.utils.LinphoneUtils
 import org.voxnode.voxnode.storage.VoxNodeDataManager
 import androidx.core.content.edit
@@ -197,6 +198,9 @@ class MainActivity : GenericActivity() {
 
         // Refresh avatar with VoxNode provider logo if available
         refreshAvatarWithProviderLogo()
+        
+        // Apply stored provider colors if available
+        DynamicThemeManager.applyStoredProviderColors(this)
 
         // Disable drawer swipe gestures in release builds
         if (!BuildConfig.DEBUG) {

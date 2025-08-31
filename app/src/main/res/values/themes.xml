@@ -138,6 +138,11 @@
         <item name="color_chat_bubble_outgoing">@color/purple_main_100</item>
     </style>
 
+    <!-- Dynamic provider theme - will be applied when provider colors are available -->
+    <style name="Theme.LinphoneProvider" parent="Theme.Linphone">
+        <!-- Colors will be applied dynamically by DynamicThemeManager -->
+    </style>
+
     <!-- In-call application theme. -->
     <style name="Theme.LinphoneInCall" parent="Theme.Linphone">
         <item name="android:windowBackground">@color/gray_600</item>

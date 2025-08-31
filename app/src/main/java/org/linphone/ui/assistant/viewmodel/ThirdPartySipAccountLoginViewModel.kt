@@ -38,6 +38,7 @@ import org.linphone.core.TransportType
 import org.linphone.core.tools.Log
 import org.linphone.ui.GenericViewModel
 import org.linphone.utils.AppUtils
+import org.linphone.utils.DynamicThemeManager
 import org.linphone.utils.Event
 import org.voxnode.voxnode.api.VoxnodeRepository
 import org.voxnode.voxnode.storage.VoxNodeDataManager
@@ -180,6 +181,9 @@ class ThirdPartySipAccountLoginViewModel
                         VoxNodeDataManager.saveLoginResult(loginResult)
                         Log.i("$TAG VoxNode login result saved successfully")
                     }
+
+                    // Apply provider colors to theme
+                    DynamicThemeManager.applyProviderColors(coreContext.context, loginResult)
 
                     sipLogin(
                         sipUsername = loginResult.clientSipAddress?.split("@")?.get(0) ?: "",

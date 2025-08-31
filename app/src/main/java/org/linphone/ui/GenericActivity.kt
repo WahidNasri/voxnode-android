@@ -45,6 +45,7 @@ import org.linphone.utils.LanguageManager
 import org.linphone.utils.ToastUtils
 import org.linphone.utils.slideInToastFromTop
 import org.linphone.utils.slideInToastFromTopForDuration
+import org.linphone.utils.DynamicThemeManager
 
 @MainThread
 open class GenericActivity : AppCompatActivity() {
@@ -59,14 +60,22 @@ open class GenericActivity : AppCompatActivity() {
     override fun getTheme(): Resources.Theme {
         mainColor = corePreferences.themeMainColor
         val theme = super.theme
-        when (mainColor) {
-            "yellow" -> theme.applyStyle(R.style.Theme_LinphoneYellow, true)
-            "green" -> theme.applyStyle(R.style.Theme_LinphoneGreen, true)
-            "blue" -> theme.applyStyle(R.style.Theme_LinphoneBlue, true)
-            "red" -> theme.applyStyle(R.style.Theme_LinphoneRed, true)
-            "pink" -> theme.applyStyle(R.style.Theme_LinphonePink, true)
-            "purple" -> theme.applyStyle(R.style.Theme_LinphonePurple, true)
-            else -> theme.applyStyle(R.style.Theme_Linphone, true)
+        
+        // Check if we have provider colors to apply
+        if (DynamicThemeManager.hasProviderColors()) {
+            Log.i("$TAG Applying provider colors theme")
+            theme.applyStyle(R.style.Theme_LinphoneProvider, true)
+        } else {
+            // Apply standard theme based on user preference
+            when (mainColor) {
+                "yellow" -> theme.applyStyle(R.style.Theme_LinphoneYellow, true)
+                "green" -> theme.applyStyle(R.style.Theme_LinphoneGreen, true)
+                "blue" -> theme.applyStyle(R.style.Theme_LinphoneBlue, true)
+                "red" -> theme.applyStyle(R.style.Theme_LinphoneRed, true)
+                "pink" -> theme.applyStyle(R.style.Theme_LinphonePink, true)
+                "purple" -> theme.applyStyle(R.style.Theme_LinphonePurple, true)
+                else -> theme.applyStyle(R.style.Theme_Linphone, true)
+            }
         }
         return theme
     }
