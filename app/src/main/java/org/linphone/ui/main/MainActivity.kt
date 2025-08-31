@@ -692,12 +692,13 @@ class MainActivity : GenericActivity() {
                     }
                 }
             } else if (core.accountList.isEmpty()) {
-                Log.w("$TAG No account found, navigating to dialer fragment")
+                Log.w("$TAG No account found, starting Assistant activity")
                 coreContext.postOnMainThread {
                     try {
                         navigateToDialerFragment()
+                        startActivity(Intent(this, AssistantActivity::class.java))
                     } catch (ise: IllegalStateException) {
-                        Log.e("$TAG Can't navigate to dialer fragment: $ise")
+                        Log.e("$TAG Can't start Assistant activity: $ise")
                     }
                 }
             } else {
