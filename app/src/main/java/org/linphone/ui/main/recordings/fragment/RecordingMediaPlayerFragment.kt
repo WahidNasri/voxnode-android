@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -98,6 +99,15 @@ class RecordingMediaPlayerFragment : GenericMainFragment() {
                 viewModel.setUserSeeking(false)
             }
         })
+
+        // Observe playing state to control animated voice wave
+        viewModel.isPlaying.observe(viewLifecycleOwner) { isPlaying ->
+            binding.animatedVoiceWave.setPlaying(isPlaying)
+        }
+
+        // Set accent color for voice wave
+        val accentColor = ContextCompat.getColor(requireContext(), R.color.main1_500)
+        binding.animatedVoiceWave.setAccentColor(accentColor)
 
         val model = sharedViewModel.playingRecording
         if (model != null) {
