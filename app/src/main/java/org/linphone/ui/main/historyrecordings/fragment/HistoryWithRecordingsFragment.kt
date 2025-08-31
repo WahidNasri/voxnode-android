@@ -33,6 +33,7 @@ import org.linphone.ui.main.fragment.AbstractMainFragment
 import org.linphone.ui.main.historyrecordings.adapter.HistoryRecordingsPagerAdapter
 import org.linphone.ui.main.historyrecordings.viewmodel.HistoryWithRecordingsViewModel
 import org.linphone.utils.Event
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 @UiThread
 class HistoryWithRecordingsFragment : AbstractMainFragment() {
@@ -96,21 +97,35 @@ class HistoryWithRecordingsFragment : AbstractMainFragment() {
     private fun setupTabs() {
         Log.i("$TAG Setting up tabs")
         
+        // Check if recordings are enabled from login result
+        val isRecordingEnabled = checkIfRecordingEnabled()
+        Log.i("$TAG Recording enabled: $isRecordingEnabled")
+        
         pagerAdapter = HistoryRecordingsPagerAdapter(
             childFragmentManager,
-            viewLifecycleOwner.lifecycle
+            viewLifecycleOwner.lifecycle,
+            isRecordingEnabled
         )
         binding.viewPager.adapter = pagerAdapter
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = when (position) {
-                HistoryRecordingsPagerAdapter.CALLS_TAB_INDEX -> 
-                    getString(R.string.history_recordings_tab_calls)
-                HistoryRecordingsPagerAdapter.RECORDINGS_TAB_INDEX -> 
-                    getString(R.string.history_recordings_tab_recordings)
-                else -> "Unknown"
-            }
-        }.attach()
+        if (isRecordingEnabled) {
+            // Show tabs when recordings are enabled
+            binding.tabLayout.visibility = View.VISIBLE
+            
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                tab.text = when (position) {
+                    HistoryRecordingsPagerAdapter.CALLS_TAB_INDEX -> 
+                        getString(R.string.history_recordings_tab_calls)
+                    HistoryRecordingsPagerAdapter.RECORDINGS_TAB_INDEX -> 
+                        getString(R.string.history_recordings_tab_recordings)
+                    else -> "Unknown"
+                }
+            }.attach()
+        } else {
+            // Hide tabs when only calls tab is available
+            binding.tabLayout.visibility = View.GONE
+            Log.i("$TAG Hiding tab layout since recordings are disabled")
+        }
     }
 
     private fun setupObservers() {
@@ -122,18 +137,33 @@ class HistoryWithRecordingsFragment : AbstractMainFragment() {
             }
         }
 
-        // Listen for tab changes from TabLayout
-        binding.tabLayout.addOnTabSelectedListener(object : com.google.android.material.tabs.TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: com.google.android.material.tabs.TabLayout.Tab?) {
-                tab?.let {
-                    Log.i("$TAG Tab selected: ${it.position}")
-                    listViewModel.setCurrentTab(it.position)
+        // Only set up tab listener if recordings are enabled
+        if (checkIfRecordingEnabled()) {
+            // Listen for tab changes from TabLayout
+            binding.tabLayout.addOnTabSelectedListener(object : com.google.android.material.tabs.TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: com.google.android.material.tabs.TabLayout.Tab?) {
+                    tab?.let {
+                        Log.i("$TAG Tab selected: ${it.position}")
+                        listViewModel.setCurrentTab(it.position)
+                    }
                 }
-            }
 
-            override fun onTabUnselected(tab: com.google.android.material.tabs.TabLayout.Tab?) {}
+                override fun onTabUnselected(tab: com.google.android.material.tabs.TabLayout.Tab?) {}
 
-            override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab?) {}
-        })
+                override fun onTabReselected(tab: com.google.android.material.tabs.TabLayout.Tab?) {}
+            })
+        }
+    }
+
+    private fun checkIfRecordingEnabled(): Boolean {
+        return try {
+            val loginResult = VoxNodeDataManager.getLoginResult()
+            val isEnabled = loginResult?.clientRecordingEnabled == 1
+            Log.i("$TAG clientRecordingEnabled from login result: ${loginResult?.clientRecordingEnabled}, isEnabled: $isEnabled")
+            isEnabled
+        } catch (e: Exception) {
+            Log.e("$TAG Error checking recording enabled status: ${e.message}")
+            false
+        }
     }
 }

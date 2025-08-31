@@ -23,27 +23,49 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import org.linphone.core.tools.Log
 import org.linphone.ui.main.history.fragment.HistoryListFragment
 import org.linphone.ui.main.recordings.fragment.RecordingsListFragment
 
 class HistoryRecordingsPagerAdapter(
     fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
+    lifecycle: Lifecycle,
+    private val recordingEnabled: Boolean = true
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     companion object {
+        private const val TAG = "[HistoryRecordingsPagerAdapter]"
         const val CALLS_TAB_INDEX = 0
         const val RECORDINGS_TAB_INDEX = 1
-        const val TAB_COUNT = 2
+        const val TAB_COUNT_WITH_RECORDINGS = 2
+        const val TAB_COUNT_WITHOUT_RECORDINGS = 1
     }
 
-    override fun getItemCount(): Int = TAB_COUNT
+    override fun getItemCount(): Int {
+        val count = if (recordingEnabled) TAB_COUNT_WITH_RECORDINGS else TAB_COUNT_WITHOUT_RECORDINGS
+        Log.i("$TAG Item count: $count (recordingEnabled: $recordingEnabled)")
+        return count
+    }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            CALLS_TAB_INDEX -> HistoryListFragment()
-            RECORDINGS_TAB_INDEX -> RecordingsListFragment()
-            else -> throw IllegalArgumentException("Invalid tab position: $position")
+            CALLS_TAB_INDEX -> {
+                Log.i("$TAG Creating HistoryListFragment for position $position")
+                HistoryListFragment()
+            }
+            RECORDINGS_TAB_INDEX -> {
+                if (recordingEnabled) {
+                    Log.i("$TAG Creating RecordingsListFragment for position $position")
+                    RecordingsListFragment()
+                } else {
+                    Log.e("$TAG Attempted to create RecordingsListFragment when recordings are disabled")
+                    throw IllegalArgumentException("Recordings tab not available when recordings are disabled")
+                }
+            }
+            else -> {
+                Log.e("$TAG Invalid tab position: $position")
+                throw IllegalArgumentException("Invalid tab position: $position")
+            }
         }
     }
 }

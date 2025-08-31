@@ -23,6 +23,7 @@ import androidx.annotation.UiThread
 import androidx.lifecycle.MutableLiveData
 import org.linphone.core.tools.Log
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 @UiThread
 class HistoryWithRecordingsViewModel : AbstractMainViewModel() {
@@ -31,11 +32,18 @@ class HistoryWithRecordingsViewModel : AbstractMainViewModel() {
     }
 
     val currentTabIndex = MutableLiveData<Int>()
+    val isRecordingEnabled = MutableLiveData<Boolean>()
 
     init {
         title.value = "History"
-        currentTabIndex.value = 0 // Default to Calls tab
-        Log.i("$TAG HistoryWithRecordings ViewModel initialized")
+        
+        // Check recording enabled status
+        val recordingEnabled = checkIfRecordingEnabled()
+        isRecordingEnabled.value = recordingEnabled
+        
+        // Set default tab index based on recording status
+        currentTabIndex.value = 0 // Always start with Calls tab
+        Log.i("$TAG HistoryWithRecordings ViewModel initialized with recordingEnabled: $recordingEnabled")
     }
 
     @UiThread
@@ -46,7 +54,26 @@ class HistoryWithRecordingsViewModel : AbstractMainViewModel() {
 
     @UiThread
     fun setCurrentTab(index: Int) {
-        Log.i("$TAG Setting current tab to index [$index]")
-        currentTabIndex.value = index
+        val maxTabIndex = if (isRecordingEnabled.value == true) 1 else 0
+        
+        if (index <= maxTabIndex) {
+            Log.i("$TAG Setting current tab to index [$index]")
+            currentTabIndex.value = index
+        } else {
+            Log.w("$TAG Invalid tab index [$index], max allowed is [$maxTabIndex]")
+            currentTabIndex.value = 0 // Default to Calls tab
+        }
+    }
+
+    private fun checkIfRecordingEnabled(): Boolean {
+        return try {
+            val loginResult = VoxNodeDataManager.getLoginResult()
+            val isEnabled = loginResult?.clientRecordingEnabled == 1
+            Log.i("$TAG clientRecordingEnabled from login result: ${loginResult?.clientRecordingEnabled}, isEnabled: $isEnabled")
+            isEnabled
+        } catch (e: Exception) {
+            Log.e("$TAG Error checking recording enabled status: ${e.message}")
+            false
+        }
     }
 }
