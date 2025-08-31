@@ -68,6 +68,7 @@ import org.linphone.utils.AppUtils
 import org.linphone.utils.AudioUtils
 import org.linphone.utils.Event
 import org.linphone.utils.LinphoneUtils
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 class CurrentCallViewModel
     @UiThread
@@ -380,7 +381,12 @@ class CurrentCallViewModel
                 } else if (call.state == Call.State.StreamsRunning) {
                     videoUpdateInProgress.postValue(false)
                     updateCallDuration()
-                    if (corePreferences.automaticallyStartCallRecording) {
+                    // Check both core preferences and VoxNode client recording enabled setting for showing recording toast
+                    val coreAutoRecordingEnabled = corePreferences.automaticallyStartCallRecording
+                    val voxnodeRecordingEnabled = checkVoxNodeRecordingEnabled()
+                    val finalAutoRecordingEnabled = coreAutoRecordingEnabled && voxnodeRecordingEnabled
+                    
+                    if (finalAutoRecordingEnabled) {
                         val recording = call.params.isRecording
                         isRecording.postValue(recording)
                         if (recording) {
@@ -541,7 +547,12 @@ class CurrentCallViewModel
 
             core.addListener(coreListener)
 
-            isRecordingEnabled.postValue(!corePreferences.disableCallRecordings)
+            // Check both core preferences and VoxNode client recording enabled setting
+            val coreRecordingEnabled = !corePreferences.disableCallRecordings
+            val voxnodeRecordingEnabled = checkVoxNodeRecordingEnabled()
+            val finalRecordingEnabled = coreRecordingEnabled && voxnodeRecordingEnabled
+            Log.i("$TAG Recording enabled - Core: $coreRecordingEnabled, VoxNode: $voxnodeRecordingEnabled, Final: $finalRecordingEnabled")
+            isRecordingEnabled.postValue(finalRecordingEnabled)
             hideVideo.postValue(!core.isVideoEnabled)
             showSwitchCamera.postValue(coreContext.showSwitchCameraButton())
 
@@ -1555,6 +1566,19 @@ class CurrentCallViewModel
             }
         } else {
             proximitySensorEnabled.postValue(false)
+        }
+    }
+
+    @WorkerThread
+    private fun checkVoxNodeRecordingEnabled(): Boolean {
+        return try {
+            val loginResult = VoxNodeDataManager.getLoginResult()
+            val isEnabled = loginResult?.clientRecordingEnabled == 1
+            Log.i("$TAG VoxNode clientRecordingEnabled from login result: ${loginResult?.clientRecordingEnabled}, isEnabled: $isEnabled")
+            isEnabled
+        } catch (e: Exception) {
+            Log.e("$TAG Error checking VoxNode recording enabled status: ${e.message}")
+            false
         }
     }
 }

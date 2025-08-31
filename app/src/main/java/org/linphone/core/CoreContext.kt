@@ -53,6 +53,7 @@ import org.linphone.utils.AppUtils
 import org.linphone.utils.Event
 import org.linphone.utils.FileUtils
 import org.linphone.utils.LinphoneUtils
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 class CoreContext
     @UiThread
@@ -339,9 +340,14 @@ class CoreContext
                 }
                 Call.State.StreamsRunning -> {
                     if (previousCallState == Call.State.Connected) {
-                        if (corePreferences.automaticallyStartCallRecording && !call.params.isRecording) {
+                        // Check both core preferences and VoxNode client recording enabled setting
+                        val coreAutoRecordingEnabled = corePreferences.automaticallyStartCallRecording
+                        val voxnodeRecordingEnabled = checkVoxNodeRecordingEnabled()
+                        val finalAutoRecordingEnabled = coreAutoRecordingEnabled && voxnodeRecordingEnabled
+                        
+                        if (finalAutoRecordingEnabled && !call.params.isRecording) {
                             if (call.conference == null) { // TODO: FIXME: Conference recordings are currently disabled
-                                Log.i("$TAG Auto record calls is enabled, starting it now")
+                                Log.i("$TAG Auto record calls is enabled (Core: $coreAutoRecordingEnabled, VoxNode: $voxnodeRecordingEnabled), starting it now")
                                 call.startRecording()
                             }
                         }
@@ -1205,5 +1211,18 @@ class CoreContext
     @WorkerThread
     fun updateCrashlyticsEnabledSetting(enabled: Boolean) {
         crashlyticsEnabled = enabled
+    }
+
+    @WorkerThread
+    private fun checkVoxNodeRecordingEnabled(): Boolean {
+        return try {
+            val loginResult = VoxNodeDataManager.getLoginResult()
+            val isEnabled = loginResult?.clientRecordingEnabled == 1
+            Log.i("$TAG VoxNode clientRecordingEnabled from login result: ${loginResult?.clientRecordingEnabled}, isEnabled: $isEnabled")
+            isEnabled
+        } catch (e: Exception) {
+            Log.e("$TAG Error checking VoxNode recording enabled status: ${e.message}")
+            false
+        }
     }
 }
