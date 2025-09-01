@@ -967,6 +967,17 @@
     <string name="vox_settings_permissions">Permissions</string>
     <string name="vox_settings_not_logged_in">Veuillez vous connecter via l\'assistant pour afficher vos paramètres VoxNode.</string>
 
+    <!-- VoxSms -->
+    <string name="bottom_navigation_voxsms_label">SMS</string>
+    <string name="vox_sms_empty_state">Aucun SMS pour le moment</string>
+    <string name="vox_sms_new_sms">Nouveau SMS</string>
+    <string name="vox_sms_send_title">Envoyer SMS</string>
+    <string name="vox_sms_recipient_hint">Numéro du destinataire</string>
+    <string name="vox_sms_content_hint">Contenu du message</string>
+    <string name="vox_sms_send_button">Envoyer SMS</string>
+    <string name="vox_sms_send_success">SMS envoyé avec succès</string>
+    <string name="vox_sms_send_error">Échec de l\'envoi du SMS</string>
+
     <!-- Language Selection -->
     <string name="language_selection_title">Sélectionner la langue</string>
     <string name="language_english">English</string>
@@ -983,4 +994,5 @@
     <string name="language_display_default">English</string>
     <string name="add_contact">Ajouter un contact</string>
     <string name="copy">Copier</string>
+    <string name="calling">Appel…</string>
 </resources>

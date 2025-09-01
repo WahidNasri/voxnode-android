@@ -328,7 +328,7 @@ class CorePreferences
 
     @get:WorkerThread
     val onlyDisplaySipUriUsername: Boolean
-        get() = config.getBool("ui", "only_display_sip_uri_username", false)
+        get() = config.getBool("ui", "only_display_sip_uri_username", true)
 
     @get:WorkerThread
     val hideSipAddresses: Boolean

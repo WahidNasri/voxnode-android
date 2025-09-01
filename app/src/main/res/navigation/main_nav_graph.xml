@@ -11,14 +11,20 @@
         android:label="HistoryWithRecordingsFragment"
         tools:layout="@layout/history_with_recordings_fragment">
         <action
+            android:id="@+id/action_historyWithRecordingsFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_historyWithRecordingsFragment_to_contactsListFragment"
             app:destination="@id/contactsListFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/voxDialerFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_historyWithRecordingsFragment_to_conversationsListFragment"
-            app:destination="@id/conversationsListFragment"
+            android:id="@+id/action_historyWithRecordingsFragment_to_voxSmsFragment"
+            app:destination="@id/voxSmsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/voxDialerFragment"
             app:popUpToInclusive="true" />
@@ -66,14 +72,20 @@
         android:label="ContactsListFragment"
         tools:layout="@layout/contacts_list_fragment">
         <action
+            android:id="@+id/action_contactsListFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/contactsListFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_contactsListFragment_to_historyWithRecordingsFragment"
             app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/contactsListFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_contactsListFragment_to_conversationsListFragment"
-            app:destination="@id/conversationsListFragment"
+            android:id="@+id/action_contactsListFragment_to_voxSmsFragment"
+            app:destination="@id/voxSmsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/contactsListFragment"
             app:popUpToInclusive="true" />
@@ -109,6 +121,12 @@
         android:label="VoxDialerFragment"
         tools:layout="@layout/vox_dialer_fragment">
         <action
+            android:id="@+id/action_voxDialerFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxDialerFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_voxDialerFragment_to_historyWithRecordingsFragment"
             app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
@@ -121,8 +139,8 @@
             app:popUpTo="@id/voxDialerFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_voxDialerFragment_to_conversationsListFragment"
-            app:destination="@id/conversationsListFragment"
+            android:id="@+id/action_voxDialerFragment_to_voxSmsFragment"
+            app:destination="@id/voxSmsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/voxDialerFragment"
             app:popUpToInclusive="true" />
@@ -158,8 +176,8 @@
             app:popUpTo="@id/historyListFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_historyListFragment_to_conversationsListFragment"
-            app:destination="@id/conversationsListFragment"
+            android:id="@+id/action_historyListFragment_to_voxSmsFragment"
+            app:destination="@id/voxSmsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/historyListFragment"
             app:popUpToInclusive="true" />
@@ -365,59 +383,53 @@
     </fragment>
 
     <fragment
-        android:id="@+id/conversationsListFragment"
-        android:name="org.linphone.ui.main.chat.fragment.ConversationsListFragment"
-        android:label="ConversationsListFragment"
-        tools:layout="@layout/chat_list_fragment" >
+        android:id="@+id/voxSmsFragment"
+        android:name="org.linphone.ui.main.voxsms.fragment.VoxSmsFragment"
+        android:label="VoxSmsFragment"
+        tools:layout="@layout/vox_sms_fragment" >
         <action
-            android:id="@+id/action_conversationsListFragment_to_historyWithRecordingsFragment"
+            android:id="@+id/action_voxSmsFragment_to_historyWithRecordingsFragment"
             app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@id/conversationsListFragment"
+            app:popUpTo="@id/voxSmsFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_conversationsListFragment_to_contactsListFragment"
+            android:id="@+id/action_voxSmsFragment_to_contactsListFragment"
             app:destination="@id/contactsListFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@id/conversationsListFragment"
+            app:popUpTo="@id/voxSmsFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_conversationsListFragment_to_meetingsListFragment"
+            android:id="@+id/action_voxSmsFragment_to_meetingsListFragment"
             app:destination="@id/meetingsListFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@id/conversationsListFragment"
+            app:popUpTo="@id/voxSmsFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_conversationsListFragment_to_voxDialerFragment"
+            android:id="@+id/action_voxSmsFragment_to_voxDialerFragment"
             app:destination="@id/voxDialerFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@id/conversationsListFragment"
+            app:popUpTo="@id/voxSmsFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_conversationsListFragment_to_voxSettingsFragment"
+            android:id="@+id/action_voxSmsFragment_to_voxSettingsFragment"
             app:destination="@id/voxSettingsFragment"
             app:launchSingleTop="true"
-            app:popUpTo="@id/conversationsListFragment"
+            app:popUpTo="@id/voxSmsFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_conversationsListFragment_to_startConversationFragment"
-            app:destination="@id/startConversationFragment"
+            android:id="@+id/action_voxSmsFragment_to_sendSmsFragment"
+            app:destination="@id/sendSmsFragment"
             app:enterAnim="@anim/slide_in"
             app:popExitAnim="@anim/slide_out"
             app:launchSingleTop="true" />
-        <action
-            android:id="@+id/action_conversationsListFragment_to_meetingWaitingRoomFragment"
-            app:destination="@id/meetingWaitingRoomFragment"
-            app:enterAnim="@anim/slide_in"
-            app:popExitAnim="@anim/slide_out"
-            app:launchSingleTop="true" />
-        <action
-            android:id="@+id/action_conversationsListFragment_to_accountProfileFragment"
-            app:destination="@id/accountProfileFragment"
-            app:launchSingleTop="true"
-            app:enterAnim="@anim/slide_in"
-            app:popExitAnim="@anim/slide_out" />
     </fragment>
+
+    <fragment
+        android:id="@+id/sendSmsFragment"
+        android:name="org.linphone.ui.main.voxsms.fragment.SendSmsFragment"
+        android:label="SendSmsFragment"
+        tools:layout="@layout/send_sms_fragment"/>
 
     <fragment
         android:id="@+id/startConversationFragment"
@@ -431,14 +443,20 @@
         android:label="MeetingsListFragment"
         tools:layout="@layout/meetings_list_fragment">
         <action
+            android:id="@+id/action_meetingsListFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/meetingsListFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_meetingsListFragment_to_historyWithRecordingsFragment"
             app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/meetingsListFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_meetingsListFragment_to_conversationsListFragment"
-            app:destination="@id/conversationsListFragment"
+            android:id="@+id/action_meetingsListFragment_to_voxSmsFragment"
+            app:destination="@id/voxSmsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/meetingsListFragment"
             app:popUpToInclusive="true" />
@@ -510,8 +528,8 @@
             android:defaultValue="@null" />
     </fragment>
 
-    <action android:id="@+id/action_global_conversationsListFragment"
-        app:destination="@id/conversationsListFragment"
+    <action android:id="@+id/action_global_voxSmsFragment"
+        app:destination="@id/voxSmsFragment"
         app:launchSingleTop="true"
         app:popUpTo="@id/contactsListFragment"
         app:popUpToInclusive="true"/>
@@ -611,6 +629,42 @@
         android:label="VoxSettingsFragment"
         tools:layout="@layout/vox_settings_fragment">
         <action
+            android:id="@+id/action_voxSettingsFragment_to_conversationsListFragment"
+            app:destination="@id/conversationsListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/voxSettingsFragment"
+            app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/conversationsListFragment"
+        android:name="org.linphone.ui.main.chat.fragment.ConversationsListFragment"
+        android:label="ConversationsListFragment"
+        tools:layout="@layout/chat_list_fragment" >
+        <action
+            android:id="@+id/action_conversationsListFragment_to_startConversationFragment"
+            app:destination="@id/startConversationFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_conversationsListFragment_to_accountProfileFragment"
+            app:destination="@id/accountProfileFragment"
+            app:launchSingleTop="true"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_conversationsListFragment_to_meetingWaitingRoomFragment"
+            app:destination="@id/meetingWaitingRoomFragment"
+            app:enterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_out"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <action android:id="@+id/action_global_conversationsListFragment"
+        app:destination="@id/conversationsListFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/contactsListFragment"
+        app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_voxSettingsFragment_to_historyWithRecordingsFragment"
             app:destination="@id/historyWithRecordingsFragment"
             app:launchSingleTop="true"
@@ -629,8 +683,8 @@
             app:popUpTo="@id/voxSettingsFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_voxSettingsFragment_to_conversationsListFragment"
-            app:destination="@id/conversationsListFragment"
+            android:id="@+id/action_voxSettingsFragment_to_voxSmsFragment"
+            app:destination="@id/voxSmsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/voxSettingsFragment"
             app:popUpToInclusive="true" />

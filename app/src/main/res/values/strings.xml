@@ -1033,6 +1033,17 @@
     <string name="vox_settings_permissions">Permissions</string>
     <string name="vox_settings_not_logged_in">Please log in through the assistant to view your VoxNode settings.</string>
 
+    <!-- VoxSms -->
+    <string name="bottom_navigation_voxsms_label">SMS</string>
+    <string name="vox_sms_empty_state">No SMS messages yet</string>
+    <string name="vox_sms_new_sms">New SMS</string>
+    <string name="vox_sms_send_title">Send SMS</string>
+    <string name="vox_sms_recipient_hint">Recipient number</string>
+    <string name="vox_sms_content_hint">Message content</string>
+    <string name="vox_sms_send_button">Send SMS</string>
+    <string name="vox_sms_send_success">SMS sent successfully</string>
+    <string name="vox_sms_send_error">Failed to send SMS</string>
+
     <!-- Language Selection -->
     <string name="language_selection_title">Select Language</string>
     <string name="language_english">English</string>
@@ -1050,5 +1061,6 @@
 
     <string name="add_contact">Add contact</string>
     <string name="copy">Copy</string>
+    <string name="calling">Calling...</string>
 
 </resources>

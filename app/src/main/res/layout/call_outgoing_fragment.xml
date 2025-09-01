@@ -72,7 +72,18 @@
                 app:layout_constraintEnd_toEndOf="@id/avatar"
                 app:layout_constraintTop_toBottomOf="@id/call_direction_label"
                 app:layout_constraintBottom_toTopOf="@id/avatar" />
-
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/default_text_style_300"
+                android:id="@+id/calling_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/calling"
+                android:textColor="@color/bc_white"
+                android:textSize="22sp"
+                app:layout_constraintTop_toBottomOf="@id/in_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
             <include
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar_in_call_size"

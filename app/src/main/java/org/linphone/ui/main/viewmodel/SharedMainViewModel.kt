@@ -58,6 +58,10 @@ class SharedMainViewModel
         MutableLiveData<Event<Boolean>>()
     }
 
+    val navigateToSmsEvent: MutableLiveData<Event<Boolean>> by lazy {
+        MutableLiveData<Event<Boolean>>()
+    }
+
     val navigateToMeetingsEvent: MutableLiveData<Event<Boolean>> by lazy {
         MutableLiveData<Event<Boolean>>()
     }

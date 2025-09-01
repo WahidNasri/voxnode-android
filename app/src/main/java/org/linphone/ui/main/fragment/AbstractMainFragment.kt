@@ -41,12 +41,12 @@ import org.linphone.core.tools.Log
 import org.linphone.databinding.BottomNavBarBinding
 import org.linphone.databinding.MainActivityTopBarBinding
 import org.linphone.ui.main.MainActivity
-import org.linphone.ui.main.chat.fragment.ConversationsListFragmentDirections
 import org.linphone.ui.main.contacts.fragment.ContactsListFragmentDirections
 import org.linphone.ui.main.meetings.fragment.MeetingsListFragmentDirections
 import org.linphone.ui.main.voxsettings.fragment.VoxSettingsFragmentDirections
 import org.linphone.ui.main.voxdialer.fragment.VoxDialerFragmentDirections
 import org.linphone.ui.main.historyrecordings.fragment.HistoryWithRecordingsFragmentDirections
+import org.linphone.ui.main.voxsms.fragment.VoxSmsFragmentDirections
 import org.linphone.ui.main.viewmodel.AbstractMainViewModel
 import org.linphone.utils.Event
 import org.linphone.utils.SlidingPaneBackPressedCallback
@@ -164,6 +164,14 @@ abstract class AbstractMainFragment : GenericMainFragment() {
                 }
             }
         }
+        
+        viewModel.navigateToSmsEvent.observe(viewLifecycleOwner) {
+            it.consume {
+                if (currentFragmentId != R.id.voxSmsFragment) {
+                    goToSmsList()
+                }
+            }
+        }
 
         viewModel.navigateToMeetingsEvent.observe(viewLifecycleOwner) {
             it.consume {
@@ -199,6 +207,7 @@ abstract class AbstractMainFragment : GenericMainFragment() {
             viewModel.contactsSelected.value = it == R.id.contactsListFragment
             viewModel.callsSelected.value = it == R.id.historyWithRecordingsFragment
             viewModel.conversationsSelected.value = it == R.id.conversationsListFragment
+            viewModel.smsSelected.value = it == R.id.voxSmsFragment
             viewModel.meetingsSelected.value = it == R.id.meetingsListFragment
             viewModel.dialerSelected.value = it == R.id.voxDialerFragment
             viewModel.voxSettingsSelected.value = it == R.id.voxSettingsFragment
@@ -348,6 +357,12 @@ abstract class AbstractMainFragment : GenericMainFragment() {
                 goToConversationsList()
             }
         }
+        
+        sharedViewModel.navigateToSmsEvent.observe(viewLifecycleOwner) {
+            it.consume {
+                goToSmsList()
+            }
+        }
 
         sharedViewModel.navigateToMeetingsEvent.observe(viewLifecycleOwner) {
             it.consume {
@@ -379,9 +394,15 @@ abstract class AbstractMainFragment : GenericMainFragment() {
     private fun goToContactsList() {
         Log.i("$TAG Navigating to contacts list")
         when (currentFragmentId) {
+            R.id.voxSmsFragment -> {
+                Log.i("$TAG Leaving vox SMS")
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToContactsListFragment()
+                navigateTo(action)
+            }
             R.id.conversationsListFragment -> {
                 Log.i("$TAG Leaving conversations list")
-                val action = ConversationsListFragmentDirections.actionConversationsListFragmentToContactsListFragment()
+                // TODO: Replace with SMS equivalent when conversations are fully replaced
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToContactsListFragment()
                 navigateTo(action)
             }
             R.id.meetingsListFragment -> {
@@ -410,9 +431,15 @@ abstract class AbstractMainFragment : GenericMainFragment() {
     private fun goToHistoryWithRecordingsList() {
         Log.i("$TAG Navigating to history with recordings list")
         when (currentFragmentId) {
+            R.id.voxSmsFragment -> {
+                Log.i("$TAG Leaving vox SMS")
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToHistoryWithRecordingsFragment()
+                navigateTo(action)
+            }
             R.id.conversationsListFragment -> {
                 Log.i("$TAG Leaving conversations list")
-                val action = ConversationsListFragmentDirections.actionConversationsListFragmentToHistoryWithRecordingsFragment()
+                // TODO: Replace with SMS equivalent when conversations are fully replaced
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToHistoryWithRecordingsFragment()
                 navigateTo(action)
             }
             R.id.contactsListFragment -> {
@@ -443,27 +470,58 @@ abstract class AbstractMainFragment : GenericMainFragment() {
         when (currentFragmentId) {
             R.id.contactsListFragment -> {
                 Log.i("$TAG Leaving contacts list")
-                val action = ContactsListFragmentDirections.actionContactsListFragmentToConversationsListFragment()
+                val action = ContactsListFragmentDirections.actionContactsListFragmentToVoxSmsFragment()
                 navigateTo(action)
             }
             R.id.meetingsListFragment -> {
                 Log.i("$TAG Leaving meetings list")
-                val action = MeetingsListFragmentDirections.actionMeetingsListFragmentToConversationsListFragment()
+                val action = MeetingsListFragmentDirections.actionMeetingsListFragmentToVoxSmsFragment()
                 navigateTo(action)
             }
             R.id.historyWithRecordingsFragment -> {
                 Log.i("$TAG Leaving history with recordings list")
-                val action = HistoryWithRecordingsFragmentDirections.actionHistoryWithRecordingsFragmentToConversationsListFragment()
+                val action = HistoryWithRecordingsFragmentDirections.actionHistoryWithRecordingsFragmentToVoxSmsFragment()
                 navigateTo(action)
             }
             R.id.voxDialerFragment -> {
                 Log.i("$TAG Leaving vox dialer")
-                val action = VoxDialerFragmentDirections.actionVoxDialerFragmentToConversationsListFragment()
+                val action = VoxDialerFragmentDirections.actionVoxDialerFragmentToVoxSmsFragment()
                 navigateTo(action)
             }
             R.id.voxSettingsFragment -> {
                 Log.i("$TAG Leaving vox settings")
-                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToConversationsListFragment()
+                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToVoxSmsFragment()
+                navigateTo(action)
+            }
+        }
+    }
+
+    private fun goToSmsList() {
+        Log.i("$TAG Navigating to SMS list")
+        when (currentFragmentId) {
+            R.id.contactsListFragment -> {
+                Log.i("$TAG Leaving contacts list")
+                val action = ContactsListFragmentDirections.actionContactsListFragmentToVoxSmsFragment()
+                navigateTo(action)
+            }
+            R.id.meetingsListFragment -> {
+                Log.i("$TAG Leaving meetings list")
+                val action = MeetingsListFragmentDirections.actionMeetingsListFragmentToVoxSmsFragment()
+                navigateTo(action)
+            }
+            R.id.historyWithRecordingsFragment -> {
+                Log.i("$TAG Leaving history with recordings list")
+                val action = HistoryWithRecordingsFragmentDirections.actionHistoryWithRecordingsFragmentToVoxSmsFragment()
+                navigateTo(action)
+            }
+            R.id.voxDialerFragment -> {
+                Log.i("$TAG Leaving vox dialer")
+                val action = VoxDialerFragmentDirections.actionVoxDialerFragmentToVoxSmsFragment()
+                navigateTo(action)
+            }
+            R.id.voxSettingsFragment -> {
+                Log.i("$TAG Leaving vox settings")
+                val action = VoxSettingsFragmentDirections.actionVoxSettingsFragmentToVoxSmsFragment()
                 navigateTo(action)
             }
         }
@@ -472,9 +530,15 @@ abstract class AbstractMainFragment : GenericMainFragment() {
     private fun goToMeetingsList() {
         Log.i("$TAG Navigating to meetings list")
         when (currentFragmentId) {
+            R.id.voxSmsFragment -> {
+                Log.i("$TAG Leaving vox SMS")
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToMeetingsListFragment()
+                navigateTo(action)
+            }
             R.id.conversationsListFragment -> {
                 Log.i("$TAG Leaving conversations list")
-                val action = ConversationsListFragmentDirections.actionConversationsListFragmentToMeetingsListFragment()
+                // TODO: Replace with SMS equivalent when conversations are fully replaced
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToMeetingsListFragment()
                 navigateTo(action)
             }
             R.id.contactsListFragment -> {
@@ -503,9 +567,15 @@ abstract class AbstractMainFragment : GenericMainFragment() {
     private fun goToDialerList() {
         Log.i("$TAG Navigating to dialer list")
         when (currentFragmentId) {
+            R.id.voxSmsFragment -> {
+                Log.i("$TAG Leaving vox SMS")
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToVoxDialerFragment()
+                navigateTo(action)
+            }
             R.id.conversationsListFragment -> {
                 Log.i("$TAG Leaving conversations list")
-                val action = ConversationsListFragmentDirections.actionConversationsListFragmentToVoxDialerFragment()
+                // TODO: Replace with SMS equivalent when conversations are fully replaced
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToVoxDialerFragment()
                 navigateTo(action)
             }
             R.id.contactsListFragment -> {
@@ -534,9 +604,15 @@ abstract class AbstractMainFragment : GenericMainFragment() {
     private fun goToVoxSettingsList() {
         Log.i("$TAG Navigating to vox settings list")
         when (currentFragmentId) {
+            R.id.voxSmsFragment -> {
+                Log.i("$TAG Leaving vox SMS")
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToVoxSettingsFragment()
+                navigateTo(action)
+            }
             R.id.conversationsListFragment -> {
                 Log.i("$TAG Leaving conversations list")
-                val action = ConversationsListFragmentDirections.actionConversationsListFragmentToVoxSettingsFragment()
+                // TODO: Replace with SMS equivalent when conversations are fully replaced
+                val action = VoxSmsFragmentDirections.actionVoxSmsFragmentToVoxSettingsFragment()
                 navigateTo(action)
             }
             R.id.contactsListFragment -> {

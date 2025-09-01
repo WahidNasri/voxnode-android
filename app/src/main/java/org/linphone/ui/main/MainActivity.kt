@@ -66,7 +66,7 @@ import org.linphone.core.tools.Log
 import org.linphone.databinding.MainActivityBinding
 import org.linphone.ui.GenericActivity
 import org.linphone.ui.assistant.AssistantActivity
-import org.linphone.ui.main.chat.fragment.ConversationsListFragmentDirections
+import org.linphone.ui.main.voxsms.fragment.VoxSmsFragmentDirections
 import org.linphone.utils.PasswordDialogModel
 import org.linphone.ui.main.sso.fragment.SingleSignOnFragmentDirections
 import org.linphone.ui.main.viewmodel.MainViewModel
@@ -428,7 +428,7 @@ class MainActivity : GenericActivity() {
             R.id.voxDialerFragment -> {
                 DIALER_FRAGMENT_ID
             }
-            R.id.conversationsListFragment -> {
+            R.id.voxSmsFragment -> {
                 CHAT_FRAGMENT_ID
             }
             R.id.voxSettingsFragment -> {
@@ -597,7 +597,7 @@ class MainActivity : GenericActivity() {
                     CHAT_FRAGMENT_ID -> {
                         findNavController().addOnDestinationChangedListener(destinationListener)
                         findNavController().navigate(
-                            R.id.conversationsListFragment,
+                            R.id.voxSmsFragment,
                             args,
                             navOptions
                         )
@@ -717,7 +717,7 @@ class MainActivity : GenericActivity() {
                             }
                             args?.clear()
 
-                            if (findNavController().currentDestination?.id == R.id.conversationsListFragment) {
+                            if (findNavController().currentDestination?.id == R.id.voxSmsFragment) {
                                 Log.w(
                                     "$TAG Current destination is already conversations list, skipping navigation"
                                 )
@@ -730,7 +730,7 @@ class MainActivity : GenericActivity() {
                                 navOptionsBuilder.setLaunchSingleTop(true)
                                 val navOptions = navOptionsBuilder.build()
                                 findNavController().navigate(
-                                    R.id.conversationsListFragment,
+                                    R.id.voxSmsFragment,
                                     args,
                                     navOptions
                                 )
@@ -785,7 +785,7 @@ class MainActivity : GenericActivity() {
                 Log.i("$TAG Drawer menu is opened, closing it")
                 closeDrawerMenu()
             }
-            if (findNavController().currentDestination?.id == R.id.conversationsListFragment) {
+            if (findNavController().currentDestination?.id == R.id.voxSmsFragment) {
                 if (sharedViewModel.displayedChatRoom != null) {
                     Log.w(
                         "$TAG Closing already opened conversation to prevent attaching file in it directly"
@@ -814,7 +814,7 @@ class MainActivity : GenericActivity() {
 
             if (findNavController().currentDestination?.id == R.id.debugFragment) {
                 Log.i(
-                    "$TAG App is already started and in debug fragment, navigating to conversations list"
+                    "$TAG App is already started and in debug fragment, navigating to SMS list"
                 )
                 val conversationId = parseShortcutIfAny(intent)
                 if (conversationId != null) {
@@ -824,7 +824,7 @@ class MainActivity : GenericActivity() {
                     sharedViewModel.showConversationEvent.value = Event(conversationId)
                 }
 
-                val action = ConversationsListFragmentDirections.actionGlobalConversationsListFragment()
+                val action = VoxSmsFragmentDirections.actionGlobalVoxSmsFragment()
                 val options = NavOptions.Builder()
                 options.apply {
                     setPopUpTo(R.id.helpFragment, true)
@@ -840,12 +840,12 @@ class MainActivity : GenericActivity() {
                     sharedViewModel.showConversationEvent.value = Event(conversationId)
                 }
 
-                if (findNavController().currentDestination?.id == R.id.conversationsListFragment) {
+                if (findNavController().currentDestination?.id == R.id.voxSmsFragment) {
                     Log.w(
                         "$TAG Current destination is already conversations list, skipping navigation"
                     )
                 } else {
-                    val action = ConversationsListFragmentDirections.actionGlobalConversationsListFragment()
+                    val action = VoxSmsFragmentDirections.actionGlobalVoxSmsFragment()
                     findNavController().navigate(action)
                 }
             }

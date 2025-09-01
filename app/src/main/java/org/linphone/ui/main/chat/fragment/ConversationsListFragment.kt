@@ -43,6 +43,8 @@ import org.linphone.ui.main.chat.adapter.ConversationsListAdapter
 import org.linphone.ui.main.chat.viewmodel.ConversationsListViewModel
 import org.linphone.ui.main.fragment.AbstractMainFragment
 import org.linphone.ui.main.history.fragment.HistoryMenuDialogFragment
+import org.linphone.ui.main.voxsms.fragment.VoxSmsFragmentDirections
+import org.linphone.ui.main.meetings.fragment.MeetingsListFragmentDirections
 import org.linphone.utils.Event
 import org.linphone.utils.LinphoneUtils
 
@@ -168,8 +170,9 @@ class ConversationsListFragment : AbstractMainFragment() {
         binding.setOnNewConversationClicked {
             if (findNavController().currentDestination?.id == R.id.conversationsListFragment) {
                 Log.i("$TAG Navigating to start conversation fragment")
+                // TODO: Replace with SMS equivalent when conversations are fully replaced
                 val action =
-                    ConversationsListFragmentDirections.actionConversationsListFragmentToStartConversationFragment()
+                    VoxSmsFragmentDirections.actionVoxSmsFragmentToSendSmsFragment()
                 findNavController().navigate(action)
             }
         }
@@ -199,8 +202,9 @@ class ConversationsListFragment : AbstractMainFragment() {
             it.consume { uri ->
                 if (findNavController().currentDestination?.id == R.id.conversationsListFragment) {
                     Log.i("$TAG Navigating to meeting waiting room fragment with URI [$uri]")
+                    // TODO: Replace with SMS equivalent or handle meetings differently
                     val action =
-                        ConversationsListFragmentDirections.actionConversationsListFragmentToMeetingWaitingRoomFragment(
+                        MeetingsListFragmentDirections.actionMeetingsListFragmentToMeetingWaitingRoomFragment(
                             uri
                         )
                     findNavController().navigate(action)
@@ -214,11 +218,14 @@ class ConversationsListFragment : AbstractMainFragment() {
             it.consume {
                 if (findNavController().currentDestination?.id == R.id.conversationsListFragment) {
                     val identity = LinphoneUtils.getDefaultAccount()?.params?.identityAddress?.asStringUriOnly().orEmpty()
-                    val action =
-                        ConversationsListFragmentDirections.actionConversationsListFragmentToAccountProfileFragment(
-                            identity
-                        )
-                    findNavController().navigate(action)
+                    // TODO: Replace with SMS equivalent when conversations are fully replaced
+                    // Using global action since individual fragment actions might not be available
+                    findNavController().navigate(
+                        R.id.accountProfileFragment,
+                        Bundle().apply {
+                        putString("accountIdentity", identity)
+                    }
+                    )
                 }
             }
         }
