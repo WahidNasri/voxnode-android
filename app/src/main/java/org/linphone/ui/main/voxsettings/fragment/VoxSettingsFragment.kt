@@ -20,6 +20,8 @@
 package org.linphone.ui.main.voxsettings.fragment
 
 import android.os.Bundle
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +42,17 @@ class VoxSettingsFragment : AbstractMainFragment() {
 
     private lateinit var binding: VoxSettingsFragmentBinding
     private lateinit var listViewModel: VoxSettingsViewModel
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            Log.i("$TAG Avatar image picked: $uri")
+            listViewModel.saveAvatarFromUri(uri)
+        } else {
+            Log.w("$TAG No image picked for avatar")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,6 +93,11 @@ class VoxSettingsFragment : AbstractMainFragment() {
         )
         
         observeEvents()
+
+        binding.editAvatarButton.setOnClickListener {
+            Log.i("$TAG Edit avatar button clicked, opening picker")
+            pickImageLauncher.launch("image/*")
+        }
     }
 
     override fun onResume() {

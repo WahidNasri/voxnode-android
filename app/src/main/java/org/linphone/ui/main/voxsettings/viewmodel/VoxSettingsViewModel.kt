@@ -19,6 +19,7 @@
  */
 package org.linphone.ui.main.voxsettings.viewmodel
 
+import android.net.Uri
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
@@ -29,6 +30,9 @@ import org.linphone.utils.Event
 import org.linphone.utils.LanguageManager
 import org.voxnode.voxnode.api.VoxnodeRepository
 import org.voxnode.voxnode.storage.VoxNodeDataManager
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 @UiThread
 class VoxSettingsViewModel : AbstractMainViewModel() {
@@ -44,6 +48,7 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     val callerIdNumber = MutableLiveData<String>()
     val isLoggedIn = MutableLiveData<Boolean>()
     val isCallerIdLoading = MutableLiveData<Boolean>()
+    val avatarPath = MutableLiveData<String?>()
     
     // Caller ID data
     private var allCallerIds: List<org.voxnode.voxnode.models.CallerId> = emptyList()
@@ -74,9 +79,48 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
 
         // Load VoxNode data
         loadVoxNodeData()
+        // Load local avatar if any
+        loadLocalAvatar()
         
         // Initialize language settings
         initializeLanguageSettings()
+    }
+
+    @UiThread
+    fun saveAvatarFromUri(uri: Uri) {
+        coreContext.postOnMainThread {
+            try {
+                val inputStream: InputStream? = coreContext.context.contentResolver.openInputStream(uri)
+                if (inputStream == null) {
+                    showFormattedRedToast("Failed to read image", org.linphone.R.drawable.warning_circle)
+                    return@postOnMainThread
+                }
+
+                val avatarsDir = File(coreContext.context.filesDir, "avatars")
+                if (!avatarsDir.exists()) avatarsDir.mkdirs()
+
+                val avatarFile = File(avatarsDir, "profile_avatar.jpg")
+                FileOutputStream(avatarFile).use { out ->
+                    inputStream.copyTo(out)
+                }
+                inputStream.close()
+
+                // Bump a version to force data binding to rebind (change reference)
+                avatarPath.value = avatarFile.absolutePath + "?ts=" + System.currentTimeMillis()
+                showFormattedGreenToast("Avatar updated", org.linphone.R.drawable.check)
+            } catch (e: Exception) {
+                Log.e("$TAG Failed to save avatar: ${e.message}")
+                showFormattedRedToast("Failed to save avatar", org.linphone.R.drawable.warning_circle)
+            }
+        }
+    }
+
+    @UiThread
+    private fun loadLocalAvatar() {
+        val avatarFile = File(File(coreContext.context.filesDir, "avatars"), "profile_avatar.jpg")
+        if (avatarFile.exists()) {
+            avatarPath.value = avatarFile.absolutePath
+        }
     }
 
     @UiThread
@@ -174,6 +218,15 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
 
         coreContext.postOnCoreThread { core ->
             VoxNodeDataManager.clearLoginData()
+
+            // Erase local avatar
+            try {
+                val avatarFile = File(File(coreContext.context.filesDir, "avatars"), "profile_avatar.jpg")
+                if (avatarFile.exists()) avatarFile.delete()
+                coreContext.postOnMainThread { avatarPath.value = null }
+            } catch (e: Exception) {
+                Log.w("$TAG Failed to delete avatar on logout: ${e.message}")
+            }
 
             val voxNodeAccount = core.accountList.first()
 
