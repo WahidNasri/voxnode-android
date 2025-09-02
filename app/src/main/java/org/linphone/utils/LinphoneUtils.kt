@@ -547,7 +547,7 @@ class LinphoneUtils {
                 RECORDING_MKV_FILE_EXTENSION
             }
             Log.i("$TAG Using [$extension] file format for call recording")
-            val fileName = "${RECORDING_FILE_NAME_HEADER}${address.asStringUriOnly()}${RECORDING_FILE_NAME_URI_TIMESTAMP_SEPARATOR}${System.currentTimeMillis()}$extension"
+            val fileName = "${RECORDING_FILE_NAME_HEADER}${address.username}${RECORDING_FILE_NAME_URI_TIMESTAMP_SEPARATOR}${System.currentTimeMillis()}$extension"
             return FileUtils.getFileStoragePath(fileName, isRecording = true).absolutePath
         }
 

@@ -59,14 +59,16 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <!-- Phone number display area -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:id="@+id/number_display_container"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="24dp"
                         android:padding="16dp"
+                        android:gravity="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -76,46 +78,42 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.countryFlagEmoji}"
+                            tools:text="🇫🇷"
                             android:textSize="24sp"
-                            android:visibility="@{viewModel.isFlagVisible ? View.VISIBLE : View.GONE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/phone_number_display"
+                            tools:visibility="visible"
+                            android:visibility="@{viewModel.isFlagVisible ? View.VISIBLE : View.GONE}" />
+                        <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.formattedNumber}"
-                            tools:text="+33 1231231231231231234dddddd"
-                            android:textSize="24sp"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:maxLength="18"
-                            android:ellipsize="end"
-                            android:hint="@string/enter_phone_number_hint"
-                            android:inputType="none"
-                            android:focusable="false"
-                            android:clickable="true"
-                            android:longClickable="true"
-                            android:textColor="?attr/color_main2_900"
-                            android:textColorHint="?attr/color_main2_400"
-                            android:minHeight="48dp"
-                            android:gravity="center"
-                            android:background="@null"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:textAlignment="center"
-                            android:fontFamily="@font/noto_sans_600"
-                            android:letterSpacing="0.05"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMinTextSize="12sp"
-                            app:autoSizeMaxTextSize="24sp"
-                            app:autoSizeStepGranularity="1sp"
-                            app:layout_constraintEnd_toStartOf="@+id/delete_button"
-                            app:layout_constraintStart_toEndOf="@id/country_flag"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            android:layout_weight="1"
+                            android:layout_gravity="center">
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/phone_number_display"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@{viewModel.formattedNumber}"
+                                tools:text="+33 12314444466666666663"
+                                android:textSize="24sp"
+                                android:maxLines="1"
+                                android:hint="@string/enter_phone_number_hint"
+                                android:inputType="none"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:longClickable="true"
+                                android:textColor="?attr/color_main2_900"
+                                android:textColorHint="?attr/color_main2_400"
+                                android:minHeight="48dp"
+                                android:gravity="center"
+                                android:background="@null"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:textAlignment="center"
+                                android:fontFamily="@font/noto_sans_600"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMaxTextSize="24sp"
+                                app:autoSizeStepGranularity="1sp" />
+
+                        </FrameLayout>
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/delete_button"
@@ -125,12 +123,9 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:padding="12dp"
                             android:visibility="@{viewModel.deleteButtonEnabled ? View.VISIBLE : View.GONE}"
-                            app:tint="?attr/color_main2_600"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:tint="?attr/color_main2_600" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
 
                     <!-- Dialer keypad -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -596,7 +591,7 @@
                         android:src="@drawable/phone"
                         android:tint="@color/bc_white"
                         android:background="@drawable/circular_fab_background"
-                        android:backgroundTint="?attr/color_success_500"
+                        android:backgroundTint="?attr/color_main1_500"
                         android:padding="20dp"
                         android:clickable="true"
                         android:focusable="true"
