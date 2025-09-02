@@ -82,7 +82,7 @@ open class GenericActivity : AppCompatActivity() {
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableWindowSecureMode(corePreferences.enableSecureMode)
+        // enableWindowSecureMode(corePreferences.enableSecureMode)
 
         val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val darkModeEnabled = corePreferences.darkMode
