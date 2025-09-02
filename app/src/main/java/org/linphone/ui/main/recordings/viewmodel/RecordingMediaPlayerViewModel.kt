@@ -254,9 +254,9 @@ class RecordingMediaPlayerViewModel
         player.close()
     }
 
-    private fun formatTime(seconds: Int): String {
-        val minutes = seconds / 60
-        val remainingSeconds = seconds % 60
+    private fun formatTime(milliseconds: Int): String {
+        val minutes = (milliseconds / 1000) / 60
+        val remainingSeconds = (milliseconds / 1000) % 60
         return String.format("%02d:%02d", minutes, remainingSeconds)
     }
 }
