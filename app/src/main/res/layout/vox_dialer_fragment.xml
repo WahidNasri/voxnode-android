@@ -84,7 +84,7 @@
                             android:visibility="@{viewModel.isFlagVisible ? View.VISIBLE : View.GONE}" />
                         <FrameLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="48dp"
                             android:layout_weight="1"
                             android:layout_gravity="center">
                             <androidx.appcompat.widget.AppCompatTextView
@@ -591,7 +591,7 @@
                         android:src="@drawable/phone"
                         android:tint="@color/bc_white"
                         android:background="@drawable/circular_fab_background"
-                        android:backgroundTint="?attr/color_main1_500"
+                        android:backgroundTint="?attr/color_success_500"
                         android:padding="20dp"
                         android:clickable="true"
                         android:focusable="true"
