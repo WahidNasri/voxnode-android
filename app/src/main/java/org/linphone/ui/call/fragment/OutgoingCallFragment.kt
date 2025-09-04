@@ -33,6 +33,8 @@ import org.linphone.core.tools.Log
 import org.linphone.databinding.CallOutgoingFragmentBinding
 import org.linphone.ui.call.viewmodel.CurrentCallViewModel
 import org.linphone.utils.LinphoneUtils
+import org.linphone.R
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 @UiThread
 class OutgoingCallFragment : GenericCallFragment() {
@@ -64,6 +66,16 @@ class OutgoingCallFragment : GenericCallFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = callViewModel
         binding.numpadModel = callViewModel.numpadModel
+
+        // Update calling text with current client email if available
+        try {
+            val email = VoxNodeDataManager.getLoginResult()?.clientEmail
+            if (!email.isNullOrEmpty()) {
+                binding.callingText?.text = getString(R.string.call_from_email, email)
+            }
+        } catch (e: Exception) {
+            Log.w("$TAG Failed to set calling from email text: ${e.message}")
+        }
 
         callViewModel.isOutgoingEarlyMedia.observe(viewLifecycleOwner) { earlyMedia ->
             if (earlyMedia) {

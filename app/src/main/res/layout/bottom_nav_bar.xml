@@ -6,6 +6,7 @@
     <data>
         <import type="android.view.View" />
         <import type="org.linphone.ui.NotoSansFont" />
+        <import type="org.linphone.R" />
         <variable
             name="viewModel"
             type="org.linphone.ui.main.viewmodel.AbstractMainViewModel" />
@@ -28,7 +29,7 @@
             android:layout_marginBottom="12dp"
             android:drawableTop="@drawable/phone"
             android:drawablePadding="4dp"
-            android:drawableTint="@{viewModel.callsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            attrDrawableTint="@{viewModel.callsSelected ? R.attr.color_main1_500 : R.attr.color_main2_600}"
             android:text="@string/bottom_navigation_history_recordings_label"
             textFont="@{viewModel.callsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -46,7 +47,7 @@
             android:layout_marginBottom="12dp"
             android:drawableTop="@drawable/address_book"
             android:drawablePadding="4dp"
-            android:drawableTint="@{viewModel.contactsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            attrDrawableTint="@{viewModel.contactsSelected ? R.attr.color_main1_500 : R.attr.color_main2_600}"
             android:text="@string/bottom_navigation_contacts_label"
             textFont="@{viewModel.contactsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -64,7 +65,7 @@
             android:layout_marginBottom="12dp"
             android:drawableTop="@drawable/dialer"
             android:drawablePadding="4dp"
-            android:drawableTint="@{viewModel.dialerSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            attrDrawableTint="@{viewModel.dialerSelected ? R.attr.color_main1_500 : R.attr.color_main2_600}"
             android:text=""
             textFont="@{viewModel.dialerSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +96,7 @@
             android:layout_marginBottom="12dp"
             android:drawableTop="@drawable/chat_teardrop_text"
             android:drawablePadding="4dp"
-            android:drawableTint="@{viewModel.smsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            attrDrawableTint="@{viewModel.smsSelected ? R.attr.color_main1_500 : R.attr.color_main2_600}"
             android:text="@string/bottom_navigation_voxsms_label"
             android:visibility="@{viewModel.hideConversations ? View.GONE : View.VISIBLE}"
             textFont="@{viewModel.smsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
@@ -127,7 +128,7 @@
             android:layout_marginBottom="12dp"
             android:drawableTop="@drawable/gear"
             android:drawablePadding="4dp"
-            android:drawableTint="@{viewModel.voxSettingsSelected ? @color/main1_500 : @color/main2_600, default=@color/main2_600}"
+            attrDrawableTint="@{viewModel.voxSettingsSelected ? R.attr.color_main1_500 : R.attr.color_main2_600}"
             android:text="@string/bottom_navigation_voxsettings_label"
             textFont="@{viewModel.voxSettingsSelected ? NotoSansFont.NotoSansBold : NotoSansFont.NotoSansRegular}"
             app:layout_constraintBottom_toBottomOf="parent"

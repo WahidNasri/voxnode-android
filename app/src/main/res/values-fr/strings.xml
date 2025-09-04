@@ -995,4 +995,5 @@
     <string name="add_contact">Ajouter un contact</string>
     <string name="copy">Copier</string>
     <string name="calling">Appel…</string>
+    <string name="call_from_email">Appel de : %s</string>
 </resources>

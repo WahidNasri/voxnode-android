@@ -34,6 +34,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.AttrRes
 import androidx.annotation.DimenRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
@@ -299,6 +300,24 @@ fun ImageView.setTintColor(@ColorRes color: Int, disable: Boolean) {
 @BindingAdapter("textColor")
 fun AppCompatTextView.setColor(@ColorRes color: Int) {
     setTextColor(context.getColor(color))
+}
+
+@UiThread
+@BindingAdapter("attrDrawableTint")
+fun AppCompatTextView.setAttrDrawableTint(@AttrRes colorAttr: Int) {
+    if (colorAttr == 0) return
+    val color = ThemeColorWrapper.getColor(context, colorAttr)
+    for (drawable in compoundDrawablesRelative) {
+        drawable?.setTint(color)
+    }
+}
+
+@UiThread
+@BindingAdapter("attrBackgroundColor")
+fun View.setAttrBackgroundColor(@AttrRes colorAttr: Int) {
+    if (colorAttr == 0) return
+    val color = ThemeColorWrapper.getColor(context, colorAttr)
+    setBackgroundColor(color)
 }
 
 @UiThread

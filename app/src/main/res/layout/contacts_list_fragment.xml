@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="org.linphone.R" />
         <import type="android.view.View" />
         <variable
             name="onNewContactClicked"
@@ -26,7 +27,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?attr/color_main1_500">
+                android:background="@{R.attr.color_main1_500}">
 
                 <androidx.constraintlayout.widget.Group
                     android:layout_width="wrap_content"

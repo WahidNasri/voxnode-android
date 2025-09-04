@@ -219,13 +219,24 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
         coreContext.postOnCoreThread { core ->
             VoxNodeDataManager.clearLoginData()
 
-            // Erase local avatar
+            // Preserve local avatar by tagging it with current client email (if available)
             try {
-                val avatarFile = File(File(coreContext.context.filesDir, "avatars"), "profile_avatar.jpg")
-                if (avatarFile.exists()) avatarFile.delete()
+                val avatarsDir = File(coreContext.context.filesDir, "avatars")
+                val avatarFile = File(avatarsDir, "profile_avatar.jpg")
+                if (avatarFile.exists()) {
+                    val email = try {
+                        org.voxnode.voxnode.storage.VoxNodeDataManager.getLoginResult()?.clientEmail
+                    } catch (e: Exception) { null }
+                    val sanitizedEmail = (email ?: "unknown").replace("[^A-Za-z0-9@._-]".toRegex(), "_")
+                    val target = File(avatarsDir, "profile_avatar_$sanitizedEmail.jpg")
+                    if (!target.exists()) {
+                        avatarFile.copyTo(target, overwrite = false)
+                    }
+                    // Do not delete original to avoid data loss if needed elsewhere
+                }
                 coreContext.postOnMainThread { avatarPath.value = null }
             } catch (e: Exception) {
-                Log.w("$TAG Failed to delete avatar on logout: ${e.message}")
+                Log.w("$TAG Failed to preserve avatar on logout: ${e.message}")
             }
 
             val voxNodeAccount = core.accountList.first()

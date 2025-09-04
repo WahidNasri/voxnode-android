@@ -51,6 +51,7 @@ import org.linphone.utils.Event
 import org.linphone.utils.addCharacterAtPosition
 import org.linphone.utils.removeCharacterAtPosition
 import org.linphone.utils.startAnimatedDrawable
+import org.voxnode.voxnode.storage.VoxNodeDataManager
 
 @UiThread
 class ActiveCallFragment : GenericCallFragment() {
@@ -165,6 +166,16 @@ class ActiveCallFragment : GenericCallFragment() {
         binding.viewModel = callViewModel
         binding.callsViewModel = callsViewModel
         binding.numpadModel = callViewModel.numpadModel
+
+        // If the current call is outgoing, show caller email in calling text
+        try {
+            val email = VoxNodeDataManager.getLoginResult()?.clientEmail
+            if (!email.isNullOrEmpty()) {
+                binding.callingText?.text = getString(R.string.call_from_email, email)
+            }
+        } catch (e: Exception) {
+            Log.w("$TAG Failed to set calling from email text: ${e.message}")
+        }
 
         val actionsBottomSheetBehavior = BottomSheetBehavior.from(binding.bottomBar.root)
         actionsBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED

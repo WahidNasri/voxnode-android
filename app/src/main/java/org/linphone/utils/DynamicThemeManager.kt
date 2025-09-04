@@ -22,9 +22,11 @@ object DynamicThemeManager {
      */
     @UiThread
     fun applyProviderColors(context: Context, loginResult: LoginResult) {
-        val providerColor1 = loginResult.providerColor1
-        val providerColor2 = loginResult.providerColor2
-        
+         val providerColor1 = loginResult.providerColor1
+        // val providerColor1 = "000000"
+         val providerColor2 = loginResult.providerColor2
+        // val providerColor2 = "000000"
+
         Log.i("$TAG Applying provider colors - Color1: $providerColor1, Color2: $providerColor2")
         
         // Validate colors

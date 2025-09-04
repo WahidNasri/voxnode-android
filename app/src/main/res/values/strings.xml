@@ -1062,5 +1062,6 @@
     <string name="add_contact">Add contact</string>
     <string name="copy">Copy</string>
     <string name="calling">Calling...</string>
+    <string name="call_from_email">Call from: %s</string>
 
 </resources>
