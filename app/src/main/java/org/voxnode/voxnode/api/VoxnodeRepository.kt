@@ -36,10 +36,11 @@ class VoxnodeRepository {
         email: String,
         password: String,
         providerId: Long,
+        appVersion: String,
         onSuccess: (LoginResult) -> Unit,
         onError: (String) -> Unit
     ) {
-        apiService.loginApi(email, password, providerId).enqueue(object : Callback<LoginResult> {
+        apiService.loginApi(email, password, providerId, appVersion).enqueue(object : Callback<LoginResult> {
             override fun onResponse(call: Call<LoginResult>, response: Response<LoginResult>) {
                 if (response.isSuccessful) {
                     response.body()?.let { onSuccess(it) }

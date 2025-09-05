@@ -171,6 +171,11 @@ class ThirdPartySipAccountLoginViewModel
             email = usernameValue,
             password = passwordValue,
             providerId = 1L,
+            appVersion = try {
+                coreContext.context.packageManager.getPackageInfo(coreContext.context.packageName, 0).versionName ?: "unknown"
+            } catch (e: Exception) {
+                "unknown"
+            },
             onSuccess = { loginResult ->
                 registrationInProgress.postValue(false)
                 if (loginResult.status) {

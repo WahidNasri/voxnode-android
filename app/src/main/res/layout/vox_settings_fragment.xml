@@ -43,7 +43,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="@dimen/top_bar_shadow_height"
-                    android:background="@drawable/shape_squircle_white_r20_top_shadow"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout

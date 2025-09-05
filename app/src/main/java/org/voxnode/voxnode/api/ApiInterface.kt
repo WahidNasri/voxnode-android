@@ -21,7 +21,8 @@ interface ApiInterface {
     fun loginApi(
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("providerId") providerId: Long
+        @Field("providerId") providerId: Long,
+        @Field("appVersion") appVersion: String
     ): Call<LoginResult>
 
     @FormUrlEncoded
