@@ -146,8 +146,15 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
 
                     Log.i("$TAG VoxNode data loaded successfully for user: ${loginResult.clientEmail}")
                     
-                    // Fetch caller ID after loading login data
-                    fetchCurrentCallerId(loginResult)
+                    // First try to load caller ID from local storage
+                    val storedCallerId = VoxNodeDataManager.getCurrentCallerId()
+                    if (storedCallerId.isNotEmpty()) {
+                        callerIdNumber.value = storedCallerId
+                        Log.i("$TAG Loaded caller ID from local storage: $storedCallerId")
+                    } else {
+                        // If no stored caller ID, fetch from API
+                        fetchCurrentCallerId(loginResult)
+                    }
                 } else {
                     // Set default values when no data is available
                     userEmail.value = "Not logged in"
@@ -192,11 +199,23 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                     if (currentCallerId != null) {
                         callerIdNumber.value = currentCallerId?.callerID ?: "Not available"
                         Log.i("$TAG Current caller ID: ${currentCallerId?.callerID}")
+                        
+                        // Save the current caller ID locally
+                        coreContext.postOnCoreThread {
+                            VoxNodeDataManager.saveCurrentCallerId(currentCallerId!!)
+                        }
                     } else {
                         // If no current caller ID is selected, show the first one or fallback
                         val firstCallerId = callerIds.firstOrNull()
                         callerIdNumber.value = firstCallerId?.callerID ?: sipAddress.value ?: "Not available"
                         Log.w("$TAG No current caller ID selected, using: ${callerIdNumber.value}")
+                        
+                        // Save the first caller ID locally if available
+                        if (firstCallerId != null) {
+                            coreContext.postOnCoreThread {
+                                VoxNodeDataManager.saveCurrentCallerId(firstCallerId)
+                            }
+                        }
                     }
                 }
             },
@@ -326,6 +345,21 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
             clientKey = clientKey,
             onSuccess = { response ->
                 Log.i("$TAG Successfully chose caller ID: ${callerId.callerID}")
+                
+                // Save the selected caller ID locally immediately after API success
+                coreContext.postOnCoreThread {
+                    VoxNodeDataManager.saveCurrentCallerId(callerId)
+                    Log.i("$TAG Local caller ID storage updated with: ${callerId.callerID}")
+                    
+                    // Verify the save was successful
+                    val verificationResult = VoxNodeDataManager.verifyCurrentCallerId(callerId)
+                    if (verificationResult) {
+                        Log.i("$TAG Caller ID local storage verification successful")
+                    } else {
+                        Log.w("$TAG Caller ID local storage verification failed - retrying save")
+                        VoxNodeDataManager.saveCurrentCallerId(callerId)
+                    }
+                }
                 
                 coreContext.postOnMainThread {
                     isCallerIdLoading.value = false

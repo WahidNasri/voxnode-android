@@ -484,6 +484,20 @@ class CorePreferences
             config.setString("voxnode", "url_recharge", value)
         }
 
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeCurrentCallerId: String
+        get() = config.getString("voxnode", "current_caller_id", "").orEmpty()
+        set(value) {
+            config.setString("voxnode", "current_caller_id", value)
+        }
+
+    @get:WorkerThread @set:WorkerThread
+    var voxnodeCurrentCallerIdId: Int
+        get() = config.getInt("voxnode", "current_caller_id_id", -1)
+        set(value) {
+            config.setInt("voxnode", "current_caller_id_id", value)
+        }
+
     @get:AnyThread
     val voxnodeDataFile: String
         get() = context.filesDir.absolutePath + "/voxnode_data.json"

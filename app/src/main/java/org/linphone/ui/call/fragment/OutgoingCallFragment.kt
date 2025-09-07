@@ -67,14 +67,20 @@ class OutgoingCallFragment : GenericCallFragment() {
         binding.viewModel = callViewModel
         binding.numpadModel = callViewModel.numpadModel
 
-        // Update calling text with current client email if available
+        // Update calling text with current caller ID if available
         try {
-            val email = VoxNodeDataManager.getLoginResult()?.clientEmail
-            if (!email.isNullOrEmpty()) {
-                binding.callingText?.text = getString(R.string.call_from_email, email)
+            val callerId = VoxNodeDataManager.getCurrentCallerId()
+            if (callerId.isNotEmpty()) {
+                binding.callingText?.text = "Calling from $callerId"
+            } else {
+                // Fallback to email if no caller ID is available
+                val email = VoxNodeDataManager.getLoginResult()?.clientEmail
+                if (!email.isNullOrEmpty()) {
+                    binding.callingText?.text = getString(R.string.call_from_email, email)
+                }
             }
         } catch (e: Exception) {
-            Log.w("$TAG Failed to set calling from email text: ${e.message}")
+            Log.w("$TAG Failed to set calling from caller ID text: ${e.message}")
         }
 
         callViewModel.isOutgoingEarlyMedia.observe(viewLifecycleOwner) { earlyMedia ->

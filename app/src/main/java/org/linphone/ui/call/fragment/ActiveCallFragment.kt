@@ -167,14 +167,13 @@ class ActiveCallFragment : GenericCallFragment() {
         binding.callsViewModel = callsViewModel
         binding.numpadModel = callViewModel.numpadModel
 
-        // If the current call is outgoing, show caller email in calling text
+        // Set caller ID for data binding
         try {
-            val email = VoxNodeDataManager.getLoginResult()?.clientEmail
-            if (!email.isNullOrEmpty()) {
-                binding.callingText?.text = getString(R.string.call_from_email, email)
-            }
+            val callerId = VoxNodeDataManager.getCurrentCallerId()
+            binding.callerId = if (callerId.isNotEmpty()) callerId else null
         } catch (e: Exception) {
-            Log.w("$TAG Failed to set calling from email text: ${e.message}")
+            Log.w("$TAG Failed to set caller ID for data binding: ${e.message}")
+            binding.callerId = null
         }
 
         val actionsBottomSheetBehavior = BottomSheetBehavior.from(binding.bottomBar.root)

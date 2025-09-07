@@ -185,6 +185,18 @@ class ThirdPartySipAccountLoginViewModel
                     coreContext.postOnCoreThread {
                         VoxNodeDataManager.saveLoginResult(loginResult)
                         Log.i("$TAG VoxNode login result saved successfully")
+                        
+                        // Fetch and save current caller ID after successful login
+                        VoxNodeDataManager.fetchAndSaveCurrentCallerId(
+                            loginResult = loginResult,
+                            onSuccess = {
+                                Log.i("$TAG Current caller ID fetched and saved successfully after login")
+                            },
+                            onError = { error ->
+                                Log.w("$TAG Failed to fetch caller ID after login: $error")
+                                // Don't fail the login process if caller ID fetch fails
+                            }
+                        )
                     }
 
                     // Apply provider colors to theme
