@@ -19,6 +19,7 @@
  */
 package org.linphone.ui.main.voxsettings.viewmodel
 
+import android.content.Intent
 import android.net.Uri
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
@@ -63,7 +64,29 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     val navigateToPermissionsEvent: MutableLiveData<Event<Boolean>> by lazy {
         MutableLiveData<Event<Boolean>>()
     }
-    
+
+    @UiThread
+    fun openTermsOfUse() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.voxnode.com/app-cgv.html"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            coreContext.context.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("$TAG Failed to open terms URL: ${e.message}")
+        }
+    }
+
+    @UiThread
+    fun openPrivacyPolicy() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.voxnode.com/app-privacy.html"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            coreContext.context.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("$TAG Failed to open privacy URL: ${e.message}")
+        }
+    }
+
     // Caller ID events
     val showCallerIdBottomSheetEvent:
         MutableLiveData<Event<Pair<List<org.voxnode.voxnode.models.CallerId>, org.voxnode.voxnode.models.CallerId?>>> by lazy {
@@ -151,10 +174,9 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                     if (storedCallerId.isNotEmpty()) {
                         callerIdNumber.value = storedCallerId
                         Log.i("$TAG Loaded caller ID from local storage: $storedCallerId")
-                    } else {
-                        // If no stored caller ID, fetch from API
-                        fetchCurrentCallerId(loginResult)
-                    }
+                    }   // If no stored caller ID, fetch from API
+                    fetchCurrentCallerId(loginResult)
+
                 } else {
                     // Set default values when no data is available
                     userEmail.value = "Not logged in"

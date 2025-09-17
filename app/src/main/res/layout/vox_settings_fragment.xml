@@ -45,18 +45,22 @@
                     android:layout_marginTop="@dimen/top_bar_shadow_height"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
                     android:id="@+id/content_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="@dimen/top_bar_height"
-                    android:background="@drawable/shape_squircle_white_r20_top_background"
-                    android:gravity="center"
-                    android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@id/bottom_nav_bar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_squircle_white_r20_top_background"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                     <!-- User Profile Section -->
                     <LinearLayout
@@ -260,41 +264,92 @@
 
                             </LinearLayout>
 
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:cardCornerRadius="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/legal_header"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/legal_title"
+                                    style="@style/default_text_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/vox_settings_legal_title"
+                                    android:textColor="#3FCEFF"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="@color/browser_actions_bg_grey" />
 
                             <LinearLayout
-                                android:id="@+id/logout_button"
+                                android:id="@+id/terms_item"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{() -> viewModel.logout()}"
-                                android:orientation="horizontal"
-                                android:padding="10dp"
-                                android:visibility="@{viewModel.isLoggedIn ? View.VISIBLE : View.GONE}">
+                                android:layout_height="60dp"
+                                android:onClick="@{() -> viewModel.openTermsOfUse()}"
+                                android:gravity="center_vertical"
+                                android:paddingHorizontal="16dp">
 
                                 <androidx.appcompat.widget.AppCompatTextView
+                                    style="@style/default_text_style"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:drawableStart="@drawable/sign_out"
-                                    android:drawablePadding="5dp"
-                                    android:paddingVertical="10dp"
-                                    android:text="@string/manage_account_delete"
-                                    android:textColor="@android:color/holo_red_dark"
+                                    android:text="@string/vox_settings_terms_of_use"
+                                    android:textColor="@android:color/black"
                                     android:textSize="16sp"
-                                    app:drawableTint="@android:color/holo_red_dark" />
+                                    android:textStyle="bold" />
 
+                                
                             </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/browser_actions_bg_grey" />
+
+                            <LinearLayout
+                                android:id="@+id/privacy_item"
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp"
+                                android:onClick="@{() -> viewModel.openPrivacyPolicy()}"
+                                android:gravity="center_vertical"
+                                android:paddingHorizontal="16dp">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    style="@style/default_text_style"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/vox_settings_privacy_policy"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                
+                            </LinearLayout>
+
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                    <!-- Logout Button -->
 
                     <!-- Not Logged In Message -->
                     <androidx.appcompat.widget.AppCompatTextView
@@ -303,17 +358,49 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:text="@string/vox_settings_not_logged_in"
                         android:textAlignment="center"
-                        android:visibility="@{viewModel.isLoggedIn ? View.GONE : View.VISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title" />
+                        android:visibility="@{viewModel.isLoggedIn ? View.GONE : View.VISIBLE}" />
 
+                    <!-- Logout Card at bottom -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:visibility="@{viewModel.isLoggedIn ? View.VISIBLE : View.GONE}"
+                        app:cardCornerRadius="16dp">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.logout()}"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawableStart="@drawable/sign_out"
+                                android:drawablePadding="5dp"
+                                android:paddingVertical="10dp"
+                                android:text="@string/manage_account_delete"
+                                android:textColor="@android:color/holo_red_dark"
+                                android:textSize="16sp"
+                                app:drawableTint="@android:color/holo_red_dark" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Bottom spacer to avoid nav bar overlap -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
                 <include
                     android:id="@+id/bottom_nav_bar"

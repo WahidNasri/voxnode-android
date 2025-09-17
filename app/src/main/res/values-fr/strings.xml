@@ -967,6 +967,11 @@
     <string name="vox_settings_permissions">Permissions</string>
     <string name="vox_settings_not_logged_in">Veuillez vous connecter via l\'assistant pour afficher vos paramètres VoxNode.</string>
 
+    <!-- VoxSettings - Legal links -->
+    <string name="vox_settings_legal_title">Mentions légales</string>
+    <string name="vox_settings_terms_of_use">Conditions d’utilisation</string>
+    <string name="vox_settings_privacy_policy">Confidentialité</string>
+
     <!-- VoxSms -->
     <string name="bottom_navigation_voxsms_label">SMS</string>
     <string name="vox_sms_empty_state">Aucun SMS pour le moment</string>

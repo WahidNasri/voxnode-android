@@ -20,7 +20,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            style="@style/avatar_imageview"
+            style="@style/avatar_imageview_transparent"
             android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_list_cell_size"
             android:layout_height="@dimen/avatar_list_cell_size"

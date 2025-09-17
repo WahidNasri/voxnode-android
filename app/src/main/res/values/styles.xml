@@ -238,6 +238,10 @@
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
+    <style name="avatar_imageview_transparent">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
     <style name="unread_count_text_style">
         <item name="android:fontFamily">@font/noto_sans</item>
         <item name="android:textColor">?attr/color_on_main</item>
