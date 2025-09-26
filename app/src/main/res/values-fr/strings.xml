@@ -1001,4 +1001,14 @@
     <string name="copy">Copier</string>
     <string name="calling">Appel…</string>
     <string name="call_from_email">Appel de : %s</string>
+
+    <!-- Update Required Dialog -->
+    <string name="update_required_dialog_title">Mise à jour requise</string>
+    <string name="update_required_dialog_message">Une nouvelle version de l\'application est requise pour continuer. Veuillez mettre à jour vers la dernière version depuis le Play Store.</string>
+    <string name="update_required_dialog_update_button">Mettre à jour maintenant</string>
+    <string name="update_required_dialog_cancel_button">Annuler</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password">Mot de passe oublié ?</string>
+
 </resources>

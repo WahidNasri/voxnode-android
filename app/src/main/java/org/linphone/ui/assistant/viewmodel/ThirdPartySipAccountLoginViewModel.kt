@@ -42,6 +42,8 @@ import org.linphone.utils.DynamicThemeManager
 import org.linphone.utils.Event
 import org.voxnode.voxnode.api.VoxnodeRepository
 import org.voxnode.voxnode.storage.VoxNodeDataManager
+import android.content.Intent
+import android.net.Uri
 
 class ThirdPartySipAccountLoginViewModel
     @UiThread
@@ -66,6 +68,10 @@ class ThirdPartySipAccountLoginViewModel
 
     val accountLoginErrorEvent: MutableLiveData<Event<String>> by lazy {
         MutableLiveData<Event<String>>()
+    }
+
+    val updateRequiredEvent: MutableLiveData<Event<Unit>> by lazy {
+        MutableLiveData<Event<Unit>>()
     }
 
     val defaultTransportIndexEvent: MutableLiveData<Event<Int>> by lazy {
@@ -180,6 +186,13 @@ class ThirdPartySipAccountLoginViewModel
                 registrationInProgress.postValue(false)
                 if (loginResult.status) {
                     Log.i("$TAG VoxNode login successful for user: $usernameValue")
+
+                    // Check if update is required
+                    if (loginResult.updateRequired == 1) {
+                        Log.i("$TAG Update required, showing update dialog")
+                        updateRequiredEvent.postValue(Event(Unit))
+                        return@login
+                    }
 
                     // Save the complete login result locally for future use
                     coreContext.postOnCoreThread {
@@ -317,5 +330,35 @@ class ThirdPartySipAccountLoginViewModel
     private fun isLoginButtonEnabled(): Boolean {
         // Password isn't mandatory as authentication could be Bearer
         return username.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
+    }
+
+    @UiThread
+    fun openPlayStore() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${coreContext.context.packageName}"))
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            coreContext.context.startActivity(intent)
+        } catch (e: Exception) {
+            // If Play Store app is not available, open in browser
+            try {
+                val intent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${coreContext.context.packageName}"))
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                coreContext.context.startActivity(intent)
+            } catch (e2: Exception) {
+                Log.e("$TAG Failed to open Play Store: ${e2.message}")
+            }
+        }
+    }
+
+    @UiThread
+    fun openForgotPassword() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://voipphone.app/recover"))
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            coreContext.context.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("$TAG Failed to open forgot password link: ${e.message}")
+        }
     }
 }

@@ -96,4 +96,9 @@ class LoginResult {
     @SerializedName("urlRecharge")
     @Expose
     var urlRecharge: String? = null
+
+    @SerializedName("updateRequired")
+    @Expose
+    var updateRequired: Int? = null
+        get() = if (field != null) field else 0
 }

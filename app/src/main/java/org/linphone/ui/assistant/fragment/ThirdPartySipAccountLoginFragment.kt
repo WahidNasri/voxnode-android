@@ -26,6 +26,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.annotation.UiThread
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -107,6 +108,12 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
             }
         }
 
+        viewModel.updateRequiredEvent.observe(viewLifecycleOwner) {
+            it.consume {
+                showUpdateRequiredDialog()
+            }
+        }
+
         coreContext.bearerAuthenticationRequestedEvent.observe(viewLifecycleOwner) {
             it.consume { pair ->
                 val serverUrl = pair.first
@@ -138,5 +145,19 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
 
     private fun goBack() {
         findNavController().popBackStack()
+    }
+
+    private fun showUpdateRequiredDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.update_required_dialog_title)
+            .setMessage(R.string.update_required_dialog_message)
+            .setPositiveButton(R.string.update_required_dialog_update_button) { _, _ ->
+                viewModel.openPlayStore()
+            }
+            .setNegativeButton(R.string.update_required_dialog_cancel_button) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
     }
 }

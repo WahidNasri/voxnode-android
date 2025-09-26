@@ -68,7 +68,9 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     @UiThread
     fun openTermsOfUse() {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.voxnode.com/app-cgv.html"))
+            val intent = Intent(coreContext.context, org.linphone.ui.web.WebViewActivity::class.java)
+            intent.putExtra(org.linphone.ui.web.WebViewActivity.EXTRA_URL, "https://www.voxnode.com/app-cgv.html")
+            intent.putExtra(org.linphone.ui.web.WebViewActivity.EXTRA_TITLE, coreContext.context.getString(org.linphone.R.string.vox_settings_terms_of_use))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             coreContext.context.startActivity(intent)
         } catch (e: Exception) {
@@ -79,7 +81,9 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
     @UiThread
     fun openPrivacyPolicy() {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.voxnode.com/app-privacy.html"))
+            val intent = Intent(coreContext.context, org.linphone.ui.web.WebViewActivity::class.java)
+            intent.putExtra(org.linphone.ui.web.WebViewActivity.EXTRA_URL, "https://www.voxnode.com/app-privacy.html")
+            intent.putExtra(org.linphone.ui.web.WebViewActivity.EXTRA_TITLE, coreContext.context.getString(org.linphone.R.string.vox_settings_privacy_policy))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             coreContext.context.startActivity(intent)
         } catch (e: Exception) {
