@@ -178,7 +178,12 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                     if (storedCallerId.isNotEmpty()) {
                         callerIdNumber.value = storedCallerId
                         Log.i("$TAG Loaded caller ID from local storage: $storedCallerId")
-                    }   // If no stored caller ID, fetch from API
+                    } else {
+                        // If no stored caller ID, show a placeholder and try to fetch from API
+                        callerIdNumber.value = "Loading..."
+                        Log.i("$TAG No caller ID in local storage, fetching from API")
+                    }
+                    // Always try to fetch from API to get the latest data
                     fetchCurrentCallerId(loginResult)
 
                 } else {
@@ -233,7 +238,7 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                     } else {
                         // If no current caller ID is selected, show the first one or fallback
                         val firstCallerId = callerIds.firstOrNull()
-                        callerIdNumber.value = firstCallerId?.callerID ?: sipAddress.value ?: "Not available"
+                        callerIdNumber.value = firstCallerId?.callerID ?: "Not available"
                         Log.w("$TAG No current caller ID selected, using: ${callerIdNumber.value}")
                         
                         // Save the first caller ID locally if available
@@ -249,8 +254,16 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                 Log.e("$TAG Failed to fetch caller IDs: $error")
                 coreContext.postOnMainThread {
                     isCallerIdLoading.value = false
-                    // Fallback to SIP address if caller ID fetch fails
-                    callerIdNumber.value = sipAddress.value ?: "Not available"
+                    // Try to use locally stored caller ID as fallback
+                    val localCallerId = VoxNodeDataManager.getCurrentCallerId()
+                    if (localCallerId.isNotEmpty()) {
+                        callerIdNumber.value = localCallerId
+                        Log.i("$TAG Using locally stored caller ID as fallback: $localCallerId")
+                    } else {
+                        // If no local caller ID, show a proper message instead of API key
+                        callerIdNumber.value = "Not available"
+                        Log.w("$TAG No local caller ID available, showing 'Not available'")
+                    }
                     // showRedToast("Failed to load caller ID: $error", org.linphone.R.drawable.warning_circle)
                 }
             }

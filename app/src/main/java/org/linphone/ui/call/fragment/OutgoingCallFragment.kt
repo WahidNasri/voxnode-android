@@ -71,7 +71,7 @@ class OutgoingCallFragment : GenericCallFragment() {
         try {
             val callerId = VoxNodeDataManager.getCurrentCallerId()
             if (callerId.isNotEmpty()) {
-                binding.callingText?.text = "Calling from $callerId"
+                binding.callingText?.text = getString(R.string.call_from_caller_id, callerId)
             } else {
                 // Fallback to email if no caller ID is available
                 val email = VoxNodeDataManager.getLoginResult()?.clientEmail

@@ -151,6 +151,7 @@
             android:name=".ui.web.WebViewActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false"
+            android:theme="@style/AppSplashScreenTheme"
             android:resizeableActivity="true" />
 
         <activity

@@ -23,9 +23,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.UiThread
 import androidx.databinding.DataBindingUtil
 import org.linphone.R
+import org.linphone.compatibility.Compatibility
 import org.linphone.core.tools.Log
 import org.linphone.databinding.AssistantPermissionsFragmentBinding
 import org.linphone.ui.GenericFragment
@@ -37,6 +39,28 @@ class VoxSettingsPermissionsFragment : GenericFragment() {
     }
 
     private lateinit var binding: AssistantPermissionsFragmentBinding
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        var allGranted = true
+        permissions.entries.forEach {
+            val permissionName = it.key
+            val isGranted = it.value
+            if (isGranted) {
+                Log.i("$TAG Permission [$permissionName] is now granted")
+            } else {
+                Log.i("$TAG Permission [$permissionName] has been denied")
+                allGranted = false
+            }
+        }
+
+        if (allGranted) {
+            Log.i("$TAG All permissions have been granted")
+        } else {
+            Log.w("$TAG Not all permissions were granted")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,8 +90,9 @@ class VoxSettingsPermissionsFragment : GenericFragment() {
 
         binding.setGrantAllClickListener {
             Log.i("$TAG Grant all permissions clicked")
-            // For now, just go back to vox settings
-            requireActivity().onBackPressed()
+            requestPermissionLauncher.launch(
+                Compatibility.getAllRequiredPermissionsArray()
+            )
         }
     }
 }
