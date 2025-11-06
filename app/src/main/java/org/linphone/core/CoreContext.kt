@@ -125,6 +125,10 @@ class CoreContext
         MutableLiveData<Event<Boolean>>()
     }
 
+    val forceLogoutEvent: MutableLiveData<Event<Boolean>> by lazy {
+        MutableLiveData<Event<Boolean>>()
+    }
+
     private var filesToExportToNativeMediaGallery = arrayListOf<String>()
     val filesToExportToNativeMediaGalleryEvent: MutableLiveData<Event<List<String>>> by lazy {
         MutableLiveData<Event<List<String>>>()
@@ -362,6 +366,12 @@ class CoreContext
                     showFormattedRedToastEvent.postValue(
                         Event(Pair(text, org.linphone.R.drawable.warning_circle))
                     )
+
+                    // If SBC returns custom SIP code 999 on INVITE error, force logout
+                    if (errorInfo.protocolCode == 999) {
+                        Log.w("$TAG Detected SBC forced logout via SIP code 999; performing forced logout")
+                        forceLogoutDueToSbc()
+                    }
                 }
                 else -> {
                 }
@@ -1226,6 +1236,51 @@ class CoreContext
         } catch (e: Exception) {
             Log.e("$TAG Error checking VoxNode recording enabled status: ${e.message}")
             false
+        }
+    }
+
+    @WorkerThread
+    fun forceLogoutDueToSbc() {
+        try {
+            // Clear VoxNode stored login/session data
+            VoxNodeDataManager.clearLoginData()
+
+            // Remove default account and its auth info if present
+            val account = core.accountList.firstOrNull()
+            if (account != null) {
+                val identity = account.params.identityAddress?.asStringUriOnly()
+                Log.w("$TAG Forcing logout: removing account [$identity] due to SBC signal")
+
+                // Clean up logs and meetings for account
+                account.clearCallLogs()
+                for (meeting in account.conferenceInformationList) {
+                    core.deleteConferenceInformation(meeting)
+                }
+
+                val authInfo = account.findAuthInfo()
+                if (authInfo != null) {
+                    core.removeAuthInfo(authInfo)
+                }
+                core.removeAccount(account)
+            } else {
+                Log.w("$TAG Forcing logout: no account found to remove")
+            }
+
+            // Optional: stop keep-alive service if it is running
+            if (keepAliveServiceStarted) {
+                stopKeepAliveService()
+            }
+
+            // Notify user on main thread
+            postOnMainThread {
+                showFormattedRedToastEvent.postValue(
+                    Event(Pair(context.getString(org.linphone.R.string.assistant_account_login_error), org.linphone.R.drawable.warning_circle))
+                )
+                // Emit event so UI can navigate to login screen
+                forceLogoutEvent.postValue(Event(true))
+            }
+        } catch (e: Exception) {
+            Log.e("$TAG Failed to force logout due to SBC: ${e.message}")
         }
     }
 }

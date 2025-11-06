@@ -367,6 +367,19 @@ class MainActivity : GenericActivity() {
             }
         }
 
+        coreContext.forceLogoutEvent.observe(this) {
+            it.consume {
+                try {
+                    val intent = Intent(this, AssistantActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    finish()
+                } catch (ise: IllegalStateException) {
+                    Log.e("$TAG Can't start Assistant activity after forced logout: $ise")
+                }
+            }
+        }
+
         coreContext.provisioningAppliedEvent.observe(this) {
             it.consume {
                 Log.i("$TAG Remote provisioning was applied, checking if theme has changed")

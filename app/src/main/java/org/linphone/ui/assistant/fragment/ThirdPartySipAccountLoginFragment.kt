@@ -38,6 +38,8 @@ import org.linphone.R
 import org.linphone.core.tools.Log
 import org.linphone.databinding.AssistantThirdPartySipAccountLoginFragmentBinding
 import org.linphone.ui.GenericActivity
+import android.content.Intent
+import org.linphone.ui.main.MainActivity
 import org.linphone.ui.GenericFragment
 import org.linphone.ui.assistant.viewmodel.ThirdPartySipAccountLoginViewModel
 import org.linphone.ui.main.sso.fragment.SingleSignOnFragmentDirections
@@ -94,7 +96,12 @@ class ThirdPartySipAccountLoginFragment : GenericFragment() {
 
         viewModel.accountLoggedInEvent.observe(viewLifecycleOwner) {
             it.consume {
-                Log.i("$TAG Account successfully logged-in, leaving assistant")
+                Log.i("$TAG Account successfully logged-in, navigating to Main and leaving assistant")
+                try {
+                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                } catch (ise: IllegalStateException) {
+                    Log.e("$TAG Can't start MainActivity after login: $ise")
+                }
                 requireActivity().finish()
             }
         }
