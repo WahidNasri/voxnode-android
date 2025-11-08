@@ -351,6 +351,7 @@ class CallActivity : GenericActivity() {
             showRedToast(getString(message), icon)
         }
 
+        /*
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -361,6 +362,7 @@ class CallActivity : GenericActivity() {
             val icon = R.drawable.warning_circle
             showRedToast(getString(message), icon)
         }
+        */
     }
 
     override fun onResume() {
