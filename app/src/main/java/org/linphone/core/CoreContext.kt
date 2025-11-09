@@ -491,10 +491,14 @@ class CoreContext
                     startKeepAliveService()
                 } else {
                     Log.i(
-                        "$TAG Newly added account (or the whole Core) doesn't support push notifications but keep-alive foreground service is already enabled, nothing to do"
+                        "$TAG Newly added account (or the whole Core) doesn't support push notifications but keep-alive foreground service is already enabled"
                     )
                 }
             }
+            // Always start keep-alive service when a new account is added
+            Log.i("$TAG Starting keep-alive service for newly added account")
+            corePreferences.keepServiceAlive = true
+            startKeepAliveService()
         }
 
         @WorkerThread

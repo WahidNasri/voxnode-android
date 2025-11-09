@@ -323,6 +323,10 @@ class VoxSettingsViewModel : AbstractMainViewModel() {
                 Log.i("$TAG VoxNode account [$identity] has been removed")
             }
 
+            // Stop keep-alive service on logout
+            coreContext.stopKeepAliveService()
+            Log.i("$TAG Keep-alive service stopped after logout")
+
             // Update UI on main thread
             coreContext.postOnMainThread {
                 loadVoxNodeData() // Reload to show logged out state

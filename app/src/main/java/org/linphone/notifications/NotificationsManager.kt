@@ -1764,7 +1764,7 @@ class NotificationsManager
             }
 
             val builder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.linphone_notification)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentText(AppUtils.getString(R.string.notification_keep_app_alive_message))
                 .setAutoCancel(false)
                 .setOngoing(true)
